@@ -3,6 +3,7 @@ package agents
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/AlloraAi/AlloraCLI/pkg/config"
@@ -11,21 +12,34 @@ import (
 
 // Agent represents an AI agent interface
 type Agent interface {
-	ProcessQuery(query string) (*Response, error)
-	GetCapabilities() []string
+	GetName() string
 	GetType() string
-	GetModel() string
+	Query(ctx context.Context, query *Query) (*Response, error)
+	GetCapabilities() []string
+	GetStatus() *AgentStatus
+	GetConfiguration() *AgentConfig
+	UpdateConfiguration(config *AgentConfig) error
+	Start() error
+	Stop() error
+	IsHealthy() bool
+}
+
+// Query represents a query to an AI agent
+type Query struct {
+	Text    string                 `json:"text"`
+	Context map[string]interface{} `json:"context"`
 }
 
 // Response represents an AI agent response
 type Response struct {
-	Content     string            `json:"content"`
-	Type        string            `json:"type"`
-	Confidence  float64           `json:"confidence"`
-	Metadata    map[string]string `json:"metadata"`
-	Suggestions []string          `json:"suggestions"`
-	Actions     []Action          `json:"actions"`
-	Timestamp   time.Time         `json:"timestamp"`
+	Text       string                 `json:"text"`
+	Content    string                 `json:"content"`
+	Type       string                 `json:"type"`
+	Confidence float64                `json:"confidence"`
+	Metadata   map[string]interface{} `json:"metadata"`
+	Suggestions []string              `json:"suggestions"`
+	Actions    []Action               `json:"actions"`
+	Timestamp  time.Time              `json:"timestamp"`
 }
 
 // Action represents an actionable item from the AI response
@@ -37,8 +51,85 @@ type Action struct {
 	Risk        string            `json:"risk"`
 }
 
+// AgentStatus represents the status of an AI agent
+type AgentStatus struct {
+	State        string    `json:"state"`
+	LastActivity time.Time `json:"last_activity"`
+	Health       string    `json:"health"`
+	Uptime       time.Duration `json:"uptime"`
+}
+
+// AgentConfig represents the configuration of an AI agent
+type AgentConfig struct {
+	Model       string  `json:"model"`
+	MaxTokens   int     `json:"max_tokens"`
+	Temperature float64 `json:"temperature"`
+	APIKey      string  `json:"api_key"`
+	Endpoint    string  `json:"endpoint"`
+}
+
+// AgentManager manages multiple AI agents
+type AgentManager struct {
+	agents map[string]Agent
+	mutex  sync.RWMutex
+}
+
+// NewAgentManager creates a new agent manager
+func NewAgentManager() *AgentManager {
+	return &AgentManager{
+		agents: make(map[string]Agent),
+	}
+}
+
+// AddAgent adds an agent to the manager
+func (m *AgentManager) AddAgent(agent Agent) error {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	
+	m.agents[agent.GetName()] = agent
+	return nil
+}
+
+// GetAgent retrieves an agent by name
+func (m *AgentManager) GetAgent(name string) (Agent, error) {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+	
+	agent, exists := m.agents[name]
+	if !exists {
+		return nil, fmt.Errorf("agent not found: %s", name)
+	}
+	return agent, nil
+}
+
+// RemoveAgent removes an agent from the manager
+func (m *AgentManager) RemoveAgent(name string) error {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	
+	if _, exists := m.agents[name]; !exists {
+		return fmt.Errorf("agent not found: %s", name)
+	}
+	
+	delete(m.agents, name)
+	return nil
+}
+
+// ListAgents returns a list of all agents
+func (m *AgentManager) ListAgents() []Agent {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+	
+	agents := make([]Agent, 0, len(m.agents))
+	for _, agent := range m.agents {
+		agents = append(agents, agent)
+	}
+	return agents
+}
+
 // BaseAgent provides common functionality for all agents
 type BaseAgent struct {
+	name    string
 	config  config.Agent
 	client  *resty.Client
 	context context.Context
