@@ -83,6 +83,7 @@ processing and multi-agent AI systems.`,
 	cmd.AddCommand(newCloudCmd())
 	cmd.AddCommand(newPluginCmd())
 	cmd.AddCommand(newCompletionCmd())
+	cmd.AddCommand(newGeminiCmd())
 
 	// Enable auto-completion
 	cmd.CompletionOptions.DisableDefaultCmd = false

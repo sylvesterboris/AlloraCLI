@@ -1,222 +1,270 @@
-# AlloraCLI - AI-Powered IT Infrastructure Management CLI
+# AlloraCLI - AI-Powered Infrastructure Management
 
-<div align="center">
-  <img src="https://github.com/organizations/AlloraAi/settings/profile" alt="AlloraCLI Logo" width="200"/>
-  
-  [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go)](https://golang.org/)
-  [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
-  [![Build Status](https://img.shields.io/github/actions/workflow/status/AlloraAi/AlloraCLI/ci.yml?style=for-the-badge)](https://github.com/AlloraAi/AlloraCLI/actions)
-  [![Release](https://img.shields.io/github/v/release/AlloraAi/AlloraCLI?style=for-the-badge)](https://github.com/AlloraAi/AlloraCLI/releases)
-</div>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Go Version](https://img.shields.io/badge/Go-1.21%2B-blue)](https://golang.org/)
+[![Release](https://img.shields.io/github/v/release/AlloraAi/AlloraCLI)](https://github.com/AlloraAi/AlloraCLI/releases)
+[![Go Report Card](https://goreportcard.com/badge/github.com/AlloraAi/AlloraCLI)](https://goreportcard.com/report/github.com/AlloraAi/AlloraCLI)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/AlloraAi)](https://github.com/sponsors/AlloraAi)
+
+<p align="center">
+  <img src="docs/assets/logo.svg" alt="AlloraCLI Logo" width="200"/>
+</p>
+
+<p align="center">
+  <strong>Your AI-Powered Infrastructure Assistant</strong>
+</p>
+
+<p align="center">
+  <em>Revolutionize DevOps and IT operations with intelligent automation through natural language processing and multi-agent AI systems</em>
+</p>
+
+---
 
 ## 🚀 Overview
 
-AlloraCLI is a powerful command-line interface for AI agents specialized in IT infrastructure management and automation. Built by AlloraAi, it provides intelligent automation for DevOps and IT operations through natural language processing and multi-agent AI systems.
+AlloraCLI is a powerful open-source command-line interface that transforms how you manage cloud infrastructure. Built by AlloraAi, it provides intelligent automation for DevOps and IT operations through natural language processing and multi-agent AI systems.
 
 ## ✨ Features
 
-### 🤖 Production-Ready AI Integration
-- **Real OpenAI Integration**: Direct connection to OpenAI GPT models with production API calls
-- **Multi-Agent Support**: Specialized agents for AWS, Azure, GCP, and Kubernetes
-- **Natural Language Processing**: Ask complex infrastructure questions in plain English
-- **Context-Aware Responses**: Agents understand your infrastructure context and history
+- **🤖 AI-Powered Automation**: Leverage advanced AI agents for infrastructure management
+- **☁️ Multi-Cloud Support**: Seamlessly manage AWS, Azure, and Google Cloud Platform
+- **💬 Natural Language Interface**: Interact with your infrastructure using plain English
+- **📊 Real-time Monitoring**: Built-in monitoring and alerting capabilities
+- **🔒 Security First**: Comprehensive security analysis and compliance management
+- **🎯 Intelligent Troubleshooting**: AI-driven incident response and problem resolution
+- **🔧 Plugin Architecture**: Extensible plugin system for custom integrations
+- **🎨 Beautiful UI**: Google Gemini-style interactive interface
 
-### ☁️ Real Cloud Provider APIs
-- **AWS**: Full EC2, VPC, IAM, and service management with AWS SDK v2
-- **Azure**: Complete resource management with Azure SDK for Go
-- **Google Cloud**: Compute Engine and project management with GCP SDK
-- **Real API Operations**: No mock data - actual cloud operations and live data
+## 📋 Table of Contents
 
-### 📊 Advanced Monitoring & Observability
-- **Prometheus Integration**: Real metrics collection and alerting
-- **Grafana Support**: Dashboard integration and visualization
-- **Real-time Monitoring**: Live system metrics and health checks
-- **Custom Alerts**: Configurable alert rules and notifications
-- **Performance Insights**: AI-driven performance analysis
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Community](#community)
+- [License](#license)
+- [Support](#support)
 
-### 🔒 Enterprise Security
-- **AES-GCM Encryption**: Military-grade data protection
-- **Audit Logging**: Complete operation audit trail
-- **Key Management**: Secure key storage and rotation
-- **Compliance Checks**: Built-in compliance validation
+## �️ Installation
 
-### ⚡ Performance Optimizations
-- **Connection Pooling**: Efficient cloud provider connections (5-10x faster)
-- **Intelligent Caching**: Memory and Redis-based caching (80% fewer API calls)
-- **Streaming Responses**: Real-time data streaming and live updates
-- **Asynchronous Operations**: Non-blocking operations for better UX
+### Prerequisites
 
-### 🎨 Enhanced User Experience
-- **Terminal UI (TUI)**: Interactive terminal interface with live dashboards
-- **Progress Bars**: Visual progress indicators for long-running operations
-- **Auto-completion**: Shell completion for all commands (bash/zsh/fish/powershell)
-- **Interactive Modes**: Guided workflows and step-by-step wizards
-- **Colorized Output**: Beautiful, readable terminal output
+- Go 1.21 or higher
+- Git
 
-### 🔌 Extensible Architecture
-- **Plugin System**: Dynamic plugin loading and management
-- **Custom Agents**: Build and deploy your own AI agents
-- **REST API**: HTTP API for integration with other tools
-- **Event Streaming**: Real-time event notifications and webhooks
+### Install from Release
 
-## 🛠 Installation
+Download the latest release from [GitHub Releases](https://github.com/AlloraAi/AlloraCLI/releases):
 
-### Pre-built Binaries
-Download the latest release from the [releases page](https://github.com/AlloraAi/AlloraCLI/releases).
+```bash
+# Linux/macOS
+curl -L https://github.com/AlloraAi/AlloraCLI/releases/latest/download/allora-linux-amd64 -o allora
+chmod +x allora
+sudo mv allora /usr/local/bin/
+
+# Windows (PowerShell)
+Invoke-WebRequest -Uri "https://github.com/AlloraAi/AlloraCLI/releases/latest/download/allora-windows-amd64.exe" -OutFile "allora.exe"
+```
+
+### Install from Source
+
+```bash
+git clone https://github.com/AlloraAi/AlloraCLI.git
+cd AlloraCLI
+go build -o allora ./cmd/allora/...
+```
 
 ### Package Managers
 
-#### macOS (Homebrew)
 ```bash
-brew install alloraai/tap/alloracli
+# Homebrew (macOS/Linux)
+brew install AlloraAi/tap/allora
+
+# Scoop (Windows)
+scoop bucket add AlloraAi https://github.com/AlloraAi/scoop-bucket
+scoop install allora
+
+# Chocolatey (Windows)
+choco install allora
 ```
 
-### PowerShell (Windows)
-```powershell
-iwr -useb https://install.alloraai.com/windows | iex
-```
+## � Quick Start
 
-### Go Install
+### 1. Initialize Configuration
+
 ```bash
-go install github.com/AlloraAi/AlloraCLI@latest
+# Initialize AlloraCLI
+allora init
+
+# Configure your cloud providers
+allora config set aws.access_key_id YOUR_AWS_ACCESS_KEY
+allora config set aws.secret_access_key YOUR_AWS_SECRET_KEY
+allora config set openai.api_key YOUR_OPENAI_API_KEY
 ```
 
-### Binary Releases
-Download the latest release from [GitHub Releases](https://github.com/AlloraAi/AlloraCLI/releases)
+### 2. Launch the AI Interface
 
-## 🚀 Quick Start
-
-1. **Initialize AlloraCLI**
-   ```bash
-   allora init
-   ```
-
-2. **Configure your first agent**
-   ```bash
-   allora config agent add --name "infra-assistant" --type "general"
-   ```
-
-3. **Start asking questions**
-   ```bash
-   allora ask "What's the CPU usage of my production servers?"
-   ```
-
-## 📚 Core Commands
-
-| Command | Description |
-|---------|-------------|
-| `allora init` | Initialize CLI and authenticate |
-| `allora config` | Manage configuration and agents |
-| `allora ask "query"` | General IT infrastructure questions |
-| `allora monitor` | Real-time monitoring commands |
-| `allora troubleshoot` | Diagnostic and troubleshooting |
-| `allora deploy` | Deployment automation |
-| `allora analyze` | Log and performance analysis |
-| `allora security` | Security audits and recommendations |
-
-## 🎯 Usage Examples
-
-### Infrastructure Monitoring
 ```bash
-# Get real-time system status
-allora monitor status
-
-# Check specific service health
-allora monitor service nginx --detailed
-
-# Set up intelligent alerts
-allora monitor alert create --condition "cpu > 80%" --action "scale-up"
+# Start the Gemini-style interface
+allora gemini
 ```
 
-### Cloud Operations
+### 3. Basic Commands
+
 ```bash
-# List all cloud resources
-allora cloud resources list
+# Ask AI questions about your infrastructure
+allora ask "How can I optimize my AWS costs?"
 
-# Deploy infrastructure with AI optimization
-allora deploy --template terraform --optimize
+# Deploy applications
+allora deploy --environment production --service web-app
 
-# Cost analysis and recommendations
-allora analyze costs --period 30d --recommendations
+# Monitor your infrastructure
+allora monitor --provider aws --resource ec2
+
+# Troubleshoot issues
+allora troubleshoot --service database --issue "high latency"
 ```
 
-### Troubleshooting
+## 📚 Documentation
+
+Comprehensive documentation is available at [docs.alloracli.com](https://docs.alloracli.com):
+
+- [Getting Started Guide](docs/getting-started.md)
+- [Configuration Reference](docs/configuration.md)
+- [API Documentation](docs/api.md)
+- [Plugin Development](docs/plugins.md)
+- [Troubleshooting](docs/troubleshooting.md)
+
+## 🎯 Use Cases
+
+### Infrastructure Management
 ```bash
-# AI-powered incident analysis
-allora troubleshoot incident --logs /var/log/app.log
+# Monitor EC2 instances
+allora ask "Show me the health status of my production EC2 instances"
 
-# Get remediation suggestions
-allora troubleshoot suggest --service "database" --issue "high-latency"
-
-# Auto-fix common issues
-allora troubleshoot autofix --severity "medium"
+# Scale applications
+allora ask "Scale my web application to handle 10x more traffic"
 ```
 
-## ⚙️ Configuration
+### Security & Compliance
+```bash
+# Security audit
+allora security audit --provider aws --resource s3
 
-AlloraCLI uses YAML configuration files located at:
-- **Linux/macOS**: `~/.config/alloracli/config.yaml`
-- **Windows**: `%APPDATA%\alloracli\config.yaml`
-
-### Example Configuration
-```yaml
-# ~/.config/alloracli/config.yaml
-agents:
-  infra-assistant:
-    type: general
-    api_key: ${ALLORA_API_KEY}
-    model: gpt-4
-    max_tokens: 2048
-    
-cloud_providers:
-  aws:
-    region: us-west-2
-    profile: default
-  azure:
-    subscription_id: ${AZURE_SUBSCRIPTION_ID}
-    tenant_id: ${AZURE_TENANT_ID}
-    
-monitoring:
-  prometheus:
-    endpoint: http://localhost:9090
-  grafana:
-    endpoint: http://localhost:3000
-    
-security:
-  encryption: true
-  audit_logging: true
+# Compliance check
+allora security compliance --standard SOC2
 ```
 
-## 🔌 Plugin Development
+### Deployment Automation
+```bash
+# Deploy to Kubernetes
+allora deploy kubernetes --app myapp --environment staging
 
-AlloraCLI supports custom plugins for extending functionality:
+# Blue-green deployment
+allora deploy --strategy blue-green --service api
+```
+## 🤝 Contributing
 
-```go
-// Example plugin structure
-type InfraPlugin struct {
-    Name    string
-    Version string
-    Commands []Command
-}
+We welcome contributions from the community! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-func (p *InfraPlugin) Execute(ctx context.Context, args []string) error {
-    // Plugin implementation
-    return nil
-}
+### Quick Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/AlloraAi/AlloraCLI.git
+cd AlloraCLI
+
+# Install dependencies
+go mod download
+
+# Run tests
+make test
+
+# Build the project
+make build
 ```
 
-See our [Plugin Development Guide](docs/plugin-development.md) for detailed instructions.
+### Ways to Contribute
 
-## 🏗 Architecture
+- 🐛 **Bug Reports**: Found a bug? [Open an issue](https://github.com/AlloraAi/AlloraCLI/issues/new?template=bug_report.md)
+- 💡 **Feature Requests**: Have an idea? [Request a feature](https://github.com/AlloraAi/AlloraCLI/issues/new?template=feature_request.md)
+- � **Documentation**: Improve our docs
+- 🧪 **Testing**: Add or improve tests
+- 🔧 **Code**: Submit pull requests
+
+## 🌟 Community
+
+- **Discord**: [Join our Discord server](https://discord.gg/alloracli)
+- **GitHub Discussions**: [Community discussions](https://github.com/AlloraAi/AlloraCLI/discussions)
+- **Twitter**: [@AlloraAi](https://twitter.com/AlloraAi)
+- **Blog**: [dev.alloracli.com](https://dev.alloracli.com)
+
+## � Sponsors
+
+This project is made possible by our amazing sponsors:
+
+<p align="center">
+  <a href="https://github.com/sponsors/AlloraAi">
+    <img src="https://github.com/AlloraAi/AlloraCLI/blob/main/docs/assets/sponsors.svg" alt="Sponsors" />
+  </a>
+</p>
+
+[Become a sponsor](https://github.com/sponsors/AlloraAi) and help us continue building amazing open-source tools!
+
+## 📊 Project Stats
+
+![GitHub stars](https://img.shields.io/github/stars/AlloraAi/AlloraCLI?style=social)
+![GitHub forks](https://img.shields.io/github/forks/AlloraAi/AlloraCLI?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/AlloraAi/AlloraCLI?style=social)
+
+## 🔧 Architecture
+
+AlloraCLI is built with a modular architecture:
 
 ```
-AlloraCLI/
-├── cmd/              # CLI commands
-├── pkg/
-│   ├── agents/       # AI agent integrations
-│   ├── cloud/        # Cloud provider APIs
-│   ├── config/       # Configuration management
-│   ├── monitor/      # Monitoring integrations
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   CLI Interface │    │   AI Agents     │    │  Cloud Providers│
+│                 │    │                 │    │                 │
+│  • Commands     │───▶│  • OpenAI GPT   │───▶│  • AWS SDK      │
+│  • Gemini UI    │    │  • Custom AI    │    │  • Azure SDK    │
+│  • Plugins      │    │  • Agent Pool   │    │  • GCP SDK      │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Config Mgmt   │    │   Monitoring    │    │    Security     │
+│                 │    │                 │    │                 │
+│  • YAML/JSON    │    │  • Prometheus   │    │  • Encryption   │
+│  • Encryption   │    │  • Grafana      │    │  • Audit Logs   │
+│  • Validation   │    │  • Alerting     │    │  • Compliance   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+## � License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ by the AlloraAi team
+- Inspired by the amazing open-source community
+- Special thanks to our [contributors](https://github.com/AlloraAi/AlloraCLI/graphs/contributors)
+
+## 📞 Support
+
+Need help? We're here for you:
+
+- 📧 **Email**: support@alloracli.com
+- 💬 **Discord**: [Join our community](https://discord.gg/alloracli)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/AlloraAi/AlloraCLI/issues)
+- 📖 **Documentation**: [docs.alloracli.com](https://docs.alloracli.com)
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/AlloraAi">AlloraAi</a>
+</p>
 │   ├── security/     # Security features
 │   └── utils/        # Utility functions
 ├── plugins/          # Plugin system

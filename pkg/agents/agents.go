@@ -1,4 +1,14 @@
-package agents
+# Launch the Gemini interface
+allora gemini
+
+# Launch with color disabled
+allora gemini --color=false
+
+# Launch with auto-export
+allora gemini --export=my_conversation.json
+
+# Show help
+allora gemini --helppackage agents
 
 import (
 	"context"
@@ -721,7 +731,17 @@ func (m *MonitoringAgent) generateMonitoringSuggestions(query string) []string {
 		"Create monitoring dashboards",
 		"Implement SLO tracking",
 	}
-}
+}# Launch the Gemini interface
+allora gemini
+
+# Launch with color disabled
+allora gemini --color=false
+
+# Launch with auto-export
+allora gemini --export=my_conversation.json
+
+# Show help
+allora gemini --help
 
 func (m *MonitoringAgent) generateMonitoringActions(query string) []Action {
 	return []Action{
@@ -733,4 +753,62 @@ func (m *MonitoringAgent) generateMonitoringActions(query string) []Action {
 			Risk:        "low",
 		},
 	}
+}
+
+// ProcessQuery processes a query using available agents
+func (m *AgentManager) ProcessQuery(ctx context.Context, queryText string) (string, error) {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+	
+	// If no agents are available, return a helpful message
+	if len(m.agents) == 0 {
+		return `I'm AlloraAi, your AI-powered infrastructure assistant! 
+
+I can help you with:
+🔧 Cloud infrastructure management (AWS, Azure, GCP)
+🚀 Application deployment and scaling
+📊 Monitoring and alerting setup
+🐛 Troubleshooting and debugging
+🔒 Security analysis and compliance
+📈 Performance optimization
+
+To get started, you'll need to configure your cloud providers using:
+- allora config set
+- allora init
+
+For now, I'm running in demo mode. How can I help you today?`, nil
+	}
+	
+	// Create a query object
+	query := &Query{
+		Text:    queryText,
+		Context: make(map[string]interface{}),
+	}
+	
+	// Try to find the best agent for the query
+	// For now, just use the first available agent
+	for _, agent := range m.agents {
+		if agent.IsHealthy() {
+			response, err := agent.Query(ctx, query)
+			if err != nil {
+				continue // Try next agent
+			}
+			return response.Content, nil
+		}
+	}
+	
+	// If no healthy agents, return a fallback response
+	return fmt.Sprintf(`I understand you're asking about: "%s"
+
+While I'm currently in demo mode, I can help you with infrastructure management tasks like:
+- Setting up monitoring for your applications
+- Deploying services to cloud platforms
+- Troubleshooting performance issues
+- Configuring security policies
+- Optimizing resource usage
+
+To enable full AI capabilities, please configure your API keys using:
+allora config set openai.api_key YOUR_API_KEY
+
+Would you like me to help you get started with the setup?`, queryText), nil
 }
