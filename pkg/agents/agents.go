@@ -47,7 +47,7 @@ type Action struct {
 	Type        string            `json:"type"`
 	Description string            `json:"description"`
 	Command     string            `json:"command"`
-	Parameters  map[string]string `json:"parameters"`
+	Parameters  map[string]interface{} `json:"parameters"`
 	Risk        string            `json:"risk"`
 }
 
@@ -301,7 +301,7 @@ func (g *GeneralAgent) ProcessQuery(query string) (*Response, error) {
 		Content:    g.generateMockResponse(query),
 		Type:       "text",
 		Confidence: 0.85,
-		Metadata: map[string]string{
+		Metadata: map[string]interface{}{
 			"agent_type": "general",
 			"model":      g.config.Model,
 		},
@@ -340,7 +340,7 @@ func (a *AWSAgent) ProcessQuery(query string) (*Response, error) {
 		Content:    a.generateAWSResponse(query),
 		Type:       "text",
 		Confidence: 0.90,
-		Metadata: map[string]string{
+		Metadata: map[string]interface{}{
 			"agent_type": "aws",
 			"model":      a.config.Model,
 		},
@@ -380,7 +380,7 @@ func (az *AzureAgent) ProcessQuery(query string) (*Response, error) {
 		Content:    az.generateAzureResponse(query),
 		Type:       "text",
 		Confidence: 0.88,
-		Metadata: map[string]string{
+		Metadata: map[string]interface{}{
 			"agent_type": "azure",
 			"model":      az.config.Model,
 		},
@@ -420,7 +420,7 @@ func (g *GCPAgent) ProcessQuery(query string) (*Response, error) {
 		Content:    g.generateGCPResponse(query),
 		Type:       "text",
 		Confidence: 0.87,
-		Metadata: map[string]string{
+		Metadata: map[string]interface{}{
 			"agent_type": "gcp",
 			"model":      g.config.Model,
 		},
@@ -460,7 +460,7 @@ func (k *KubernetesAgent) ProcessQuery(query string) (*Response, error) {
 		Content:    k.generateK8sResponse(query),
 		Type:       "text",
 		Confidence: 0.89,
-		Metadata: map[string]string{
+		Metadata: map[string]interface{}{
 			"agent_type": "kubernetes",
 			"model":      k.config.Model,
 		},
@@ -500,7 +500,7 @@ func (m *MonitoringAgent) ProcessQuery(query string) (*Response, error) {
 		Content:    m.generateMonitoringResponse(query),
 		Type:       "text",
 		Confidence: 0.91,
-		Metadata: map[string]string{
+		Metadata: map[string]interface{}{
 			"agent_type": "monitoring",
 			"model":      m.config.Model,
 		},
@@ -560,14 +560,14 @@ func (g *GeneralAgent) generateActions(query string) []Action {
 			Type:        "command",
 			Description: "Check system status",
 			Command:     "allora monitor status",
-			Parameters:  map[string]string{"format": "table"},
+			Parameters:  map[string]interface{}{"format": "table"},
 			Risk:        "low",
 		},
 		{
 			Type:        "analysis",
 			Description: "Analyze system logs",
 			Command:     "allora analyze logs --time 24h",
-			Parameters:  map[string]string{"pattern": "error|warning"},
+			Parameters:  map[string]interface{}{"pattern": "error|warning"},
 			Risk:        "low",
 		},
 	}
@@ -598,7 +598,7 @@ func (a *AWSAgent) generateAWSActions(query string) []Action {
 			Type:        "aws-command",
 			Description: "List EC2 instances",
 			Command:     "aws ec2 describe-instances",
-			Parameters:  map[string]string{"region": "us-west-2"},
+			Parameters:  map[string]interface{}{"region": "us-west-2"},
 			Risk:        "low",
 		},
 	}
@@ -629,7 +629,7 @@ func (az *AzureAgent) generateAzureActions(query string) []Action {
 			Type:        "azure-command",
 			Description: "List virtual machines",
 			Command:     "az vm list",
-			Parameters:  map[string]string{"output": "table"},
+			Parameters:  map[string]interface{}{"output": "table"},
 			Risk:        "low",
 		},
 	}
@@ -660,7 +660,7 @@ func (g *GCPAgent) generateGCPActions(query string) []Action {
 			Type:        "gcp-command",
 			Description: "List compute instances",
 			Command:     "gcloud compute instances list",
-			Parameters:  map[string]string{"format": "table"},
+			Parameters:  map[string]interface{}{"format": "table"},
 			Risk:        "low",
 		},
 	}
@@ -691,7 +691,7 @@ func (k *KubernetesAgent) generateK8sActions(query string) []Action {
 			Type:        "kubectl-command",
 			Description: "List pods",
 			Command:     "kubectl get pods",
-			Parameters:  map[string]string{"all-namespaces": "true"},
+			Parameters:  map[string]interface{}{"all-namespaces": "true"},
 			Risk:        "low",
 		},
 	}
@@ -722,7 +722,7 @@ func (m *MonitoringAgent) generateMonitoringActions(query string) []Action {
 			Type:        "monitoring-command",
 			Description: "Check system metrics",
 			Command:     "allora monitor metrics",
-			Parameters:  map[string]string{"duration": "1h"},
+			Parameters:  map[string]interface{}{"duration": "1h"},
 			Risk:        "low",
 		},
 	}

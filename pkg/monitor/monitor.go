@@ -28,7 +28,7 @@ type Monitor interface {
 	GetServiceStatus(serviceName string, detailed bool) (*ServiceStatus, error)
 	ListServices() ([]*ServiceInfo, error)
 	GetMetrics(metric, duration string) (*MetricsData, error)
-	CreateAlert(alert Alert) error
+	CreateAlert(alert AlertConfig) error
 	ListAlerts() ([]*Alert, error)
 	DeleteAlert(name string) error
 	StartDashboard(host string, port int) error
@@ -123,8 +123,8 @@ type EndpointStatus struct {
 	LastCheck    time.Time     `json:"last_check" yaml:"last_check"`
 }
 
-// Alert represents a monitoring alert configuration
-type Alert struct {
+// AlertConfig represents a monitoring alert configuration
+type AlertConfig struct {
 	Name      string    `json:"name" yaml:"name"`
 	Condition string    `json:"condition" yaml:"condition"`
 	Action    string    `json:"action" yaml:"action"`
@@ -136,11 +136,11 @@ type Alert struct {
 
 // ActiveAlert represents an active alert
 type ActiveAlert struct {
-	Alert       *Alert    `json:"alert" yaml:"alert"`
-	Triggered   time.Time `json:"triggered" yaml:"triggered"`
-	Status      string    `json:"status" yaml:"status"`
-	Message     string    `json:"message" yaml:"message"`
-	Acknowledged bool     `json:"acknowledged" yaml:"acknowledged"`
+	Alert       *AlertConfig `json:"alert" yaml:"alert"`
+	Triggered   time.Time    `json:"triggered" yaml:"triggered"`
+	Status      string       `json:"status" yaml:"status"`
+	Message     string       `json:"message" yaml:"message"`
+	Acknowledged bool        `json:"acknowledged" yaml:"acknowledged"`
 }
 
 // MetricsData represents metrics data
@@ -345,7 +345,7 @@ func (m *MonitorImpl) GetMetrics(metric, duration string) (*MetricsData, error) 
 }
 
 // CreateAlert creates a new alert
-func (m *MonitorImpl) CreateAlert(alert Alert) error {
+func (m *MonitorImpl) CreateAlert(alert AlertConfig) error {
 	// Mock implementation - in real scenario, this would persist the alert
 	alert.CreatedAt = time.Now()
 	alert.UpdatedAt = time.Now()
@@ -357,22 +357,18 @@ func (m *MonitorImpl) ListAlerts() ([]*Alert, error) {
 	// Mock implementation
 	alerts := []*Alert{
 		{
-			Name:      "high-cpu",
-			Condition: "cpu > 80%",
-			Action:    "notify",
+			RuleName:  "high-cpu",
 			Severity:  "warning",
-			Enabled:   true,
-			CreatedAt: time.Now().Add(-24 * time.Hour),
-			UpdatedAt: time.Now().Add(-24 * time.Hour),
+			Message:   "CPU usage is above 80%",
+			Timestamp: time.Now().Add(-24 * time.Hour),
+			Value:     85.5,
 		},
 		{
-			Name:      "low-memory",
-			Condition: "memory < 10%",
-			Action:    "scale-up",
+			RuleName:  "low-memory",
 			Severity:  "critical",
-			Enabled:   true,
-			CreatedAt: time.Now().Add(-48 * time.Hour),
-			UpdatedAt: time.Now().Add(-48 * time.Hour),
+			Message:   "Memory usage is below 10%",
+			Timestamp: time.Now().Add(-48 * time.Hour),
+			Value:     8.2,
 		},
 	}
 
@@ -792,4 +788,73 @@ func shouldTriggerAlert(rule *AlertRule, metric *Metric) bool {
 		}
 	}
 	return false
+}
+
+// GetName returns the monitor name
+func (m *MonitorImpl) GetName() string {
+	return "system-monitor"
+}
+
+// GetCategory returns the monitor category
+func (m *MonitorImpl) GetCategory() string {
+	return "system"
+}
+
+// GetInterval returns the monitor interval
+func (m *MonitorImpl) GetInterval() time.Duration {
+	return 30 * time.Second
+}
+
+// GetStatus returns the monitor status
+func (m *MonitorImpl) GetStatus() string {
+	return "running"
+}
+
+// Start starts the monitor
+func (m *MonitorImpl) Start() error {
+	return nil
+}
+
+// Stop stops the monitor
+func (m *MonitorImpl) Stop() error {
+	return nil
+}
+
+// CollectMetrics collects metrics
+func (m *MonitorImpl) CollectMetrics(ctx context.Context) ([]*Metric, error) {
+	return []*Metric{
+		{
+			Name:      "cpu_usage",
+			Value:     45.5,
+			Unit:      "percent",
+			Timestamp: time.Now(),
+		},
+		{
+			Name:      "memory_usage",
+			Value:     67.2,
+			Unit:      "percent",
+			Timestamp: time.Now(),
+		},
+	}, nil
+}
+
+// GetConfiguration returns the monitor configuration
+func (m *MonitorImpl) GetConfiguration() *MonitorConfig {
+	return &MonitorConfig{
+		Name:     m.GetName(),
+		Category: m.GetCategory(),
+		Interval: m.GetInterval(),
+		Enabled:  true,
+	}
+}
+
+// UpdateConfiguration updates the monitor configuration
+func (m *MonitorImpl) UpdateConfiguration(config *MonitorConfig) error {
+	// Update configuration logic here
+	return nil
+}
+
+// IsHealthy returns whether the monitor is healthy
+func (m *MonitorImpl) IsHealthy() bool {
+	return true
 }

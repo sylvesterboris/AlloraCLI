@@ -227,11 +227,12 @@ func BenchmarkListResources(b *testing.B) {
 
 // MockCloudProvider is a test implementation of the CloudProvider interface
 type MockCloudProvider struct {
-	name     string
-	region   string
-	status   string
-	config   *ProviderConfig
+	name           string
+	region         string
+	status         string
+	config         *ProviderConfig
 	providerStatus *ProviderStatus
+	resources      map[string]*Resource
 }
 
 func (m *MockCloudProvider) GetName() string {
@@ -257,8 +258,10 @@ func (m *MockCloudProvider) IsConnected() bool {
 }
 
 func (m *MockCloudProvider) ListResources(ctx context.Context, resourceType string) ([]*Resource, error) {
-	return []*Resource{
-		{
+	if m.resources == nil {
+		m.resources = make(map[string]*Resource)
+		// Add default resources
+		m.resources["i-12345678"] = &Resource{
 			ID:     "i-12345678",
 			Name:   "test-instance",
 			Type:   "ec2",
@@ -269,8 +272,8 @@ func (m *MockCloudProvider) ListResources(ctx context.Context, resourceType stri
 				"image_id":      "ami-12345678",
 			},
 			CreatedAt: time.Now().Add(-24 * time.Hour),
-		},
-		{
+		}
+		m.resources["vol-87654321"] = &Resource{
 			ID:     "vol-87654321",
 			Name:   "test-volume",
 			Type:   "ebs",
@@ -281,44 +284,64 @@ func (m *MockCloudProvider) ListResources(ctx context.Context, resourceType stri
 				"type": "gp3",
 			},
 			CreatedAt: time.Now().Add(-12 * time.Hour),
-		},
-	}, nil
+		}
+	}
+
+	resources := make([]*Resource, 0, len(m.resources))
+	for _, resource := range m.resources {
+		if resourceType == "" || resource.Type == resourceType {
+			resources = append(resources, resource)
+		}
+	}
+	return resources, nil
 }
 
 func (m *MockCloudProvider) GetResourceDetails(ctx context.Context, resourceID string) (*Resource, error) {
-	resources, err := m.ListResources(ctx, "")
-	if err != nil {
-		return nil, err
+	if m.resources == nil {
+		m.ListResources(ctx, "") // Initialize resources
 	}
 
-	for _, resource := range resources {
-		if resource.ID == resourceID {
-			return resource, nil
-		}
+	if resource, exists := m.resources[resourceID]; exists {
+		return resource, nil
 	}
 
 	return nil, fmt.Errorf("resource not found: %s", resourceID)
 }
 
 func (m *MockCloudProvider) CreateResource(ctx context.Context, req *CreateResourceRequest) (*Resource, error) {
-	return &Resource{
-		ID:     "i-newinstance",
-		Name:   req.Name,
-		Type:   req.Type,
-		Region: req.Region,
-		State:  "pending",
-		Config: req.Config,
+	if m.resources == nil {
+		m.resources = make(map[string]*Resource)
+	}
+
+	resourceID := fmt.Sprintf("i-%s", generateRandomID())
+	resource := &Resource{
+		ID:        resourceID,
+		Name:      req.Name,
+		Type:      req.Type,
+		Region:    req.Region,
+		State:     "pending",
+		Config:    req.Config,
 		CreatedAt: time.Now(),
-	}, nil
+	}
+
+	m.resources[resourceID] = resource
+	return resource, nil
 }
 
 func (m *MockCloudProvider) UpdateResource(ctx context.Context, req *UpdateResourceRequest) (*Resource, error) {
-	resource, err := m.GetResourceDetails(ctx, req.ID)
-	if err != nil {
-		return nil, err
+	if m.resources == nil {
+		m.ListResources(ctx, "") // Initialize resources
+	}
+
+	resource, exists := m.resources[req.ID]
+	if !exists {
+		return nil, fmt.Errorf("resource not found: %s", req.ID)
 	}
 
 	// Update the config
+	if resource.Config == nil {
+		resource.Config = make(map[string]interface{})
+	}
 	for key, value := range req.Config {
 		resource.Config[key] = value
 	}
@@ -327,8 +350,21 @@ func (m *MockCloudProvider) UpdateResource(ctx context.Context, req *UpdateResou
 }
 
 func (m *MockCloudProvider) DeleteResource(ctx context.Context, resourceID string) error {
-	// Mock deletion - just return success
+	if m.resources == nil {
+		m.ListResources(ctx, "") // Initialize resources
+	}
+
+	if _, exists := m.resources[resourceID]; !exists {
+		return fmt.Errorf("resource not found: %s", resourceID)
+	}
+
+	delete(m.resources, resourceID)
 	return nil
+}
+
+// generateRandomID generates a random ID for testing
+func generateRandomID() string {
+	return fmt.Sprintf("%d", time.Now().UnixNano()%1000000)
 }
 
 func (m *MockCloudProvider) GetMetrics(ctx context.Context, req *MetricsRequest) (*MetricsResponse, error) {
