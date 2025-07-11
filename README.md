@@ -200,17 +200,7 @@ make build
 - **Twitter**: [@AlloraAi](https://twitter.com/AlloraAi)
 - **Blog**: [dev.alloracli.com](https://dev.alloracli.com)
 
-## � Sponsors
 
-This project is made possible by our amazing sponsors:
-
-<p align="center">
-  <a href="https://github.com/sponsors/AlloraAi">
-    <img src="https://github.com/AlloraAi/AlloraCLI/blob/main/docs/assets/sponsors.svg" alt="Sponsors" />
-  </a>
-</p>
-
-[Become a sponsor](https://github.com/sponsors/AlloraAi) and help us continue building amazing open-source tools!
 
 ## 📊 Project Stats
 
