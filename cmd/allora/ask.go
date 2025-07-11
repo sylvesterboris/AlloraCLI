@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/AlloraAi/AlloraCLI/pkg/agents"
@@ -84,7 +85,12 @@ func runSingleAsk(agent agents.Agent, query, format string) error {
 	spinner.Start()
 
 	// Process the query
-	response, err := agent.ProcessQuery(query)
+	ctx := context.Background()
+	agentQuery := &agents.Query{
+		Text:    query,
+		Context: make(map[string]interface{}),
+	}
+	response, err := agent.Query(ctx, agentQuery)
 	spinner.Stop()
 
 	if err != nil {

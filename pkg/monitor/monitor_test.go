@@ -336,3 +336,67 @@ func (m *MockMonitor) UpdateConfiguration(config *MonitorConfig) error {
 func (m *MockMonitor) IsHealthy() bool {
 	return m.status == "running"
 }
+
+func (m *MockMonitor) GetSystemStatus() (*SystemStatus, error) {
+	return &SystemStatus{
+		Overall:   "healthy",
+		Timestamp: time.Now(),
+	}, nil
+}
+
+func (m *MockMonitor) GetServiceStatus(serviceName string, detailed bool) (*ServiceStatus, error) {
+	return &ServiceStatus{
+		Name:   serviceName,
+		Status: "healthy",
+		Health: "healthy",
+	}, nil
+}
+
+func (m *MockMonitor) ListServices() ([]*ServiceInfo, error) {
+	return []*ServiceInfo{
+		{
+			Name:   "test-service",
+			Status: "running",
+		},
+	}, nil
+}
+
+func (m *MockMonitor) GetMetrics(metric, duration string) (*MetricsData, error) {
+	return &MetricsData{
+		Metric:    metric,
+		TimeRange: duration,
+		Data: []MetricPoint{
+			{
+				Timestamp: time.Now(),
+				Value:     42.0,
+			},
+		},
+	}, nil
+}
+
+func (m *MockMonitor) CreateAlert(alert AlertConfig) error {
+	// Mock implementation
+	return nil
+}
+
+func (m *MockMonitor) ListAlerts() ([]*Alert, error) {
+	return []*Alert{
+		{
+			RuleName:  "test-alert",
+			Severity:  "warning",
+			Message:   "Test alert message",
+			Timestamp: time.Now(),
+			Value:     42.0,
+		},
+	}, nil
+}
+
+func (m *MockMonitor) DeleteAlert(name string) error {
+	// Mock implementation
+	return nil
+}
+
+func (m *MockMonitor) StartDashboard(host string, port int) error {
+	// Mock implementation
+	return nil
+}

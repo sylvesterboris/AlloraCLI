@@ -245,7 +245,7 @@ func runMonitorAlertCreate(name, condition, action, severity string, enabled boo
 		return fmt.Errorf("failed to initialize monitor: %w", err)
 	}
 
-	alert := monitor.Alert{
+	alert := monitor.AlertConfig{
 		Name:      name,
 		Condition: condition,
 		Action:    action,
@@ -280,11 +280,7 @@ func runMonitorAlertList() error {
 
 	fmt.Println("Configured alerts:")
 	for _, alert := range alerts {
-		status := "enabled"
-		if !alert.Enabled {
-			status = "disabled"
-		}
-		fmt.Printf("  • %s (%s) - %s [%s]\n", alert.Name, alert.Severity, alert.Condition, status)
+		fmt.Printf("  • %s (%s) - %s\n", alert.RuleName, alert.Severity, alert.Message)
 	}
 
 	return nil

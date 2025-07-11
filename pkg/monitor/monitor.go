@@ -594,7 +594,7 @@ func (h *HealthChecker) AddCheck(check *HealthCheck) error {
 // RunCheck runs a specific health check
 func (h *HealthChecker) RunCheck(ctx context.Context, name string) (*HealthCheckResult, error) {
 	h.mutex.RLock()
-	check, exists := h.checks[name]
+	_, exists := h.checks[name]
 	h.mutex.RUnlock()
 	
 	if !exists {
