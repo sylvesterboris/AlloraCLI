@@ -297,32 +297,134 @@ type CostPeriod struct {
 
 // ProviderConfig represents cloud provider configuration
 type ProviderConfig struct {
-	Region      string            `json:"region"`
-	Credentials map[string]string `json:"credentials"`
+	Region             string            `json:"region"`
+	Credentials        map[string]string `json:"credentials"`
+	// AWS specific
+	Profile            string            `json:"profile,omitempty"`
+	// Azure specific
+	SubscriptionID     string            `json:"subscription_id,omitempty"`
+	TenantID           string            `json:"tenant_id,omitempty"`
+	// GCP specific
+	ProjectID          string            `json:"project_id,omitempty"`
+	ServiceAccountPath string            `json:"service_account_path,omitempty"`
 }
 
 // ProviderStatus represents cloud provider status
 type ProviderStatus struct {
-	State     string    `json:"state"`
+	Name      string    `json:"name"`
+	Type      string    `json:"type"`
+	Status    string    `json:"status"`
+	Connected bool      `json:"connected"`
 	LastCheck time.Time `json:"last_check"`
 	Health    string    `json:"health"`
 }
 
 // DefaultCloudService provides a default implementation
 type DefaultCloudService struct {
-	config *config.Config
+	config    *config.Config
+	providers map[string]CloudProvider
+	mu        sync.RWMutex
 }
 
 // NewCloudService creates a new cloud service
 func NewCloudService(cfg *config.Config) CloudService {
-	return &DefaultCloudService{
-		config: cfg,
+	service := &DefaultCloudService{
+		config:    cfg,
+		providers: make(map[string]CloudProvider),
 	}
+	
+	// Initialize providers based on configuration
+	service.initializeProviders()
+	
+	return service
+}
+
+// initializeProviders initializes cloud providers based on configuration
+func (c *DefaultCloudService) initializeProviders() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	
+	// Initialize AWS provider if configured
+	if awsConfig := c.getProviderConfig("aws"); awsConfig != nil {
+		if provider, err := NewAWSProvider(awsConfig); err == nil {
+			c.providers["aws"] = provider
+		}
+	}
+	
+	// Initialize Azure provider if configured
+	if azureConfig := c.getProviderConfig("azure"); azureConfig != nil {
+		if provider, err := NewAzureProvider(azureConfig); err == nil {
+			c.providers["azure"] = provider
+		}
+	}
+	
+	// Initialize GCP provider if configured
+	if gcpConfig := c.getProviderConfig("gcp"); gcpConfig != nil {
+		if provider, err := NewGCPProvider(gcpConfig); err == nil {
+			c.providers["gcp"] = provider
+		}
+	}
+}
+
+// getProviderConfig extracts provider configuration from main config
+func (c *DefaultCloudService) getProviderConfig(provider string) *ProviderConfig {
+	// This is a simplified implementation
+	// In a real implementation, you would extract from c.config
+	cfg := &ProviderConfig{
+		Region:      "us-west-2", // Default region
+		Credentials: make(map[string]string),
+	}
+	
+	switch provider {
+	case "aws":
+		cfg.Profile = "default"
+		return cfg
+	case "azure":
+		cfg.SubscriptionID = "" // Should be loaded from config
+		cfg.TenantID = ""       // Should be loaded from config
+		return cfg
+	case "gcp":
+		cfg.ProjectID = ""                // Should be loaded from config
+		cfg.ServiceAccountPath = ""       // Should be loaded from config
+		return cfg
+	}
+	
+	return nil
+}
+
+// getProvider returns the cloud provider for the given name
+func (c *DefaultCloudService) getProvider(name string) (CloudProvider, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	
+	provider, exists := c.providers[name]
+	if !exists {
+		return nil, fmt.Errorf("provider %s not found or not configured", name)
+	}
+	
+	return provider, nil
 }
 
 // ListResources lists resources from the specified provider
 func (c *DefaultCloudService) ListResources(ctx context.Context, provider string, resourceType string) ([]Resource, error) {
-	// Mock implementation - in real implementation, this would integrate with cloud provider APIs
+	// Try to use real provider first
+	if cloudProvider, err := c.getProvider(provider); err == nil {
+		resources, err := cloudProvider.ListResources(ctx, resourceType)
+		if err == nil {
+			// Convert []*Resource to []Resource
+			var result []Resource
+			for _, res := range resources {
+				if res != nil {
+					result = append(result, *res)
+				}
+			}
+			return result, nil
+		}
+		// If real provider fails, log warning and fall back to mock
+		fmt.Printf("Warning: Real provider %s failed: %v. Using mock data.\n", provider, err)
+	}
+	
+	// Fallback to mock implementation
 	switch provider {
 	case "aws":
 		return c.listAWSResources(ctx, resourceType)

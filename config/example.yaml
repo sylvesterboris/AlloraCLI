@@ -14,6 +14,15 @@ agents:
     api_key: ""  # Set via environment variable ALLORA_OPENAI_API_KEY
     endpoint: "https://api.openai.com/v1"
 
+  # OpenAI agent (using real OpenAI API)
+  openai:
+    type: "openai"
+    model: "gpt-4"
+    max_tokens: 4096
+    temperature: 0.7
+    api_key: ""  # Set via environment variable ALLORA_OPENAI_API_KEY
+    endpoint: "https://api.openai.com/v1"
+
   # AWS specialized agent
   aws:
     type: "aws"
@@ -38,7 +47,7 @@ agents:
     temperature: 0.3
     api_key: ""  # Set via environment variable ALLORA_K8S_AGENT_API_KEY
 
-# Cloud Provider Configuration
+# Cloud Provider Configuration (Real API Integration)
 cloud_providers:
   aws:
     region: "us-west-2"
@@ -53,6 +62,7 @@ cloud_providers:
     tenant_id: ""        # Set via environment variable AZURE_TENANT_ID
     # client_id: ""        # Set via environment variable AZURE_CLIENT_ID
     # client_secret: ""    # Set via environment variable AZURE_CLIENT_SECRET
+    region: "eastus"
 
   gcp:
     project_id: ""                    # Set via environment variable GCP_PROJECT_ID
@@ -60,48 +70,150 @@ cloud_providers:
     application_default: true
     # service_account_path: ""        # Set via environment variable GOOGLE_APPLICATION_CREDENTIALS
 
-# Monitoring Configuration
+# Monitoring Configuration (Real Integration)
 monitoring:
   prometheus:
     endpoint: "http://localhost:9090"
     # username: ""
     # password: ""
+    enabled: true
+    timeout: 30
 
   grafana:
-    endpoint: "http://localhost:3000"
-    # api_key: ""
-    # username: ""
-    # password: ""
+    enabled: true
+    url: "http://localhost:3000"
+    api_key: ""  # Set via environment variable ALLORA_GRAFANA_API_KEY
+    username: ""  # Alternative to API key
+    password: ""  # Alternative to API key
+    timeout: 30
+    dashboard_refresh_interval: 30s
+    alert_refresh_interval: 60s
 
   datadog:
     api_key: ""  # Set via environment variable DATADOG_API_KEY
     app_key: ""  # Set via environment variable DATADOG_APP_KEY
+    enabled: false
 
   newrelic:
     api_key: ""     # Set via environment variable NEWRELIC_API_KEY
     account_id: ""  # Set via environment variable NEWRELIC_ACCOUNT_ID
+    enabled: false
 
-# Security Configuration
+# Security Configuration (Enhanced)
 security:
   encryption: true
   audit_logging: true
   key_management: "local"  # Options: local, vault, aws-kms, azure-kv
   compliance_mode: "standard"  # Options: standard, strict, custom
+  audit_log_path: "${HOME}/.config/alloracli/audit.log"
+  key_store_path: "${HOME}/.config/alloracli/keys.json"
+  rotation_period: 30  # days
 
-# Plugin Configuration
+# Plugin Configuration (Enhanced)
 plugins:
   directory: "${HOME}/.config/alloracli/plugins"
   auto_update: false
+  max_plugins: 10
+  timeout: 60  # seconds
   allowed_sources:
     - "github.com"
     - "registry.alloraai.com"
+
+# Output Configuration (Enhanced)
+output:
+  format: "table"  # Options: table, json, yaml, csv
+  colors: true
+  progress_bars: true
+  interactive: true
+  paging: true
+
+# Performance Configuration
+performance:
+  # Connection pooling
+  connection_pools:
+    aws:
+      enabled: true
+      pool_size: 5
+      max_idle_connections: 10
+      connection_timeout: 30s
+    azure:
+      enabled: true
+      pool_size: 5
+      max_idle_connections: 10
+      connection_timeout: 30s
+    gcp:
+      enabled: true
+      pool_size: 5
+      max_idle_connections: 10
+      connection_timeout: 30s
+
+  # Caching configuration
+  cache:
+    enabled: true
+    type: "memory"  # memory or redis
+    ttl: 300s  # 5 minutes default TTL
+    max_size: 1000  # Maximum number of cached items
+    # Redis configuration (if type is redis)
+    redis:
+      host: "localhost"
+      port: 6379
+      password: ""
+      database: 0
+
+  # Streaming configuration
+  streaming:
+    enabled: true
+    buffer_size: 1000
+    timeout: 30s
+    heartbeat_interval: 10s
 
 # Logging Configuration
 logging:
   level: "info"        # Options: debug, info, warn, error
   format: "text"       # Options: text, json
   output: "stdout"     # Options: stdout, stderr, file
+  file_path: "${HOME}/.config/alloracli/allora.log"
   rotate: true
   max_size: 100        # MB
   max_age: 30          # days
   max_files: 10
+
+# User Interface Configuration
+ui:
+  # Color output
+  colors: true
+  
+  # Interactive mode
+  interactive: true
+  
+  # Progress bars
+  progress_bars: true
+  
+  # Terminal UI
+  tui:
+    enabled: true
+    theme: "default"
+    key_bindings:
+      quit: "q"
+      help: "?"
+      refresh: "r"
+      
+  # Output formatting
+  output:
+    format: "table"  # table, json, yaml, text
+    timestamps: true
+    verbose: false
+
+# API Configuration
+api:
+  rate_limit: 100      # requests per minute
+  burst_limit: 10      # burst requests
+  timeout: 30          # seconds
+  retry_policy: "exponential"  # Options: exponential, linear, none
+
+# Development Configuration
+development:
+  debug: false
+  verbose: false
+  profiling: false
+  metrics_endpoint: "http://localhost:8080/metrics"

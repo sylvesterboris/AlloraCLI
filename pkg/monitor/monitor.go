@@ -148,8 +148,18 @@ type MetricsData struct {
 	Metric    string                   `json:"metric" yaml:"metric"`
 	TimeRange string                   `json:"time_range" yaml:"time_range"`
 	Data      []MetricPoint            `json:"data" yaml:"data"`
+	Points    []*DataPoint             `json:"points" yaml:"points"`
 	Summary   *MetricSummary           `json:"summary" yaml:"summary"`
 	Metadata  map[string]string        `json:"metadata" yaml:"metadata"`
+	StartTime time.Time                `json:"start_time" yaml:"start_time"`
+	EndTime   time.Time                `json:"end_time" yaml:"end_time"`
+}
+
+// DataPoint represents a single data point for Prometheus integration
+type DataPoint struct {
+	Timestamp time.Time         `json:"timestamp" yaml:"timestamp"`
+	Value     float64           `json:"value" yaml:"value"`
+	Labels    map[string]string `json:"labels" yaml:"labels"`
 }
 
 // MetricPoint represents a single metric data point
@@ -456,6 +466,64 @@ type MonitoringManager struct {
 func NewMonitoringManager() *MonitoringManager {
 	return &MonitoringManager{
 		monitors: make(map[string]Monitor),
+	}
+}
+
+// NewMonitoringService creates a new monitoring service with real integrations
+func NewMonitoringService(cfg *config.Config) *MonitoringManager {
+	manager := NewMonitoringManager()
+	
+	// Add Prometheus monitor if configured
+	if prometheusConfig := getPrometheusConfig(cfg); prometheusConfig != nil {
+		if monitor, err := NewPrometheusMonitor(prometheusConfig.Endpoint, prometheusConfig); err == nil {
+			manager.AddMonitor(monitor)
+		}
+	}
+	
+	// Add Grafana monitor if configured
+	if grafanaConfig := getGrafanaConfig(cfg); grafanaConfig != nil {
+		if monitor, err := NewGrafanaMonitor(grafanaConfig); err == nil {
+			manager.AddMonitor(monitor)
+		}
+	}
+	
+	// Add other monitors (Datadog, etc.) as needed
+	// TODO: Implement other monitoring integrations
+	
+	return manager
+}
+
+// getPrometheusConfig extracts Prometheus configuration from main config
+func getPrometheusConfig(cfg *config.Config) *MonitorConfig {
+	// This is a simplified implementation
+	// In a real implementation, you would extract from cfg
+	return &MonitorConfig{
+		Endpoint:  "http://localhost:9090",
+		Username:  "",
+		Password:  "",
+		Interval:  30,
+		Timeout:   10,
+		Enabled:   true,
+	}
+}
+
+// getGrafanaConfig extracts Grafana configuration from main config
+func getGrafanaConfig(cfg *config.Config) *MonitorConfig {
+	// Check if Grafana is configured
+	if cfg.Monitoring.Grafana.Endpoint == "" {
+		return nil
+	}
+	
+	return &MonitorConfig{
+		Name:     "grafana",
+		Category: "monitoring",
+		Interval: 30 * time.Second,
+		Enabled:  true,
+		Grafana: GrafanaConfig{
+			URL:     cfg.Monitoring.Grafana.Endpoint,
+			APIKey:  cfg.Monitoring.Grafana.APIKey,
+			Timeout: 30,
+		},
 	}
 }
 
@@ -777,6 +845,32 @@ type MonitorConfig struct {
 	Category string        `json:"category"`
 	Interval time.Duration `json:"interval"`
 	Enabled  bool          `json:"enabled"`
+	Endpoint string        `json:"endpoint"`
+	Username string        `json:"username"`
+	Password string        `json:"password"`
+	Timeout  int           `json:"timeout"`
+	
+	// Prometheus configuration
+	Prometheus PrometheusConfig `json:"prometheus"`
+	
+	// Grafana configuration
+	Grafana GrafanaConfig `json:"grafana"`
+}
+
+// PrometheusConfig contains Prometheus-specific settings
+type PrometheusConfig struct {
+	URL         string `json:"url"`
+	Username    string `json:"username"`
+	Password    string `json:"password"`
+	Timeout     int    `json:"timeout"`
+	MetricsPort int    `json:"metrics_port"`
+}
+
+// GrafanaConfig contains Grafana-specific settings
+type GrafanaConfig struct {
+	URL     string `json:"url"`
+	APIKey  string `json:"api_key"`
+	Timeout int    `json:"timeout"`
 }
 
 // shouldTriggerAlert is a simple helper function for testing

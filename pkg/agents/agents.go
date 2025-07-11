@@ -259,7 +259,14 @@ type MonitoringAgent struct {
 
 // NewAgent creates a new agent based on the configuration
 func NewAgent(cfg config.Agent) (Agent, error) {
+	// Check if this should be an OpenAI agent
+	if cfg.APIKey != "" && (cfg.Model == "gpt-4" || cfg.Model == "gpt-3.5-turbo" || cfg.Model == "gpt-4-turbo") {
+		return NewOpenAIAgent(cfg, cfg.Type)
+	}
+
+	// Fallback to mock agents for development/testing
 	baseAgent := &BaseAgent{
+		name:    cfg.Type,
 		config:  cfg,
 		client:  resty.New(),
 		context: context.Background(),

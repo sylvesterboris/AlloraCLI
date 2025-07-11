@@ -82,9 +82,10 @@ processing and multi-agent AI systems.`,
 	cmd.AddCommand(newSecurityCmd())
 	cmd.AddCommand(newCloudCmd())
 	cmd.AddCommand(newPluginCmd())
+	cmd.AddCommand(newCompletionCmd())
 
-	// Disable auto-completion for now
-	cmd.CompletionOptions.DisableDefaultCmd = true
+	// Enable auto-completion
+	cmd.CompletionOptions.DisableDefaultCmd = false
 
 	return cmd
 }
