@@ -3,6 +3,7 @@ package cloud
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/AlloraAi/AlloraCLI/pkg/config"
@@ -20,19 +21,44 @@ type CloudService interface {
 	MonitorHealth(ctx context.Context, provider string) (<-chan HealthEvent, error)
 }
 
+// CloudProvider interface defines cloud provider operations
+type CloudProvider interface {
+	GetName() string
+	GetType() string
+	Connect(ctx context.Context) error
+	Disconnect(ctx context.Context) error
+	IsConnected() bool
+	ListResources(ctx context.Context, resourceType string) ([]*Resource, error)
+	GetResourceDetails(ctx context.Context, resourceID string) (*Resource, error)
+	CreateResource(ctx context.Context, req *CreateResourceRequest) (*Resource, error)
+	UpdateResource(ctx context.Context, req *UpdateResourceRequest) (*Resource, error)
+	DeleteResource(ctx context.Context, resourceID string) error
+	GetMetrics(ctx context.Context, req *MetricsRequest) (*MetricsResponse, error)
+	GetCost(ctx context.Context, req *CostRequest) (*CostResponse, error)
+	GetConfiguration() *ProviderConfig
+	UpdateConfiguration(config *ProviderConfig) error
+	GetStatus() *ProviderStatus
+	ValidateCredentials(ctx context.Context) error
+	GetRegions(ctx context.Context) ([]string, error)
+	GetResourceTypes(ctx context.Context) ([]string, error)
+}
+
 // Resource represents a cloud resource
 type Resource struct {
-	ID           string            `json:"id"`
-	Name         string            `json:"name"`
-	Type         string            `json:"type"`
-	Provider     string            `json:"provider"`
-	Region       string            `json:"region"`
-	Status       string            `json:"status"`
-	Created      time.Time         `json:"created"`
-	Modified     time.Time         `json:"modified"`
-	Tags         map[string]string `json:"tags"`
-	Metadata     map[string]string `json:"metadata"`
-	Cost         *CostInfo         `json:"cost,omitempty"`
+	ID        string                 `json:"id"`
+	Name      string                 `json:"name"`
+	Type      string                 `json:"type"`
+	Provider  string                 `json:"provider"`
+	Region    string                 `json:"region"`
+	State     string                 `json:"state"`
+	Status    string                 `json:"status"`
+	Config    map[string]interface{} `json:"config"`
+	CreatedAt time.Time              `json:"created_at"`
+	Created   time.Time              `json:"created"`
+	Modified  time.Time              `json:"modified"`
+	Tags      map[string]string      `json:"tags"`
+	Metadata  map[string]string      `json:"metadata"`
+	Cost      *CostInfo              `json:"cost,omitempty"`
 }
 
 // ResourceSpec defines the specification for creating/updating resources
@@ -210,6 +236,76 @@ type HealthEvent struct {
 	Message     string            `json:"message"`
 	Severity    string            `json:"severity"`
 	Details     map[string]string `json:"details"`
+}
+
+// CreateResourceRequest represents a request to create a resource
+type CreateResourceRequest struct {
+	Type   string                 `json:"type"`
+	Name   string                 `json:"name"`
+	Region string                 `json:"region"`
+	Config map[string]interface{} `json:"config"`
+}
+
+// UpdateResourceRequest represents a request to update a resource
+type UpdateResourceRequest struct {
+	ID     string                 `json:"id"`
+	Config map[string]interface{} `json:"config"`
+}
+
+// MetricsRequest represents a request for metrics
+type MetricsRequest struct {
+	ResourceID string    `json:"resource_id"`
+	MetricName string    `json:"metric_name"`
+	StartTime  time.Time `json:"start_time"`
+	EndTime    time.Time `json:"end_time"`
+	Period     int       `json:"period"`
+}
+
+// MetricsResponse represents a metrics response
+type MetricsResponse struct {
+	MetricName string              `json:"metric_name"`
+	DataPoints []*MetricDataPoint  `json:"data_points"`
+}
+
+// MetricDataPoint represents a single metric data point
+type MetricDataPoint struct {
+	Timestamp time.Time `json:"timestamp"`
+	Value     float64   `json:"value"`
+	Unit      string    `json:"unit"`
+}
+
+// CostRequest represents a request for cost information
+type CostRequest struct {
+	StartTime time.Time `json:"start_time"`
+	EndTime   time.Time `json:"end_time"`
+	GroupBy   string    `json:"group_by"`
+}
+
+// CostResponse represents a cost response
+type CostResponse struct {
+	Total       float64            `json:"total"`
+	Currency    string             `json:"currency"`
+	Period      *CostPeriod        `json:"period"`
+	BreakdownBy map[string]float64 `json:"breakdown_by"`
+}
+
+// CostPeriod represents a cost period
+type CostPeriod struct {
+	StartTime time.Time `json:"start_time"`
+	EndTime   time.Time `json:"end_time"`
+}
+
+// ProviderConfig represents cloud provider configuration
+type ProviderConfig struct {
+	Region      string            `json:"region"`
+	Credentials map[string]string `json:"credentials"`
+}
+
+// ProviderStatus represents cloud provider status
+type ProviderStatus struct {
+	State     string    `json:"state"`
+	LastCheck time.Time `json:"last_check"`
+	Health    string    `json:"health"`
 }
 
 // DefaultCloudService provides a default implementation
@@ -595,4 +691,50 @@ func (c *DefaultCloudService) listGCPResources(ctx context.Context, resourceType
 	}
 	
 	return resources, nil
+}
+
+// CloudManager manages multiple cloud providers
+type CloudManager struct {
+	providers map[string]CloudProvider
+	mutex     sync.RWMutex
+}
+
+// NewCloudManager creates a new cloud manager
+func NewCloudManager() *CloudManager {
+	return &CloudManager{
+		providers: make(map[string]CloudProvider),
+	}
+}
+
+// AddProvider adds a cloud provider to the manager
+func (m *CloudManager) AddProvider(provider CloudProvider) error {
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	
+	m.providers[provider.GetName()] = provider
+	return nil
+}
+
+// GetProvider retrieves a cloud provider by name
+func (m *CloudManager) GetProvider(name string) (CloudProvider, error) {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+	
+	provider, exists := m.providers[name]
+	if !exists {
+		return nil, fmt.Errorf("provider not found: %s", name)
+	}
+	return provider, nil
+}
+
+// ListProviders returns a list of all cloud providers
+func (m *CloudManager) ListProviders() []CloudProvider {
+	m.mutex.RLock()
+	defer m.mutex.RUnlock()
+	
+	providers := make([]CloudProvider, 0, len(m.providers))
+	for _, provider := range m.providers {
+		providers = append(providers, provider)
+	}
+	return providers
 }

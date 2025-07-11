@@ -129,10 +129,102 @@ func (m *AgentManager) ListAgents() []Agent {
 
 // BaseAgent provides common functionality for all agents
 type BaseAgent struct {
-	name    string
-	config  config.Agent
-	client  *resty.Client
-	context context.Context
+	name     string
+	config   config.Agent
+	client   *resty.Client
+	context  context.Context
+	status   *AgentStatus
+	agentConfig *AgentConfig
+}
+
+// GetName returns the agent name
+func (b *BaseAgent) GetName() string {
+	return b.name
+}
+
+// GetType returns the agent type
+func (b *BaseAgent) GetType() string {
+	return b.config.Type
+}
+
+// Query processes a query and returns a response
+func (b *BaseAgent) Query(ctx context.Context, query *Query) (*Response, error) {
+	// This is a base implementation - specific agents should override this
+	return &Response{
+		Text:       fmt.Sprintf("Processed query: %s", query.Text),
+		Confidence: 0.8,
+		Metadata: map[string]interface{}{
+			"agent_type": b.GetType(),
+			"timestamp":  time.Now().UTC(),
+		},
+		Timestamp: time.Now().UTC(),
+	}, nil
+}
+
+// GetCapabilities returns the agent capabilities
+func (b *BaseAgent) GetCapabilities() []string {
+	return []string{"general", "chat", "help"}
+}
+
+// GetStatus returns the agent status
+func (b *BaseAgent) GetStatus() *AgentStatus {
+	if b.status == nil {
+		b.status = &AgentStatus{
+			State:        "idle",
+			LastActivity: time.Now().UTC(),
+			Health:       "healthy",
+		}
+	}
+	return b.status
+}
+
+// GetConfiguration returns the agent configuration
+func (b *BaseAgent) GetConfiguration() *AgentConfig {
+	if b.agentConfig == nil {
+		b.agentConfig = &AgentConfig{
+			Model:       b.config.Model,
+			MaxTokens:   b.config.MaxTokens,
+			Temperature: b.config.Temperature,
+			APIKey:      b.config.APIKey,
+			Endpoint:    b.config.Endpoint,
+		}
+	}
+	return b.agentConfig
+}
+
+// UpdateConfiguration updates the agent configuration
+func (b *BaseAgent) UpdateConfiguration(config *AgentConfig) error {
+	b.agentConfig = config
+	b.config.Model = config.Model
+	b.config.MaxTokens = config.MaxTokens
+	b.config.Temperature = config.Temperature
+	b.config.APIKey = config.APIKey
+	b.config.Endpoint = config.Endpoint
+	return nil
+}
+
+// Start starts the agent
+func (b *BaseAgent) Start() error {
+	if b.status == nil {
+		b.status = &AgentStatus{}
+	}
+	b.status.State = "running"
+	b.status.LastActivity = time.Now().UTC()
+	return nil
+}
+
+// Stop stops the agent
+func (b *BaseAgent) Stop() error {
+	if b.status == nil {
+		b.status = &AgentStatus{}
+	}
+	b.status.State = "stopped"
+	return nil
+}
+
+// IsHealthy returns whether the agent is healthy
+func (b *BaseAgent) IsHealthy() bool {
+	return b.GetStatus().Health == "healthy"
 }
 
 // GeneralAgent handles general IT infrastructure questions
