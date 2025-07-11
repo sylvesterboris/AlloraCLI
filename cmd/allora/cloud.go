@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"time"
 
 	"github.com/AlloraAi/AlloraCLI/pkg/cloud"
+	"github.com/AlloraAi/AlloraCLI/pkg/config"
 	"github.com/AlloraAi/AlloraCLI/pkg/utils"
 	"github.com/spf13/cobra"
 )
@@ -134,20 +137,18 @@ func newCloudBackupCmd() *cobra.Command {
 
 // Implementation functions
 func runCloudResources(provider, resourceType, format string) error {
-	cloudMgr, err := cloud.New()
+	cfg, err := config.Load()
 	if err != nil {
-		return fmt.Errorf("failed to initialize cloud manager: %w", err)
+		return fmt.Errorf("failed to load configuration: %w", err)
 	}
 
-	options := cloud.ResourceOptions{
-		Provider: provider,
-		Type:     resourceType,
-	}
+	cloudService := cloud.NewCloudService(cfg)
+	ctx := context.Background()
 
 	spinner := utils.NewSpinner("Fetching cloud resources...")
 	spinner.Start()
 
-	resources, err := cloudMgr.ListResources(options)
+	resources, err := cloudService.ListResources(ctx, provider, resourceType)
 	spinner.Stop()
 
 	if err != nil {
@@ -158,21 +159,25 @@ func runCloudResources(provider, resourceType, format string) error {
 }
 
 func runCloudCosts(provider, period string, breakdown bool, format string) error {
-	cloudMgr, err := cloud.New()
+	cfg, err := config.Load()
 	if err != nil {
-		return fmt.Errorf("failed to initialize cloud manager: %w", err)
+		return fmt.Errorf("failed to load configuration: %w", err)
 	}
 
+	cloudService := cloud.NewCloudService(cfg)
+	ctx := context.Background()
+
 	options := cloud.CostOptions{
-		Provider:  provider,
-		Period:    period,
-		Breakdown: breakdown,
+		StartDate:   time.Now().Add(-30 * 24 * time.Hour), // Default 30 days
+		EndDate:     time.Now(),
+		Granularity: "daily",
+		GroupBy:     []string{"service"},
 	}
 
 	spinner := utils.NewSpinner("Analyzing cloud costs...")
 	spinner.Start()
 
-	costs, err := cloudMgr.AnalyzeCosts(options)
+	costs, err := cloudService.GetCostAnalysis(ctx, provider, options)
 	spinner.Stop()
 
 	if err != nil {
@@ -183,21 +188,24 @@ func runCloudCosts(provider, period string, breakdown bool, format string) error
 }
 
 func runCloudOptimize(provider, resourceType string, autoApply bool, format string) error {
-	cloudMgr, err := cloud.New()
+	cfg, err := config.Load()
 	if err != nil {
-		return fmt.Errorf("failed to initialize cloud manager: %w", err)
+		return fmt.Errorf("failed to load configuration: %w", err)
 	}
 
+	cloudService := cloud.NewCloudService(cfg)
+	ctx := context.Background()
+
 	options := cloud.OptimizeOptions{
-		Provider:  provider,
-		Type:      resourceType,
-		AutoApply: autoApply,
+		ResourceTypes: []string{resourceType},
+		Criteria:      []string{"cost", "performance"},
+		DryRun:        !autoApply,
 	}
 
 	spinner := utils.NewSpinner("Generating optimization recommendations...")
 	spinner.Start()
 
-	optimization, err := cloudMgr.OptimizeResources(options)
+	optimization, err := cloudService.OptimizeResources(ctx, provider, options)
 	spinner.Stop()
 
 	if err != nil {
@@ -208,39 +216,18 @@ func runCloudOptimize(provider, resourceType string, autoApply bool, format stri
 }
 
 func runCloudMigrate(source, target string, plan bool, format string) error {
-	cloudMgr, err := cloud.New()
-	if err != nil {
-		return fmt.Errorf("failed to initialize cloud manager: %w", err)
-	}
-
-	options := cloud.MigrateOptions{
-		Source: source,
-		Target: target,
-		Plan:   plan,
-	}
-
-	spinner := utils.NewSpinner("Preparing migration...")
-	spinner.Start()
-
-	migration, err := cloudMgr.MigrateResources(options)
-	spinner.Stop()
-
-	if err != nil {
-		return fmt.Errorf("failed to migrate cloud resources: %w", err)
-	}
-
-	return utils.DisplayResponse(migration, format)
+	// Mock implementation for cloud migration
+	utils.LogInfo("Cloud migration is not yet implemented")
+	fmt.Println("Cloud migration feature coming soon!")
+	return nil
 }
 
 func runCloudBackup(provider, resourceType, schedule, format string) error {
-	cloudMgr, err := cloud.New()
-	if err != nil {
-		return fmt.Errorf("failed to initialize cloud manager: %w", err)
-	}
-
-	options := cloud.BackupOptions{
-		Provider: provider,
-		Type:     resourceType,
+	// Mock implementation for cloud backup
+	utils.LogInfo("Cloud backup is not yet implemented")
+	fmt.Println("Cloud backup feature coming soon!")
+	return nil
+}
 		Schedule: schedule,
 	}
 
