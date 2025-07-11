@@ -27,7 +27,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 	utils.PrintBanner()
 	
 	fmt.Println("🚀 Welcome to AlloraCLI!")
-	fmt.Println("Let's set up your AI-powered IT infrastructure management CLI.\n")
+	fmt.Println("Let's set up your AI-powered IT infrastructure management CLI.")
 
 	// Check if already initialized
 	configDir, err := config.GetConfigDir()

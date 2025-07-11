@@ -12,38 +12,38 @@ import (
 
 // Config represents the main configuration structure
 type Config struct {
-	Version        string         `yaml:"version"`
-	Agents         map[string]Agent `yaml:"agents"`
-	CloudProviders CloudProviders `yaml:"cloud_providers"`
-	Monitoring     MonitoringConfig `yaml:"monitoring"`
-	Security       SecurityConfig `yaml:"security"`
-	Plugins        PluginConfig   `yaml:"plugins"`
-	Logging        LoggingConfig  `yaml:"logging"`
+	Version        string         `yaml:"version" mapstructure:"version"`
+	Agents         map[string]Agent `yaml:"agents" mapstructure:"agents"`
+	CloudProviders CloudProviders `yaml:"cloud_providers" mapstructure:"cloud_providers"`
+	Monitoring     MonitoringConfig `yaml:"monitoring" mapstructure:"monitoring"`
+	Security       SecurityConfig `yaml:"security" mapstructure:"security"`
+	Plugins        PluginConfig   `yaml:"plugins" mapstructure:"plugins"`
+	Logging        LoggingConfig  `yaml:"logging" mapstructure:"logging"`
 }
 
 // Agent represents an AI agent configuration
 type Agent struct {
-	Type        string  `yaml:"type"`
-	APIKey      string  `yaml:"api_key"`
-	Model       string  `yaml:"model"`
-	MaxTokens   int     `yaml:"max_tokens"`
-	Temperature float64 `yaml:"temperature"`
-	Endpoint    string  `yaml:"endpoint,omitempty"`
+	Type        string  `yaml:"type" mapstructure:"type"`
+	APIKey      string  `yaml:"api_key" mapstructure:"api_key"`
+	Model       string  `yaml:"model" mapstructure:"model"`
+	MaxTokens   int     `yaml:"max_tokens" mapstructure:"max_tokens"`
+	Temperature float64 `yaml:"temperature" mapstructure:"temperature"`
+	Endpoint    string  `yaml:"endpoint,omitempty" mapstructure:"endpoint"`
 }
 
 // CloudProviders contains configuration for all cloud providers
 type CloudProviders struct {
-	AWS   AWSConfig   `yaml:"aws"`
-	Azure AzureConfig `yaml:"azure"`
-	GCP   GCPConfig   `yaml:"gcp"`
+	AWS   AWSConfig   `yaml:"aws" mapstructure:"aws"`
+	Azure AzureConfig `yaml:"azure" mapstructure:"azure"`
+	GCP   GCPConfig   `yaml:"gcp" mapstructure:"gcp"`
 }
 
 // AWSConfig represents AWS-specific configuration
 type AWSConfig struct {
-	Region      string `yaml:"region"`
-	Profile     string `yaml:"profile"`
-	AccessKeyID string `yaml:"access_key_id,omitempty"`
-	SecretKey   string `yaml:"secret_access_key,omitempty"`
+	Region      string `yaml:"region" mapstructure:"region"`
+	Profile     string `yaml:"profile" mapstructure:"profile"`
+	AccessKeyID string `yaml:"access_key_id,omitempty" mapstructure:"access_key_id"`
+	SecretKey   string `yaml:"secret_access_key,omitempty" mapstructure:"secret_access_key"`
 }
 
 // AzureConfig represents Azure-specific configuration
@@ -99,10 +99,10 @@ type NewRelicConfig struct {
 
 // SecurityConfig contains security-related settings
 type SecurityConfig struct {
-	Encryption      bool   `yaml:"encryption"`
-	AuditLogging    bool   `yaml:"audit_logging"`
-	KeyManagement   string `yaml:"key_management"`
-	ComplianceMode  string `yaml:"compliance_mode"`
+	Encryption      bool   `yaml:"encryption" mapstructure:"encryption"`
+	AuditLogging    bool   `yaml:"audit_logging" mapstructure:"audit_logging"`
+	KeyManagement   string `yaml:"key_management" mapstructure:"key_management"`
+	ComplianceMode  string `yaml:"compliance_mode" mapstructure:"compliance_mode"`
 }
 
 // PluginConfig contains plugin-related settings
@@ -114,13 +114,13 @@ type PluginConfig struct {
 
 // LoggingConfig contains logging configuration
 type LoggingConfig struct {
-	Level     string `yaml:"level"`
-	Format    string `yaml:"format"`
-	Output    string `yaml:"output"`
-	Rotate    bool   `yaml:"rotate"`
-	MaxSize   int    `yaml:"max_size"`
-	MaxAge    int    `yaml:"max_age"`
-	MaxFiles  int    `yaml:"max_files"`
+	Level     string `yaml:"level" mapstructure:"level"`
+	Format    string `yaml:"format" mapstructure:"format"`
+	Output    string `yaml:"output" mapstructure:"output"`
+	Rotate    bool   `yaml:"rotate" mapstructure:"rotate"`
+	MaxSize   int    `yaml:"max_size" mapstructure:"max_size"`
+	MaxAge    int    `yaml:"max_age" mapstructure:"max_age"`
+	MaxFiles  int    `yaml:"max_files" mapstructure:"max_files"`
 }
 
 // Initialize initializes the configuration system
@@ -151,7 +151,17 @@ func Initialize(configFile string, verbose bool) error {
 	// Read config file
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			return fmt.Errorf("failed to read config file: %w", err)
+			// If a specific config file was provided and it doesn't exist, 
+			// treat it as a missing config file error instead of a read error
+			if configFile != "" {
+				if os.IsNotExist(err) {
+					// Continue without error, just use defaults
+				} else {
+					return fmt.Errorf("failed to read config file: %w", err)
+				}
+			} else {
+				return fmt.Errorf("failed to read config file: %w", err)
+			}
 		}
 	}
 

@@ -1,0 +1,107 @@
+# AlloraCLI Configuration Example
+# Copy this file to your configuration directory and modify as needed
+
+version: "1.0.0"
+
+# AI Agent Configuration
+agents:
+  # Default general-purpose agent
+  default:
+    type: "general"
+    model: "gpt-4"
+    max_tokens: 4096
+    temperature: 0.7
+    api_key: ""  # Set via environment variable ALLORA_OPENAI_API_KEY
+    endpoint: "https://api.openai.com/v1"
+
+  # AWS specialized agent
+  aws:
+    type: "aws"
+    model: "gpt-4"
+    max_tokens: 4096
+    temperature: 0.5
+    api_key: ""  # Set via environment variable ALLORA_AWS_AGENT_API_KEY
+
+  # Azure specialized agent
+  azure:
+    type: "azure"
+    model: "gpt-4"
+    max_tokens: 4096
+    temperature: 0.5
+    api_key: ""  # Set via environment variable ALLORA_AZURE_AGENT_API_KEY
+
+  # Kubernetes specialized agent
+  k8s:
+    type: "kubernetes"
+    model: "gpt-4"
+    max_tokens: 4096
+    temperature: 0.3
+    api_key: ""  # Set via environment variable ALLORA_K8S_AGENT_API_KEY
+
+# Cloud Provider Configuration
+cloud_providers:
+  aws:
+    region: "us-west-2"
+    profile: "default"
+    # Credentials should be set via environment variables:
+    # AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+    # access_key_id: ""
+    # secret_access_key: ""
+
+  azure:
+    subscription_id: ""  # Set via environment variable AZURE_SUBSCRIPTION_ID
+    tenant_id: ""        # Set via environment variable AZURE_TENANT_ID
+    # client_id: ""        # Set via environment variable AZURE_CLIENT_ID
+    # client_secret: ""    # Set via environment variable AZURE_CLIENT_SECRET
+
+  gcp:
+    project_id: ""                    # Set via environment variable GCP_PROJECT_ID
+    region: "us-central1"
+    application_default: true
+    # service_account_path: ""        # Set via environment variable GOOGLE_APPLICATION_CREDENTIALS
+
+# Monitoring Configuration
+monitoring:
+  prometheus:
+    endpoint: "http://localhost:9090"
+    # username: ""
+    # password: ""
+
+  grafana:
+    endpoint: "http://localhost:3000"
+    # api_key: ""
+    # username: ""
+    # password: ""
+
+  datadog:
+    api_key: ""  # Set via environment variable DATADOG_API_KEY
+    app_key: ""  # Set via environment variable DATADOG_APP_KEY
+
+  newrelic:
+    api_key: ""     # Set via environment variable NEWRELIC_API_KEY
+    account_id: ""  # Set via environment variable NEWRELIC_ACCOUNT_ID
+
+# Security Configuration
+security:
+  encryption: true
+  audit_logging: true
+  key_management: "local"  # Options: local, vault, aws-kms, azure-kv
+  compliance_mode: "standard"  # Options: standard, strict, custom
+
+# Plugin Configuration
+plugins:
+  directory: "${HOME}/.config/alloracli/plugins"
+  auto_update: false
+  allowed_sources:
+    - "github.com"
+    - "registry.alloraai.com"
+
+# Logging Configuration
+logging:
+  level: "info"        # Options: debug, info, warn, error
+  format: "text"       # Options: text, json
+  output: "stdout"     # Options: stdout, stderr, file
+  rotate: true
+  max_size: 100        # MB
+  max_age: 30          # days
+  max_files: 10

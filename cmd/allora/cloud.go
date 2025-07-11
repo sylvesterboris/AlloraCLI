@@ -228,18 +228,3 @@ func runCloudBackup(provider, resourceType, schedule, format string) error {
 	fmt.Println("Cloud backup feature coming soon!")
 	return nil
 }
-		Schedule: schedule,
-	}
-
-	spinner := utils.NewSpinner("Configuring backup...")
-	spinner.Start()
-
-	backup, err := cloudMgr.ManageBackups(options)
-	spinner.Stop()
-
-	if err != nil {
-		return fmt.Errorf("failed to manage cloud backups: %w", err)
-	}
-
-	return utils.DisplayResponse(backup, format)
-}
