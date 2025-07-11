@@ -1,7 +1,7 @@
 # AlloraCLI - AI-Powered IT Infrastructure Management CLI
 
 <div align="center">
-  <img src="https://via.placeholder.com/200x200/1e40af/ffffff?text=AlloraCLI" alt="AlloraCLI Logo" width="200"/>
+  <img src="https://github.com/organizations/AlloraAi/settings/profile" alt="AlloraCLI Logo" width="200"/>
   
   [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?style=for-the-badge&logo=go)](https://golang.org/)
   [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
