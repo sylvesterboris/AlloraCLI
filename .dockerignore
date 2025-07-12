@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+docs/
+
+# CI/CD
+.github/
+
+# Build artifacts
+dist/
+*.exe
+allora
+allora-*
+
+# Test files
+*_test.go
+test/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# Dependencies (will be downloaded in container)
+vendor/
+
+# Config files that shouldn't be in container
+*.env
+.env.*
+
+# Examples and demos
+examples/
+demos/

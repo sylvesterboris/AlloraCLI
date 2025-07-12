@@ -1,7 +1,7 @@
 # AlloraCLI Dockerfile
 
 # Build stage
-FROM golang:1.21-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 # Install git and ca-certificates
 RUN apk --no-cache add git ca-certificates
@@ -13,10 +13,13 @@ WORKDIR /app
 COPY go.mod go.sum ./
 
 # Download dependencies
-RUN go mod download
+RUN go mod download && go mod verify
 
 # Copy source code
 COPY . .
+
+# Verify again after copying source
+RUN go mod verify
 
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o allora ./cmd/allora
