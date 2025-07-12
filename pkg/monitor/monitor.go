@@ -36,28 +36,28 @@ type Monitor interface {
 
 // SystemStatus represents overall system status
 type SystemStatus struct {
-	Overall     string               `json:"overall" yaml:"overall"`
-	Timestamp   time.Time           `json:"timestamp" yaml:"timestamp"`
-	Services    []*ServiceStatus    `json:"services" yaml:"services"`
-	Resources   *ResourceUsage      `json:"resources" yaml:"resources"`
-	Alerts      []*ActiveAlert      `json:"alerts" yaml:"alerts"`
-	Uptime      time.Duration       `json:"uptime" yaml:"uptime"`
-	Metadata    map[string]string   `json:"metadata" yaml:"metadata"`
+	Overall   string            `json:"overall" yaml:"overall"`
+	Timestamp time.Time         `json:"timestamp" yaml:"timestamp"`
+	Services  []*ServiceStatus  `json:"services" yaml:"services"`
+	Resources *ResourceUsage    `json:"resources" yaml:"resources"`
+	Alerts    []*ActiveAlert    `json:"alerts" yaml:"alerts"`
+	Uptime    time.Duration     `json:"uptime" yaml:"uptime"`
+	Metadata  map[string]string `json:"metadata" yaml:"metadata"`
 }
 
 // ServiceStatus represents the status of a specific service
 type ServiceStatus struct {
-	Name        string            `json:"name" yaml:"name"`
-	Status      string            `json:"status" yaml:"status"`
-	Health      string            `json:"health" yaml:"health"`
-	Uptime      time.Duration     `json:"uptime" yaml:"uptime"`
-	CPU         float64           `json:"cpu" yaml:"cpu"`
-	Memory      float64           `json:"memory" yaml:"memory"`
-	Disk        float64           `json:"disk" yaml:"disk"`
-	Network     *NetworkMetrics   `json:"network" yaml:"network"`
-	Endpoints   []*EndpointStatus `json:"endpoints" yaml:"endpoints"`
-	LastCheck   time.Time         `json:"last_check" yaml:"last_check"`
-	Metadata    map[string]string `json:"metadata" yaml:"metadata"`
+	Name      string            `json:"name" yaml:"name"`
+	Status    string            `json:"status" yaml:"status"`
+	Health    string            `json:"health" yaml:"health"`
+	Uptime    time.Duration     `json:"uptime" yaml:"uptime"`
+	CPU       float64           `json:"cpu" yaml:"cpu"`
+	Memory    float64           `json:"memory" yaml:"memory"`
+	Disk      float64           `json:"disk" yaml:"disk"`
+	Network   *NetworkMetrics   `json:"network" yaml:"network"`
+	Endpoints []*EndpointStatus `json:"endpoints" yaml:"endpoints"`
+	LastCheck time.Time         `json:"last_check" yaml:"last_check"`
+	Metadata  map[string]string `json:"metadata" yaml:"metadata"`
 }
 
 // ServiceInfo represents basic service information
@@ -101,8 +101,8 @@ type DiskUsage struct {
 
 // NetworkUsage represents network usage metrics
 type NetworkUsage struct {
-	BytesIn  int64 `json:"bytes_in" yaml:"bytes_in"`
-	BytesOut int64 `json:"bytes_out" yaml:"bytes_out"`
+	BytesIn    int64 `json:"bytes_in" yaml:"bytes_in"`
+	BytesOut   int64 `json:"bytes_out" yaml:"bytes_out"`
 	PacketsIn  int64 `json:"packets_in" yaml:"packets_in"`
 	PacketsOut int64 `json:"packets_out" yaml:"packets_out"`
 }
@@ -136,23 +136,23 @@ type AlertConfig struct {
 
 // ActiveAlert represents an active alert
 type ActiveAlert struct {
-	Alert       *AlertConfig `json:"alert" yaml:"alert"`
-	Triggered   time.Time    `json:"triggered" yaml:"triggered"`
-	Status      string       `json:"status" yaml:"status"`
-	Message     string       `json:"message" yaml:"message"`
-	Acknowledged bool        `json:"acknowledged" yaml:"acknowledged"`
+	Alert        *AlertConfig `json:"alert" yaml:"alert"`
+	Triggered    time.Time    `json:"triggered" yaml:"triggered"`
+	Status       string       `json:"status" yaml:"status"`
+	Message      string       `json:"message" yaml:"message"`
+	Acknowledged bool         `json:"acknowledged" yaml:"acknowledged"`
 }
 
 // MetricsData represents metrics data
 type MetricsData struct {
-	Metric    string                   `json:"metric" yaml:"metric"`
-	TimeRange string                   `json:"time_range" yaml:"time_range"`
-	Data      []MetricPoint            `json:"data" yaml:"data"`
-	Points    []*DataPoint             `json:"points" yaml:"points"`
-	Summary   *MetricSummary           `json:"summary" yaml:"summary"`
-	Metadata  map[string]string        `json:"metadata" yaml:"metadata"`
-	StartTime time.Time                `json:"start_time" yaml:"start_time"`
-	EndTime   time.Time                `json:"end_time" yaml:"end_time"`
+	Metric    string            `json:"metric" yaml:"metric"`
+	TimeRange string            `json:"time_range" yaml:"time_range"`
+	Data      []MetricPoint     `json:"data" yaml:"data"`
+	Points    []*DataPoint      `json:"points" yaml:"points"`
+	Summary   *MetricSummary    `json:"summary" yaml:"summary"`
+	Metadata  map[string]string `json:"metadata" yaml:"metadata"`
+	StartTime time.Time         `json:"start_time" yaml:"start_time"`
+	EndTime   time.Time         `json:"end_time" yaml:"end_time"`
 }
 
 // DataPoint represents a single data point for Prometheus integration
@@ -164,8 +164,8 @@ type DataPoint struct {
 
 // MetricPoint represents a single metric data point
 type MetricPoint struct {
-	Timestamp time.Time `json:"timestamp" yaml:"timestamp"`
-	Value     float64   `json:"value" yaml:"value"`
+	Timestamp time.Time         `json:"timestamp" yaml:"timestamp"`
+	Value     float64           `json:"value" yaml:"value"`
 	Labels    map[string]string `json:"labels" yaml:"labels"`
 }
 
@@ -192,7 +192,7 @@ func New() (Monitor, error) {
 	}
 
 	registry := prometheus.NewRegistry()
-	
+
 	return &MonitorImpl{
 		config:   cfg,
 		registry: registry,
@@ -237,9 +237,9 @@ func (m *MonitorImpl) GetSystemStatus() (*SystemStatus, error) {
 				Cores:       4,
 			},
 			Memory: &MemoryUsage{
-				Used:      4 * 1024 * 1024 * 1024,  // 4GB
-				Available: 4 * 1024 * 1024 * 1024,  // 4GB
-				Total:     8 * 1024 * 1024 * 1024,  // 8GB
+				Used:      4 * 1024 * 1024 * 1024, // 4GB
+				Available: 4 * 1024 * 1024 * 1024, // 4GB
+				Total:     8 * 1024 * 1024 * 1024, // 8GB
 				Usage:     50.0,
 			},
 			Disk: &DiskUsage{
@@ -264,13 +264,13 @@ func (m *MonitorImpl) GetSystemStatus() (*SystemStatus, error) {
 func (m *MonitorImpl) GetServiceStatus(serviceName string, detailed bool) (*ServiceStatus, error) {
 	// Mock implementation
 	service := &ServiceStatus{
-		Name:      serviceName,
-		Status:    "running",
-		Health:    "healthy",
-		Uptime:    24 * time.Hour,
-		CPU:       15.5,
-		Memory:    45.2,
-		Disk:      12.8,
+		Name:   serviceName,
+		Status: "running",
+		Health: "healthy",
+		Uptime: 24 * time.Hour,
+		CPU:    15.5,
+		Memory: 45.2,
+		Disk:   12.8,
 		Network: &NetworkMetrics{
 			Connections: 42,
 			Latency:     15.2,
@@ -394,16 +394,16 @@ func (m *MonitorImpl) DeleteAlert(name string) error {
 // StartDashboard starts the monitoring dashboard web server
 func (m *MonitorImpl) StartDashboard(host string, port int) error {
 	mux := http.NewServeMux()
-	
+
 	// Prometheus metrics endpoint
 	mux.Handle("/metrics", promhttp.HandlerFor(m.registry, promhttp.HandlerOpts{}))
-	
+
 	// Health check endpoint
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("OK"))
 	})
-	
+
 	// Simple dashboard endpoint
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		html := `
@@ -447,12 +447,12 @@ func (m *MonitorImpl) StartDashboard(host string, port int) error {
 		w.Header().Set("Content-Type", "text/html")
 		w.Write([]byte(html))
 	})
-	
+
 	server := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", host, port),
 		Handler: mux,
 	}
-	
+
 	return server.ListenAndServe()
 }
 
@@ -472,24 +472,24 @@ func NewMonitoringManager() *MonitoringManager {
 // NewMonitoringService creates a new monitoring service with real integrations
 func NewMonitoringService(cfg *config.Config) *MonitoringManager {
 	manager := NewMonitoringManager()
-	
+
 	// Add Prometheus monitor if configured
 	if prometheusConfig := getPrometheusConfig(cfg); prometheusConfig != nil {
 		if monitor, err := NewPrometheusMonitor(prometheusConfig.Endpoint, prometheusConfig); err == nil {
 			manager.AddMonitor(monitor)
 		}
 	}
-	
+
 	// Add Grafana monitor if configured
 	if grafanaConfig := getGrafanaConfig(cfg); grafanaConfig != nil {
 		if monitor, err := NewGrafanaMonitor(grafanaConfig); err == nil {
 			manager.AddMonitor(monitor)
 		}
 	}
-	
+
 	// Add other monitors (Datadog, etc.) as needed
 	// TODO: Implement other monitoring integrations
-	
+
 	return manager
 }
 
@@ -498,12 +498,12 @@ func getPrometheusConfig(cfg *config.Config) *MonitorConfig {
 	// This is a simplified implementation
 	// In a real implementation, you would extract from cfg
 	return &MonitorConfig{
-		Endpoint:  "http://localhost:9090",
-		Username:  "",
-		Password:  "",
-		Interval:  30,
-		Timeout:   10,
-		Enabled:   true,
+		Endpoint: "http://localhost:9090",
+		Username: "",
+		Password: "",
+		Interval: 30,
+		Timeout:  10,
+		Enabled:  true,
 	}
 }
 
@@ -513,7 +513,7 @@ func getGrafanaConfig(cfg *config.Config) *MonitorConfig {
 	if cfg.Monitoring.Grafana.Endpoint == "" {
 		return nil
 	}
-	
+
 	return &MonitorConfig{
 		Name:     "grafana",
 		Category: "monitoring",
@@ -531,7 +531,7 @@ func getGrafanaConfig(cfg *config.Config) *MonitorConfig {
 func (m *MonitoringManager) AddMonitor(monitor Monitor) error {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	
+
 	m.monitors[monitor.GetName()] = monitor
 	return nil
 }
@@ -540,7 +540,7 @@ func (m *MonitoringManager) AddMonitor(monitor Monitor) error {
 func (m *MonitoringManager) GetMonitor(name string) (Monitor, error) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	monitor, exists := m.monitors[name]
 	if !exists {
 		return nil, fmt.Errorf("monitor not found: %s", name)
@@ -552,7 +552,7 @@ func (m *MonitoringManager) GetMonitor(name string) (Monitor, error) {
 func (m *MonitoringManager) ListMonitors() []Monitor {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	monitors := make([]Monitor, 0, len(m.monitors))
 	for _, monitor := range m.monitors {
 		monitors = append(monitors, monitor)
@@ -595,7 +595,7 @@ func NewAlertManager() *AlertManager {
 func (m *AlertManager) AddRule(rule *AlertRule) error {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	
+
 	m.rules[rule.Name] = rule
 	return nil
 }
@@ -604,7 +604,7 @@ func (m *AlertManager) AddRule(rule *AlertRule) error {
 func (m *AlertManager) GetRule(name string) (*AlertRule, error) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	rule, exists := m.rules[name]
 	if !exists {
 		return nil, fmt.Errorf("alert rule not found: %s", name)
@@ -616,7 +616,7 @@ func (m *AlertManager) GetRule(name string) (*AlertRule, error) {
 func (m *AlertManager) EvaluateRules(ctx context.Context, metrics []*Metric) ([]*Alert, error) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	var alerts []*Alert
 	for _, rule := range m.rules {
 		if rule.Enabled {
@@ -654,7 +654,7 @@ func NewHealthChecker() *HealthChecker {
 func (h *HealthChecker) AddCheck(check *HealthCheck) error {
 	h.mutex.Lock()
 	defer h.mutex.Unlock()
-	
+
 	h.checks[check.Name] = check
 	return nil
 }
@@ -664,11 +664,11 @@ func (h *HealthChecker) RunCheck(ctx context.Context, name string) (*HealthCheck
 	h.mutex.RLock()
 	_, exists := h.checks[name]
 	h.mutex.RUnlock()
-	
+
 	if !exists {
 		return nil, fmt.Errorf("health check not found: %s", name)
 	}
-	
+
 	// Simple health check logic for testing
 	return &HealthCheckResult{
 		CheckName: name,
@@ -712,7 +712,7 @@ func NewDashboard() *Dashboard {
 func (d *Dashboard) AddWidget(widget *Widget) error {
 	d.mutex.Lock()
 	defer d.mutex.Unlock()
-	
+
 	d.widgets[widget.ID] = widget
 	return nil
 }
@@ -721,7 +721,7 @@ func (d *Dashboard) AddWidget(widget *Widget) error {
 func (d *Dashboard) GetWidget(id string) (*Widget, error) {
 	d.mutex.RLock()
 	defer d.mutex.RUnlock()
-	
+
 	widget, exists := d.widgets[id]
 	if !exists {
 		return nil, fmt.Errorf("widget not found: %s", id)
@@ -733,7 +733,7 @@ func (d *Dashboard) GetWidget(id string) (*Widget, error) {
 func (d *Dashboard) ListWidgets() []*Widget {
 	d.mutex.RLock()
 	defer d.mutex.RUnlock()
-	
+
 	widgets := make([]*Widget, 0, len(d.widgets))
 	for _, widget := range d.widgets {
 		widgets = append(widgets, widget)
@@ -745,34 +745,34 @@ func (d *Dashboard) ListWidgets() []*Widget {
 func (d *Dashboard) GenerateData(ctx context.Context) (*DashboardData, error) {
 	d.mutex.RLock()
 	defer d.mutex.RUnlock()
-	
+
 	data := &DashboardData{
 		Widgets: make([]*WidgetData, 0, len(d.widgets)),
 	}
-	
+
 	for _, widget := range d.widgets {
 		widgetData := &WidgetData{
 			ID:    widget.ID,
 			Title: widget.Title,
 			Type:  widget.Type,
-			Data:  map[string]interface{}{
+			Data: map[string]interface{}{
 				"value": 42.5,
 				"unit":  "percent",
 			},
 		}
 		data.Widgets = append(data.Widgets, widgetData)
 	}
-	
+
 	return data, nil
 }
 
 // Additional type definitions for the test interfaces
 type Metric struct {
-	Name      string                 `json:"name"`
-	Value     interface{}            `json:"value"`
-	Unit      string                 `json:"unit"`
-	Timestamp time.Time              `json:"timestamp"`
-	Labels    map[string]string      `json:"labels"`
+	Name      string            `json:"name"`
+	Value     interface{}       `json:"value"`
+	Unit      string            `json:"unit"`
+	Timestamp time.Time         `json:"timestamp"`
+	Labels    map[string]string `json:"labels"`
 }
 
 type AlertRule struct {
@@ -811,12 +811,12 @@ type HealthCheckResult struct {
 }
 
 type Widget struct {
-	ID          string    `json:"id"`
-	Title       string    `json:"title"`
-	Type        string    `json:"type"`
-	MetricQuery string    `json:"metric_query"`
-	Position    Position  `json:"position"`
-	Size        Size      `json:"size"`
+	ID          string   `json:"id"`
+	Title       string   `json:"title"`
+	Type        string   `json:"type"`
+	MetricQuery string   `json:"metric_query"`
+	Position    Position `json:"position"`
+	Size        Size     `json:"size"`
 }
 
 type Position struct {
@@ -849,10 +849,10 @@ type MonitorConfig struct {
 	Username string        `json:"username"`
 	Password string        `json:"password"`
 	Timeout  int           `json:"timeout"`
-	
+
 	// Prometheus configuration
 	Prometheus PrometheusConfig `json:"prometheus"`
-	
+
 	// Grafana configuration
 	Grafana GrafanaConfig `json:"grafana"`
 }

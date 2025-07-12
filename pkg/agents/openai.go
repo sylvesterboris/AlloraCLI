@@ -13,7 +13,7 @@ import (
 // OpenAIAgent implements the Agent interface using OpenAI's GPT models
 type OpenAIAgent struct {
 	*BaseAgent
-	client     *openai.Client
+	client       *openai.Client
 	systemPrompt string
 }
 
@@ -24,7 +24,7 @@ func NewOpenAIAgent(cfg config.Agent, agentType string) (*OpenAIAgent, error) {
 	}
 
 	client := openai.NewClient(cfg.APIKey)
-	
+
 	baseAgent := &BaseAgent{
 		name:    fmt.Sprintf("openai-%s", agentType),
 		config:  cfg,
@@ -89,24 +89,24 @@ func (o *OpenAIAgent) Query(ctx context.Context, query *Query) (*Response, error
 	}
 
 	o.status.State = "idle"
-	
+
 	// Parse the response for actions and suggestions
 	content := resp.Choices[0].Message.Content
 	actions := parseActions(content)
 	suggestions := parseSuggestions(content)
 
 	return &Response{
-		Text:        content,
-		Content:     content,
-		Type:        "text",
-		Confidence:  calculateConfidence(resp.Usage),
+		Text:       content,
+		Content:    content,
+		Type:       "text",
+		Confidence: calculateConfidence(resp.Usage),
 		Metadata: map[string]interface{}{
-			"agent_type":     o.GetType(),
-			"model":          o.config.Model,
-			"tokens_used":    resp.Usage.TotalTokens,
-			"prompt_tokens":  resp.Usage.PromptTokens,
+			"agent_type":        o.GetType(),
+			"model":             o.config.Model,
+			"tokens_used":       resp.Usage.TotalTokens,
+			"prompt_tokens":     resp.Usage.PromptTokens,
 			"completion_tokens": resp.Usage.CompletionTokens,
-			"finish_reason":  resp.Choices[0].FinishReason,
+			"finish_reason":     resp.Choices[0].FinishReason,
 		},
 		Suggestions: suggestions,
 		Actions:     actions,
@@ -118,7 +118,7 @@ func (o *OpenAIAgent) Query(ctx context.Context, query *Query) (*Response, error
 func (o *OpenAIAgent) GetCapabilities() []string {
 	agentType := o.GetType()
 	baseCapabilities := []string{"chat", "analysis", "recommendations"}
-	
+
 	switch agentType {
 	case "openai-general":
 		return append(baseCapabilities, "general", "help", "documentation")
@@ -147,7 +147,7 @@ func (o *OpenAIAgent) GetType() string {
 // getSystemPrompt returns the system prompt based on agent type
 func getSystemPrompt(agentType string) string {
 	basePrompt := "You are an AI assistant specialized in IT infrastructure management and DevOps operations. "
-	
+
 	switch agentType {
 	case "general":
 		return basePrompt + "You help with general IT infrastructure questions, provide guidance on best practices, and assist with troubleshooting. Always provide actionable advice and consider security implications."
@@ -180,12 +180,12 @@ func formatContext(context map[string]interface{}) string {
 // parseActions extracts actionable items from the response
 func parseActions(content string) []Action {
 	var actions []Action
-	
+
 	// Look for command patterns
 	lines := strings.Split(content, "\n")
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		
+
 		// Look for AWS CLI commands
 		if strings.Contains(line, "aws ") && strings.HasPrefix(line, "aws ") {
 			actions = append(actions, Action{
@@ -196,7 +196,7 @@ func parseActions(content string) []Action {
 				Risk:        "medium",
 			})
 		}
-		
+
 		// Look for kubectl commands
 		if strings.Contains(line, "kubectl ") && strings.HasPrefix(line, "kubectl ") {
 			actions = append(actions, Action{
@@ -207,7 +207,7 @@ func parseActions(content string) []Action {
 				Risk:        "medium",
 			})
 		}
-		
+
 		// Look for Azure CLI commands
 		if strings.Contains(line, "az ") && strings.HasPrefix(line, "az ") {
 			actions = append(actions, Action{
@@ -218,7 +218,7 @@ func parseActions(content string) []Action {
 				Risk:        "medium",
 			})
 		}
-		
+
 		// Look for gcloud commands
 		if strings.Contains(line, "gcloud ") && strings.HasPrefix(line, "gcloud ") {
 			actions = append(actions, Action{
@@ -230,28 +230,28 @@ func parseActions(content string) []Action {
 			})
 		}
 	}
-	
+
 	return actions
 }
 
 // parseSuggestions extracts suggestions from the response
 func parseSuggestions(content string) []string {
 	var suggestions []string
-	
+
 	// Look for common suggestion patterns
 	lines := strings.Split(content, "\n")
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		
+
 		// Look for lines that start with suggestion indicators
-		if strings.HasPrefix(line, "•") || strings.HasPrefix(line, "-") || 
-		   strings.HasPrefix(line, "1.") || strings.HasPrefix(line, "2.") ||
-		   strings.HasPrefix(line, "Consider") || strings.HasPrefix(line, "Recommend") ||
-		   strings.HasPrefix(line, "Suggestion:") {
+		if strings.HasPrefix(line, "•") || strings.HasPrefix(line, "-") ||
+			strings.HasPrefix(line, "1.") || strings.HasPrefix(line, "2.") ||
+			strings.HasPrefix(line, "Consider") || strings.HasPrefix(line, "Recommend") ||
+			strings.HasPrefix(line, "Suggestion:") {
 			suggestions = append(suggestions, line)
 		}
 	}
-	
+
 	// If no specific suggestions found, generate generic ones
 	if len(suggestions) == 0 {
 		suggestions = []string{
@@ -261,7 +261,7 @@ func parseSuggestions(content string) []string {
 			"Consider monitoring and alerting setup",
 		}
 	}
-	
+
 	return suggestions
 }
 

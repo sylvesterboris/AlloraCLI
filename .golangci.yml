@@ -1,0 +1,55 @@
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  enable:
+    - gofmt
+    - goimports
+    - govet
+    - errcheck
+    - staticcheck
+    - unused
+    - gosimple
+    - ineffassign
+    - typecheck
+    - misspell
+    - gocritic
+    - revive
+  disable:
+    - gosec  # We handle security scanning separately
+    - funlen
+    - gocognit
+    - nestif
+    - cyclop
+
+linters-settings:
+  revive:
+    rules:
+      - name: exported
+        disabled: true
+      - name: package-comments
+        disabled: true
+  gocritic:
+    disabled-checks:
+      - commentFormatting
+      - ifElseChain
+  errcheck:
+    check-type-assertions: false
+    check-blank: false
+  misspell:
+    locale: US
+
+issues:
+  exclude-rules:
+    # Exclude some linters from running on tests files
+    - path: _test\.go
+      linters:
+        - errcheck
+        - revive
+    # Exclude generated files
+    - path: ".*\\.pb\\.go"
+      linters:
+        - all
+  max-issues-per-linter: 0
+  max-same-issues: 0

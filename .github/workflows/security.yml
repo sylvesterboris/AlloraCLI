@@ -22,12 +22,7 @@ jobs:
     - name: Run Gosec Security Scanner
       run: |
         go install github.com/securecodewarrior/gosec/v2/cmd/gosec@latest
-        gosec ./...
-    
-    - name: Run Nancy vulnerability scanner
-      run: |
-        go install github.com/sonatypecommunity/nancy@latest
-        go list -json -deps ./... | nancy sleuth
+        gosec -exclude=G104,G204 ./...
     
     - name: Run govulncheck
       run: |

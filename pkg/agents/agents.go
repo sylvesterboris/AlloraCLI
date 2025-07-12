@@ -32,30 +32,30 @@ type Query struct {
 
 // Response represents an AI agent response
 type Response struct {
-	Text       string                 `json:"text"`
-	Content    string                 `json:"content"`
-	Type       string                 `json:"type"`
-	Confidence float64                `json:"confidence"`
-	Metadata   map[string]interface{} `json:"metadata"`
-	Suggestions []string              `json:"suggestions"`
-	Actions    []Action               `json:"actions"`
-	Timestamp  time.Time              `json:"timestamp"`
+	Text        string                 `json:"text"`
+	Content     string                 `json:"content"`
+	Type        string                 `json:"type"`
+	Confidence  float64                `json:"confidence"`
+	Metadata    map[string]interface{} `json:"metadata"`
+	Suggestions []string               `json:"suggestions"`
+	Actions     []Action               `json:"actions"`
+	Timestamp   time.Time              `json:"timestamp"`
 }
 
 // Action represents an actionable item from the AI response
 type Action struct {
-	Type        string            `json:"type"`
-	Description string            `json:"description"`
-	Command     string            `json:"command"`
+	Type        string                 `json:"type"`
+	Description string                 `json:"description"`
+	Command     string                 `json:"command"`
 	Parameters  map[string]interface{} `json:"parameters"`
-	Risk        string            `json:"risk"`
+	Risk        string                 `json:"risk"`
 }
 
 // AgentStatus represents the status of an AI agent
 type AgentStatus struct {
-	State        string    `json:"state"`
-	LastActivity time.Time `json:"last_activity"`
-	Health       string    `json:"health"`
+	State        string        `json:"state"`
+	LastActivity time.Time     `json:"last_activity"`
+	Health       string        `json:"health"`
 	Uptime       time.Duration `json:"uptime"`
 }
 
@@ -85,7 +85,7 @@ func NewAgentManager() *AgentManager {
 func (m *AgentManager) AddAgent(agent Agent) error {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	
+
 	m.agents[agent.GetName()] = agent
 	return nil
 }
@@ -94,7 +94,7 @@ func (m *AgentManager) AddAgent(agent Agent) error {
 func (m *AgentManager) GetAgent(name string) (Agent, error) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	agent, exists := m.agents[name]
 	if !exists {
 		return nil, fmt.Errorf("agent not found: %s", name)
@@ -106,11 +106,11 @@ func (m *AgentManager) GetAgent(name string) (Agent, error) {
 func (m *AgentManager) RemoveAgent(name string) error {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	
+
 	if _, exists := m.agents[name]; !exists {
 		return fmt.Errorf("agent not found: %s", name)
 	}
-	
+
 	delete(m.agents, name)
 	return nil
 }
@@ -119,7 +119,7 @@ func (m *AgentManager) RemoveAgent(name string) error {
 func (m *AgentManager) ListAgents() []Agent {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	agents := make([]Agent, 0, len(m.agents))
 	for _, agent := range m.agents {
 		agents = append(agents, agent)
@@ -129,11 +129,11 @@ func (m *AgentManager) ListAgents() []Agent {
 
 // BaseAgent provides common functionality for all agents
 type BaseAgent struct {
-	name     string
-	config   config.Agent
-	client   *resty.Client
-	context  context.Context
-	status   *AgentStatus
+	name        string
+	config      config.Agent
+	client      *resty.Client
+	context     context.Context
+	status      *AgentStatus
 	agentConfig *AgentConfig
 }
 
@@ -739,7 +739,7 @@ func (m *MonitoringAgent) generateMonitoringActions(query string) []Action {
 func (m *AgentManager) ProcessQuery(ctx context.Context, queryText string) (string, error) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	// If no agents are available, return a helpful message
 	if len(m.agents) == 0 {
 		return `I'm AlloraAi, your AI-powered infrastructure assistant! 
@@ -758,13 +758,13 @@ To get started, you'll need to configure your cloud providers using:
 
 For now, I'm running in demo mode. How can I help you today?`, nil
 	}
-	
+
 	// Create a query object
 	query := &Query{
 		Text:    queryText,
 		Context: make(map[string]interface{}),
 	}
-	
+
 	// Try to find the best agent for the query
 	// For now, just use the first available agent
 	for _, agent := range m.agents {
@@ -776,7 +776,7 @@ For now, I'm running in demo mode. How can I help you today?`, nil
 			return response.Content, nil
 		}
 	}
-	
+
 	// If no healthy agents, return a fallback response
 	return fmt.Sprintf(`I understand you're asking about: "%s"
 

@@ -43,14 +43,14 @@ type PluginConfig struct {
 
 // PluginInfo represents plugin information
 type PluginInfo struct {
-	Name        string            `json:"name"`
-	Version     string            `json:"version"`
-	Description string            `json:"description"`
-	Status      string            `json:"status"`
-	Path        string            `json:"path"`
+	Name        string                 `json:"name"`
+	Version     string                 `json:"version"`
+	Description string                 `json:"description"`
+	Status      string                 `json:"status"`
+	Path        string                 `json:"path"`
 	Config      map[string]interface{} `json:"config"`
-	LoadedAt    time.Time         `json:"loaded_at"`
-	LastUsed    time.Time         `json:"last_used"`
+	LoadedAt    time.Time              `json:"loaded_at"`
+	LastUsed    time.Time              `json:"last_used"`
 }
 
 // NewPluginManager creates a new plugin manager

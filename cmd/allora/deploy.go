@@ -140,9 +140,9 @@ func runDeployInfra(template string, optimize, dryRun bool, vars []string) error
 	}
 
 	options := deploy.InfraOptions{
-		Template: template,
-		Optimize: optimize,
-		DryRun:   dryRun,
+		Template:  template,
+		Optimize:  optimize,
+		DryRun:    dryRun,
 		Variables: parseVariables(vars),
 	}
 

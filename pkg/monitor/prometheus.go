@@ -74,7 +74,7 @@ func (m *PrometheusMonitor) Start() error {
 	// Test connection
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	
+
 	_, _, err := m.api.Query(ctx, "up", time.Now())
 	if err != nil {
 		return fmt.Errorf("failed to connect to Prometheus: %w", err)

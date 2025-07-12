@@ -48,20 +48,20 @@ func (a *AnimatedLogo) Start() {
 		for frameIndex, frame := range a.frames {
 			// Clear screen
 			fmt.Print("\033[2J\033[H")
-			
+
 			// Set color
 			color.Set(a.colors[frameIndex%len(a.colors)])
-			
+
 			// Print frame with ASCII art
 			fmt.Println("╔═══════════════════════════════════════════════════════════════════════════╗")
 			fmt.Println("║                                                                           ║")
 			fmt.Printf("║                          %s                        ║\n", frame)
 			fmt.Println("║                                                                           ║")
 			fmt.Println("╚═══════════════════════════════════════════════════════════════════════════╝")
-			
+
 			// Reset color
 			color.Unset()
-			
+
 			// Wait
 			time.Sleep(time.Millisecond * 800)
 		}
@@ -95,30 +95,30 @@ func NewGeminiInterface(colorEnabled bool) *GeminiInterface {
 func (g *GeminiInterface) displayWelcome() {
 	// Clear screen
 	fmt.Print("\033[2J\033[H")
-	
+
 	// Create and start animated logo
 	logo := NewAnimatedLogo()
 	logo.Start()
-	
+
 	// Clear screen again
 	fmt.Print("\033[2J\033[H")
-	
+
 	// Display welcome message
 	if g.colorEnabled {
 		color.Set(color.FgCyan, color.Bold)
 	}
-	
+
 	fmt.Println("╔═══════════════════════════════════════════════════════════════════════════╗")
 	fmt.Println("║                                                                           ║")
 	fmt.Println("║                            AlloraAi Assistant                            ║")
 	fmt.Println("║                       AI-Powered Infrastructure                          ║")
 	fmt.Println("║                                                                           ║")
 	fmt.Println("╚═══════════════════════════════════════════════════════════════════════════╝")
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
-	
+
 	// Welcome text
 	fmt.Println()
 	if g.colorEnabled {
@@ -128,12 +128,12 @@ func (g *GeminiInterface) displayWelcome() {
 	if g.colorEnabled {
 		color.Unset()
 	}
-	
+
 	// Animated typing effect for description
 	g.typeText("I'm here to help you manage your cloud infrastructure, deploy applications, monitor systems, and troubleshoot issues using natural language.")
-	
+
 	fmt.Println()
-	
+
 	// Show quick tips
 	g.showQuickTips()
 }
@@ -143,18 +143,18 @@ func (g *GeminiInterface) typeText(text string) {
 	if g.colorEnabled {
 		color.Set(color.FgWhite)
 	}
-	
+
 	for _, char := range text {
 		fmt.Print(string(char))
 		// Random delay between 10-50ms for realistic typing
 		delay := time.Duration(rand.Intn(40)+10) * time.Millisecond
 		time.Sleep(delay)
 	}
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
-	
+
 	fmt.Println()
 }
 
@@ -163,14 +163,14 @@ func (g *GeminiInterface) showQuickTips() {
 	if g.colorEnabled {
 		color.Set(color.FgYellow, color.Bold)
 	}
-	
+
 	fmt.Println("💡 Quick Tips:")
-	
+
 	if g.colorEnabled {
 		color.Unset()
 		color.Set(color.FgWhite)
 	}
-	
+
 	tips := []string{
 		"• Ask me anything about your infrastructure: \"Monitor my AWS EC2 instances\"",
 		"• Get help with deployments: \"Deploy my app to Kubernetes\"",
@@ -178,16 +178,16 @@ func (g *GeminiInterface) showQuickTips() {
 		"• Type /help for available commands",
 		"• Type /examples to see sample queries",
 	}
-	
+
 	for _, tip := range tips {
 		fmt.Println(tip)
 		time.Sleep(time.Millisecond * 200)
 	}
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
-	
+
 	fmt.Println()
 }
 
@@ -196,9 +196,9 @@ func (g *GeminiInterface) displayPrompt() {
 	if g.colorEnabled {
 		color.Set(color.FgCyan, color.Bold)
 	}
-	
+
 	fmt.Print("💬 You: ")
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
@@ -209,16 +209,16 @@ func (g *GeminiInterface) displayThinking() {
 	if g.colorEnabled {
 		color.Set(color.FgMagenta)
 	}
-	
+
 	thinkingChars := []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
-	
+
 	for i := 0; i < 20; i++ {
 		fmt.Printf("\r🤖 AlloraAi: %s Thinking...", thinkingChars[i%len(thinkingChars)])
 		time.Sleep(time.Millisecond * 100)
 	}
-	
+
 	fmt.Print("\r🤖 AlloraAi: ")
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
@@ -227,11 +227,11 @@ func (g *GeminiInterface) displayThinking() {
 // displayResponse shows the AI response with typing effect
 func (g *GeminiInterface) displayResponse(response string) {
 	g.displayThinking()
-	
+
 	if g.colorEnabled {
 		color.Set(color.FgGreen)
 	}
-	
+
 	// Type the response
 	for _, char := range response {
 		fmt.Print(string(char))
@@ -239,11 +239,11 @@ func (g *GeminiInterface) displayResponse(response string) {
 		delay := time.Duration(rand.Intn(20)+5) * time.Millisecond
 		time.Sleep(delay)
 	}
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
-	
+
 	fmt.Println()
 	fmt.Println()
 }
@@ -253,9 +253,9 @@ func (g *GeminiInterface) displayError(errMsg string) {
 	if g.colorEnabled {
 		color.Set(color.FgRed, color.Bold)
 	}
-	
+
 	fmt.Printf("❌ Error: %s\n", errMsg)
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
@@ -265,22 +265,22 @@ func (g *GeminiInterface) displayError(errMsg string) {
 func (g *GeminiInterface) handleUserInput(input string) error {
 	// Add user message to conversation
 	g.addToConversation("user", input)
-	
+
 	// Create context for AI processing
 	ctx := context.Background()
-	
+
 	// Process the input with AI agents
 	response, err := g.agents.ProcessQuery(ctx, input)
 	if err != nil {
 		return fmt.Errorf("failed to process query: %w", err)
 	}
-	
+
 	// Display response
 	g.displayResponse(response)
-	
+
 	// Add AI response to conversation
 	g.addToConversation("assistant", response)
-	
+
 	return nil
 }
 
@@ -318,12 +318,12 @@ func (g *GeminiInterface) ExportConversation(filename string) error {
 	// Write conversation as JSON
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ")
-	
+
 	exportData := map[string]interface{}{
-		"exported_at": time.Now().Format(time.RFC3339),
+		"exported_at":  time.Now().Format(time.RFC3339),
 		"conversation": g.conversation,
 	}
-	
+
 	if err := encoder.Encode(exportData); err != nil {
 		return fmt.Errorf("failed to encode conversation: %w", err)
 	}
@@ -397,7 +397,7 @@ func (g *GeminiInterface) displayMenu() {
 	if g.colorEnabled {
 		color.Set(color.FgCyan, color.Bold)
 	}
-	
+
 	fmt.Println("\n╭─────────────────────────────────────────────────────────────────────────────╮")
 	fmt.Println("│                            AlloraAi Interactive Menu                       │")
 	fmt.Println("├─────────────────────────────────────────────────────────────────────────────┤")
@@ -409,7 +409,7 @@ func (g *GeminiInterface) displayMenu() {
 	fmt.Println("│ /examples  - Show example queries                                          │")
 	fmt.Println("│ /quit      - Exit the interface                                           │")
 	fmt.Println("╰─────────────────────────────────────────────────────────────────────────────╯")
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
@@ -431,17 +431,17 @@ func (g *GeminiInterface) displayExamples() {
 	if g.colorEnabled {
 		color.Set(color.FgGreen, color.Bold)
 	}
-	
+
 	fmt.Println("\n╭─────────────────────────────────────────────────────────────────────────────╮")
 	fmt.Println("│                           Example Queries                                  │")
 	fmt.Println("├─────────────────────────────────────────────────────────────────────────────┤")
-	
+
 	for i, example := range examples {
 		fmt.Printf("│ %d. %-71s │\n", i+1, example)
 	}
-	
+
 	fmt.Println("╰─────────────────────────────────────────────────────────────────────────────╯")
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
@@ -499,12 +499,12 @@ func (g *GeminiInterface) displayGoodbye() {
 	if g.colorEnabled {
 		color.Set(color.FgMagenta, color.Bold)
 	}
-	
+
 	fmt.Println("\n╭─────────────────────────────────────────────────────────────────────────────╮")
 	fmt.Println("│                          Thank you for using AlloraAi!                     │")
 	fmt.Println("│                        Your AI Infrastructure Assistant                     │")
 	fmt.Println("╰─────────────────────────────────────────────────────────────────────────────╯")
-	
+
 	if g.colorEnabled {
 		color.Unset()
 	}
@@ -514,30 +514,30 @@ func (g *GeminiInterface) displayGoodbye() {
 func (g *GeminiInterface) Start() error {
 	// Display welcome message
 	g.displayWelcome()
-	
+
 	// Display menu
 	g.displayMenu()
-	
+
 	// Initialize scanner for user input
 	scanner := bufio.NewScanner(os.Stdin)
-	
+
 	// Main interaction loop
 	for {
 		// Display prompt
 		g.displayPrompt()
-		
+
 		// Read user input
 		if !scanner.Scan() {
 			break
 		}
-		
+
 		input := strings.TrimSpace(scanner.Text())
-		
+
 		// Skip empty input
 		if input == "" {
 			continue
 		}
-		
+
 		// Handle special commands
 		if g.handleSpecialCommands(input) {
 			// Check if user wants to quit
@@ -546,17 +546,17 @@ func (g *GeminiInterface) Start() error {
 			}
 			continue
 		}
-		
+
 		// Process regular user input
 		if err := g.handleUserInput(input); err != nil {
 			g.displayError(fmt.Sprintf("Error processing input: %v", err))
 		}
 	}
-	
+
 	// Check for scanner errors
 	if err := scanner.Err(); err != nil {
 		return fmt.Errorf("input error: %w", err)
 	}
-	
+
 	return nil
 }

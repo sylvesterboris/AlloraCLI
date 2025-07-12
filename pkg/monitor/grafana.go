@@ -160,11 +160,11 @@ func (m *GrafanaMonitor) CreateAlert(alert AlertConfig) error {
 	// Create alert rule using Grafana API
 	// Note: The Grafana API client may have different structures
 	// This is a simplified version that may need adjustment based on the actual API
-	
+
 	m.logger.WithFields(logrus.Fields{
-		"alert_name":  alert.Name,
-		"condition":   alert.Condition,
-		"severity":    alert.Severity,
+		"alert_name": alert.Name,
+		"condition":  alert.Condition,
+		"severity":   alert.Severity,
 	}).Info("Created Grafana alert rule")
 
 	return nil
@@ -182,7 +182,7 @@ func (m *GrafanaMonitor) GetAlerts(ctx context.Context) ([]*Alert, error) {
 
 	// Get alert rules - this is a simplified version
 	// The actual Grafana API may have different methods
-	
+
 	// For now, return empty alerts
 	return alerts, nil
 }

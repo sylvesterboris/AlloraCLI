@@ -41,13 +41,13 @@ type PlanOptions struct {
 
 // DeploymentResult represents the result of a deployment
 type DeploymentResult struct {
-	ID          string            `json:"id" yaml:"id"`
-	Status      string            `json:"status" yaml:"status"`
-	Message     string            `json:"message" yaml:"message"`
-	Resources   []string          `json:"resources" yaml:"resources"`
-	Duration    time.Duration     `json:"duration" yaml:"duration"`
-	Metadata    map[string]string `json:"metadata" yaml:"metadata"`
-	Timestamp   time.Time         `json:"timestamp" yaml:"timestamp"`
+	ID        string            `json:"id" yaml:"id"`
+	Status    string            `json:"status" yaml:"status"`
+	Message   string            `json:"message" yaml:"message"`
+	Resources []string          `json:"resources" yaml:"resources"`
+	Duration  time.Duration     `json:"duration" yaml:"duration"`
+	Metadata  map[string]string `json:"metadata" yaml:"metadata"`
+	Timestamp time.Time         `json:"timestamp" yaml:"timestamp"`
 }
 
 // Deployment represents a deployment
@@ -65,23 +65,23 @@ type Deployment struct {
 
 // DeploymentStatus represents the status of a deployment
 type DeploymentStatus struct {
-	ID          string            `json:"id" yaml:"id"`
-	Status      string            `json:"status" yaml:"status"`
-	Phase       string            `json:"phase" yaml:"phase"`
-	Progress    int               `json:"progress" yaml:"progress"`
-	Message     string            `json:"message" yaml:"message"`
-	Resources   []ResourceStatus  `json:"resources" yaml:"resources"`
-	LastUpdate  time.Time         `json:"last_update" yaml:"last_update"`
-	Metadata    map[string]string `json:"metadata" yaml:"metadata"`
+	ID         string            `json:"id" yaml:"id"`
+	Status     string            `json:"status" yaml:"status"`
+	Phase      string            `json:"phase" yaml:"phase"`
+	Progress   int               `json:"progress" yaml:"progress"`
+	Message    string            `json:"message" yaml:"message"`
+	Resources  []ResourceStatus  `json:"resources" yaml:"resources"`
+	LastUpdate time.Time         `json:"last_update" yaml:"last_update"`
+	Metadata   map[string]string `json:"metadata" yaml:"metadata"`
 }
 
 // ResourceStatus represents the status of a deployed resource
 type ResourceStatus struct {
-	Name      string            `json:"name" yaml:"name"`
-	Type      string            `json:"type" yaml:"type"`
-	Status    string            `json:"status" yaml:"status"`
-	Health    string            `json:"health" yaml:"health"`
-	Metadata  map[string]string `json:"metadata" yaml:"metadata"`
+	Name     string            `json:"name" yaml:"name"`
+	Type     string            `json:"type" yaml:"type"`
+	Status   string            `json:"status" yaml:"status"`
+	Health   string            `json:"health" yaml:"health"`
+	Metadata map[string]string `json:"metadata" yaml:"metadata"`
 }
 
 // RollbackResult represents the result of a rollback
@@ -98,12 +98,12 @@ type RollbackResult struct {
 
 // DeploymentPlan represents a deployment plan
 type DeploymentPlan struct {
-	Actions     []PlannedAction   `json:"actions" yaml:"actions"`
-	Resources   []PlannedResource `json:"resources" yaml:"resources"`
-	Estimated   EstimatedImpact   `json:"estimated" yaml:"estimated"`
-	Warnings    []string          `json:"warnings" yaml:"warnings"`
-	Metadata    map[string]string `json:"metadata" yaml:"metadata"`
-	Timestamp   time.Time         `json:"timestamp" yaml:"timestamp"`
+	Actions   []PlannedAction   `json:"actions" yaml:"actions"`
+	Resources []PlannedResource `json:"resources" yaml:"resources"`
+	Estimated EstimatedImpact   `json:"estimated" yaml:"estimated"`
+	Warnings  []string          `json:"warnings" yaml:"warnings"`
+	Metadata  map[string]string `json:"metadata" yaml:"metadata"`
+	Timestamp time.Time         `json:"timestamp" yaml:"timestamp"`
 }
 
 // PlannedAction represents a planned deployment action
@@ -118,19 +118,19 @@ type PlannedAction struct {
 
 // PlannedResource represents a planned resource
 type PlannedResource struct {
-	Name        string            `json:"name" yaml:"name"`
-	Type        string            `json:"type" yaml:"type"`
-	Action      string            `json:"action" yaml:"action"`
-	Changes     []string          `json:"changes" yaml:"changes"`
-	Metadata    map[string]string `json:"metadata" yaml:"metadata"`
+	Name     string            `json:"name" yaml:"name"`
+	Type     string            `json:"type" yaml:"type"`
+	Action   string            `json:"action" yaml:"action"`
+	Changes  []string          `json:"changes" yaml:"changes"`
+	Metadata map[string]string `json:"metadata" yaml:"metadata"`
 }
 
 // EstimatedImpact represents estimated deployment impact
 type EstimatedImpact struct {
-	Duration    time.Duration `json:"duration" yaml:"duration"`
-	Downtime    time.Duration `json:"downtime" yaml:"downtime"`
-	Cost        float64       `json:"cost" yaml:"cost"`
-	Complexity  string        `json:"complexity" yaml:"complexity"`
+	Duration   time.Duration `json:"duration" yaml:"duration"`
+	Downtime   time.Duration `json:"downtime" yaml:"downtime"`
+	Cost       float64       `json:"cost" yaml:"cost"`
+	Complexity string        `json:"complexity" yaml:"complexity"`
 }
 
 // DeployerImpl implements the Deployer interface

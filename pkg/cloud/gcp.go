@@ -9,8 +9,8 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	"cloud.google.com/go/compute/apiv1/computepb"
-	"google.golang.org/api/option"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/api/option"
 )
 
 // GCPProvider implements the CloudProvider interface for Google Cloud Platform
@@ -190,14 +190,14 @@ func (p *GCPProvider) listInstances(ctx context.Context) ([]*Resource, error) {
 				Modified: time.Now(),
 				Tags:     p.convertGCPLabels(instance.GetLabels()),
 				Config: map[string]interface{}{
-					"zone":          zone.GetName(),
-					"machine_type":  p.getMachineType(instance.GetMachineType()),
-					"cpu_platform":  instance.GetCpuPlatform(),
-					"self_link":     instance.GetSelfLink(),
+					"zone":               zone.GetName(),
+					"machine_type":       p.getMachineType(instance.GetMachineType()),
+					"cpu_platform":       instance.GetCpuPlatform(),
+					"self_link":          instance.GetSelfLink(),
 					"network_interfaces": len(instance.GetNetworkInterfaces()),
-					"disks":         len(instance.GetDisks()),
-					"can_ip_forward": instance.GetCanIpForward(),
-					"scheduling":    p.getSchedulingInfo(instance.GetScheduling()),
+					"disks":              len(instance.GetDisks()),
+					"can_ip_forward":     instance.GetCanIpForward(),
+					"scheduling":         p.getSchedulingInfo(instance.GetScheduling()),
 				},
 			}
 

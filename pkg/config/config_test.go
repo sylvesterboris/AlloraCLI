@@ -31,7 +31,7 @@ security:
   encryption: true
   audit_logging: true
 `
-	
+
 	err = os.WriteFile(configFile, []byte(testConfig), 0644)
 	if err != nil {
 		t.Fatalf("Failed to write test config: %v", err)
@@ -224,7 +224,7 @@ logging:
   level: "info"
   format: "text"
 `
-	
+
 	err = os.WriteFile(configFile, []byte(testConfig), 0644)
 	if err != nil {
 		b.Fatalf("Failed to write test config: %v", err)

@@ -18,7 +18,7 @@ interact with AlloraAi using natural language for infrastructure management task
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Create and start the Gemini interface
 			geminiInterface := ui.NewGeminiInterface(colorEnabled)
-			
+
 			// Set export file if provided
 			if exportFile != "" {
 				defer func() {
@@ -29,7 +29,7 @@ interact with AlloraAi using natural language for infrastructure management task
 					}
 				}()
 			}
-			
+
 			// Start the interface
 			return geminiInterface.Start()
 		},

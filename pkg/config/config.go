@@ -12,13 +12,13 @@ import (
 
 // Config represents the main configuration structure
 type Config struct {
-	Version        string         `yaml:"version" mapstructure:"version"`
+	Version        string           `yaml:"version" mapstructure:"version"`
 	Agents         map[string]Agent `yaml:"agents" mapstructure:"agents"`
-	CloudProviders CloudProviders `yaml:"cloud_providers" mapstructure:"cloud_providers"`
+	CloudProviders CloudProviders   `yaml:"cloud_providers" mapstructure:"cloud_providers"`
 	Monitoring     MonitoringConfig `yaml:"monitoring" mapstructure:"monitoring"`
-	Security       SecurityConfig `yaml:"security" mapstructure:"security"`
-	Plugins        PluginConfig   `yaml:"plugins" mapstructure:"plugins"`
-	Logging        LoggingConfig  `yaml:"logging" mapstructure:"logging"`
+	Security       SecurityConfig   `yaml:"security" mapstructure:"security"`
+	Plugins        PluginConfig     `yaml:"plugins" mapstructure:"plugins"`
+	Logging        LoggingConfig    `yaml:"logging" mapstructure:"logging"`
 }
 
 // Agent represents an AI agent configuration
@@ -56,10 +56,10 @@ type AzureConfig struct {
 
 // GCPConfig represents GCP-specific configuration
 type GCPConfig struct {
-	ProjectID           string `yaml:"project_id"`
-	Region              string `yaml:"region"`
-	ServiceAccountPath  string `yaml:"service_account_path,omitempty"`
-	ApplicationDefault  bool   `yaml:"application_default"`
+	ProjectID          string `yaml:"project_id"`
+	Region             string `yaml:"region"`
+	ServiceAccountPath string `yaml:"service_account_path,omitempty"`
+	ApplicationDefault bool   `yaml:"application_default"`
 }
 
 // MonitoringConfig contains monitoring tool configurations
@@ -99,10 +99,10 @@ type NewRelicConfig struct {
 
 // SecurityConfig contains security-related settings
 type SecurityConfig struct {
-	Encryption      bool   `yaml:"encryption" mapstructure:"encryption"`
-	AuditLogging    bool   `yaml:"audit_logging" mapstructure:"audit_logging"`
-	KeyManagement   string `yaml:"key_management" mapstructure:"key_management"`
-	ComplianceMode  string `yaml:"compliance_mode" mapstructure:"compliance_mode"`
+	Encryption     bool   `yaml:"encryption" mapstructure:"encryption"`
+	AuditLogging   bool   `yaml:"audit_logging" mapstructure:"audit_logging"`
+	KeyManagement  string `yaml:"key_management" mapstructure:"key_management"`
+	ComplianceMode string `yaml:"compliance_mode" mapstructure:"compliance_mode"`
 }
 
 // PluginConfig contains plugin-related settings
@@ -114,13 +114,13 @@ type PluginConfig struct {
 
 // LoggingConfig contains logging configuration
 type LoggingConfig struct {
-	Level     string `yaml:"level" mapstructure:"level"`
-	Format    string `yaml:"format" mapstructure:"format"`
-	Output    string `yaml:"output" mapstructure:"output"`
-	Rotate    bool   `yaml:"rotate" mapstructure:"rotate"`
-	MaxSize   int    `yaml:"max_size" mapstructure:"max_size"`
-	MaxAge    int    `yaml:"max_age" mapstructure:"max_age"`
-	MaxFiles  int    `yaml:"max_files" mapstructure:"max_files"`
+	Level    string `yaml:"level" mapstructure:"level"`
+	Format   string `yaml:"format" mapstructure:"format"`
+	Output   string `yaml:"output" mapstructure:"output"`
+	Rotate   bool   `yaml:"rotate" mapstructure:"rotate"`
+	MaxSize  int    `yaml:"max_size" mapstructure:"max_size"`
+	MaxAge   int    `yaml:"max_age" mapstructure:"max_age"`
+	MaxFiles int    `yaml:"max_files" mapstructure:"max_files"`
 }
 
 // Initialize initializes the configuration system
@@ -134,7 +134,7 @@ func Initialize(configFile string, verbose bool) error {
 		if err != nil {
 			return fmt.Errorf("failed to get config directory: %w", err)
 		}
-		
+
 		viper.AddConfigPath(configDir)
 		viper.AddConfigPath(".")
 		viper.SetConfigName("config")
@@ -151,7 +151,7 @@ func Initialize(configFile string, verbose bool) error {
 	// Read config file
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			// If a specific config file was provided and it doesn't exist, 
+			// If a specific config file was provided and it doesn't exist,
 			// treat it as a missing config file error instead of a read error
 			if configFile != "" {
 				if os.IsNotExist(err) {
@@ -221,7 +221,7 @@ func Display(cfg *Config, format string) error {
 // GetConfigDir returns the configuration directory path
 func GetConfigDir() (string, error) {
 	var configDir string
-	
+
 	switch runtime.GOOS {
 	case "windows":
 		configDir = os.Getenv("APPDATA")

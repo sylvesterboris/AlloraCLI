@@ -12,7 +12,7 @@ func TestAgentManager(t *testing.T) {
 
 	// Test adding an agent
 	agent := &MockAgent{
-		name:     "test-agent",
+		name:      "test-agent",
 		agentType: "general",
 	}
 
@@ -51,13 +51,13 @@ func TestAgentManager(t *testing.T) {
 
 func TestAgentQuery(t *testing.T) {
 	agent := &MockAgent{
-		name:     "test-agent",
+		name:      "test-agent",
 		agentType: "general",
 	}
 
 	ctx := context.Background()
 	query := &Query{
-		Text:    "What is the status of my servers?",
+		Text: "What is the status of my servers?",
 		Context: map[string]interface{}{
 			"user_id": "test-user",
 		},
@@ -79,7 +79,7 @@ func TestAgentQuery(t *testing.T) {
 
 func TestAgentCapabilities(t *testing.T) {
 	agent := &MockAgent{
-		name:     "monitoring-agent",
+		name:      "monitoring-agent",
 		agentType: "monitoring",
 	}
 
@@ -104,7 +104,7 @@ func TestAgentCapabilities(t *testing.T) {
 
 func TestAgentStatus(t *testing.T) {
 	agent := &MockAgent{
-		name:     "test-agent",
+		name:      "test-agent",
 		agentType: "general",
 	}
 
@@ -120,7 +120,7 @@ func TestAgentStatus(t *testing.T) {
 
 func TestAgentConfiguration(t *testing.T) {
 	agent := &MockAgent{
-		name:     "test-agent",
+		name:      "test-agent",
 		agentType: "general",
 	}
 
@@ -150,13 +150,13 @@ func TestAgentConfiguration(t *testing.T) {
 
 func BenchmarkAgentQuery(b *testing.B) {
 	agent := &MockAgent{
-		name:     "benchmark-agent",
+		name:      "benchmark-agent",
 		agentType: "general",
 	}
 
 	ctx := context.Background()
 	query := &Query{
-		Text:    "Test query for benchmarking",
+		Text: "Test query for benchmarking",
 		Context: map[string]interface{}{
 			"benchmark": true,
 		},

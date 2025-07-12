@@ -25,7 +25,7 @@ func newInitCmd() *cobra.Command {
 
 func runInit(cmd *cobra.Command, args []string) error {
 	utils.PrintBanner()
-	
+
 	fmt.Println("🚀 Welcome to AlloraCLI!")
 	fmt.Println("Let's set up your AI-powered IT infrastructure management CLI.")
 
@@ -41,7 +41,7 @@ func runInit(cmd *cobra.Command, args []string) error {
 			Label:     "AlloraCLI is already initialized. Do you want to reinitialize",
 			IsConfirm: true,
 		}
-		
+
 		if _, err := prompt.Run(); err != nil {
 			fmt.Println("Initialization cancelled.")
 			return nil
@@ -145,10 +145,10 @@ func setupDefaultAgent(cfg *config.Config) error {
 	}
 
 	cfg.Agents[name] = config.Agent{
-		Type:      agentType,
-		APIKey:    apiKey,
-		Model:     model,
-		MaxTokens: 2048,
+		Type:        agentType,
+		APIKey:      apiKey,
+		Model:       model,
+		MaxTokens:   2048,
 		Temperature: 0.7,
 	}
 
@@ -162,7 +162,7 @@ func setupCloudProviders(cfg *config.Config) error {
 		Label:     "Do you want to configure cloud providers now",
 		IsConfirm: true,
 	}
-	
+
 	if _, err := prompt.Run(); err != nil {
 		return nil // Skip cloud provider setup
 	}
@@ -235,7 +235,7 @@ func setupMonitoring(cfg *config.Config) error {
 		Label:     "Do you want to configure monitoring tools now",
 		IsConfirm: true,
 	}
-	
+
 	if _, err := prompt.Run(); err != nil {
 		return nil // Skip monitoring setup
 	}

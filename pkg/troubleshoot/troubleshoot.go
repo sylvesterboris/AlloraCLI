@@ -25,14 +25,14 @@ type Incident struct {
 
 // IncidentAnalysis represents the analysis of an incident
 type IncidentAnalysis struct {
-	Summary     string              `json:"summary" yaml:"summary"`
-	RootCause   string              `json:"root_cause" yaml:"root_cause"`
-	Impact      string              `json:"impact" yaml:"impact"`
-	Urgency     string              `json:"urgency" yaml:"urgency"`
-	Suggestions []*Suggestion       `json:"suggestions" yaml:"suggestions"`
+	Summary     string               `json:"summary" yaml:"summary"`
+	RootCause   string               `json:"root_cause" yaml:"root_cause"`
+	Impact      string               `json:"impact" yaml:"impact"`
+	Urgency     string               `json:"urgency" yaml:"urgency"`
+	Suggestions []*Suggestion        `json:"suggestions" yaml:"suggestions"`
 	Actions     []*RecommendedAction `json:"actions" yaml:"actions"`
-	Metadata    map[string]string   `json:"metadata" yaml:"metadata"`
-	Timestamp   time.Time           `json:"timestamp" yaml:"timestamp"`
+	Metadata    map[string]string    `json:"metadata" yaml:"metadata"`
+	Timestamp   time.Time            `json:"timestamp" yaml:"timestamp"`
 }
 
 // SuggestionRequest represents a request for troubleshooting suggestions
@@ -44,11 +44,11 @@ type SuggestionRequest struct {
 
 // SuggestionResponse represents the response with suggestions
 type SuggestionResponse struct {
-	Suggestions []*Suggestion       `json:"suggestions" yaml:"suggestions"`
-	Priority    string              `json:"priority" yaml:"priority"`
-	Confidence  float64             `json:"confidence" yaml:"confidence"`
-	Metadata    map[string]string   `json:"metadata" yaml:"metadata"`
-	Timestamp   time.Time           `json:"timestamp" yaml:"timestamp"`
+	Suggestions []*Suggestion     `json:"suggestions" yaml:"suggestions"`
+	Priority    string            `json:"priority" yaml:"priority"`
+	Confidence  float64           `json:"confidence" yaml:"confidence"`
+	Metadata    map[string]string `json:"metadata" yaml:"metadata"`
+	Timestamp   time.Time         `json:"timestamp" yaml:"timestamp"`
 }
 
 // Suggestion represents a troubleshooting suggestion
@@ -72,11 +72,11 @@ type AutofixOptions struct {
 
 // AutofixResult represents the result of an auto-fix operation
 type AutofixResult struct {
-	Issue       string    `json:"issue" yaml:"issue"`
-	Action      string    `json:"action" yaml:"action"`
-	Status      string    `json:"status" yaml:"status"`
-	Error       string    `json:"error,omitempty" yaml:"error,omitempty"`
-	Timestamp   time.Time `json:"timestamp" yaml:"timestamp"`
+	Issue     string    `json:"issue" yaml:"issue"`
+	Action    string    `json:"action" yaml:"action"`
+	Status    string    `json:"status" yaml:"status"`
+	Error     string    `json:"error,omitempty" yaml:"error,omitempty"`
+	Timestamp time.Time `json:"timestamp" yaml:"timestamp"`
 }
 
 // DiagnosticOptions represents options for running diagnostics
@@ -87,24 +87,24 @@ type DiagnosticOptions struct {
 
 // DiagnosticReport represents a diagnostic report
 type DiagnosticReport struct {
-	Target      string              `json:"target" yaml:"target"`
-	Status      string              `json:"status" yaml:"status"`
-	Summary     string              `json:"summary" yaml:"summary"`
-	Checks      []*DiagnosticCheck  `json:"checks" yaml:"checks"`
-	Issues      []*DiagnosticIssue  `json:"issues" yaml:"issues"`
-	Metadata    map[string]string   `json:"metadata" yaml:"metadata"`
-	Duration    time.Duration       `json:"duration" yaml:"duration"`
-	Timestamp   time.Time           `json:"timestamp" yaml:"timestamp"`
+	Target    string             `json:"target" yaml:"target"`
+	Status    string             `json:"status" yaml:"status"`
+	Summary   string             `json:"summary" yaml:"summary"`
+	Checks    []*DiagnosticCheck `json:"checks" yaml:"checks"`
+	Issues    []*DiagnosticIssue `json:"issues" yaml:"issues"`
+	Metadata  map[string]string  `json:"metadata" yaml:"metadata"`
+	Duration  time.Duration      `json:"duration" yaml:"duration"`
+	Timestamp time.Time          `json:"timestamp" yaml:"timestamp"`
 }
 
 // DiagnosticCheck represents a single diagnostic check
 type DiagnosticCheck struct {
-	Name        string            `json:"name" yaml:"name"`
-	Status      string            `json:"status" yaml:"status"`
-	Result      string            `json:"result" yaml:"result"`
-	Details     string            `json:"details" yaml:"details"`
-	Metadata    map[string]string `json:"metadata" yaml:"metadata"`
-	Duration    time.Duration     `json:"duration" yaml:"duration"`
+	Name     string            `json:"name" yaml:"name"`
+	Status   string            `json:"status" yaml:"status"`
+	Result   string            `json:"result" yaml:"result"`
+	Details  string            `json:"details" yaml:"details"`
+	Metadata map[string]string `json:"metadata" yaml:"metadata"`
+	Duration time.Duration     `json:"duration" yaml:"duration"`
 }
 
 // DiagnosticIssue represents an issue found during diagnostics
@@ -129,14 +129,14 @@ type RecommendedAction struct {
 
 // TroubleshootingSession represents a troubleshooting session
 type TroubleshootingSession struct {
-	ID          string            `json:"id" yaml:"id"`
-	Type        string            `json:"type" yaml:"type"`
-	Summary     string            `json:"summary" yaml:"summary"`
-	Status      string            `json:"status" yaml:"status"`
-	StartTime   time.Time         `json:"start_time" yaml:"start_time"`
-	EndTime     time.Time         `json:"end_time" yaml:"end_time"`
-	Duration    time.Duration     `json:"duration" yaml:"duration"`
-	Metadata    map[string]string `json:"metadata" yaml:"metadata"`
+	ID        string            `json:"id" yaml:"id"`
+	Type      string            `json:"type" yaml:"type"`
+	Summary   string            `json:"summary" yaml:"summary"`
+	Status    string            `json:"status" yaml:"status"`
+	StartTime time.Time         `json:"start_time" yaml:"start_time"`
+	EndTime   time.Time         `json:"end_time" yaml:"end_time"`
+	Duration  time.Duration     `json:"duration" yaml:"duration"`
+	Metadata  map[string]string `json:"metadata" yaml:"metadata"`
 }
 
 // TroubleshooterImpl implements the Troubleshooter interface
@@ -232,7 +232,7 @@ func (t *TroubleshooterImpl) GetSuggestions(request SuggestionRequest) (*Suggest
 				Metadata:    map[string]string{"category": "monitoring"},
 			},
 		},
-		Priority:  "high",
+		Priority:   "high",
 		Confidence: 0.85,
 		Metadata: map[string]string{
 			"service": request.Service,
@@ -280,7 +280,7 @@ func (t *TroubleshooterImpl) AutoFix(options AutofixOptions) ([]*AutofixResult, 
 // RunDiagnostics runs comprehensive system diagnostics
 func (t *TroubleshooterImpl) RunDiagnostics(options DiagnosticOptions) (*DiagnosticReport, error) {
 	startTime := time.Now()
-	
+
 	// Mock implementation
 	report := &DiagnosticReport{
 		Target:  options.Target,
@@ -324,7 +324,7 @@ func (t *TroubleshooterImpl) RunDiagnostics(options DiagnosticOptions) (*Diagnos
 		},
 		Metadata: map[string]string{
 			"diagnostics_version": "1.0.0",
-			"target":             options.Target,
+			"target":              options.Target,
 		},
 		Duration:  time.Since(startTime),
 		Timestamp: time.Now(),

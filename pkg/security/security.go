@@ -31,13 +31,13 @@ type SecurityService interface {
 
 // ScanResult represents the result of a security scan
 type ScanResult struct {
-	ID           string         `json:"id"`
-	Target       string         `json:"target"`
-	Timestamp    time.Time      `json:"timestamp"`
-	Status       string         `json:"status"`
-	Summary      ScanSummary    `json:"summary"`
+	ID              string          `json:"id"`
+	Target          string          `json:"target"`
+	Timestamp       time.Time       `json:"timestamp"`
+	Status          string          `json:"status"`
+	Summary         ScanSummary     `json:"summary"`
 	Vulnerabilities []Vulnerability `json:"vulnerabilities"`
-	Recommendations []string       `json:"recommendations"`
+	Recommendations []string        `json:"recommendations"`
 }
 
 // ScanSummary provides a summary of scan results
@@ -88,38 +88,38 @@ type ComplianceControl struct {
 
 // ComplianceSummary provides a summary of compliance results
 type ComplianceSummary struct {
-	TotalControls int `json:"total_controls"`
-	PassedControls int `json:"passed_controls"`
-	FailedControls int `json:"failed_controls"`
+	TotalControls   int `json:"total_controls"`
+	PassedControls  int `json:"passed_controls"`
+	FailedControls  int `json:"failed_controls"`
 	WarningControls int `json:"warning_controls"`
 }
 
 // AuditResult represents permission audit results
 type AuditResult struct {
-	ID          string         `json:"id"`
-	Resource    string         `json:"resource"`
-	Timestamp   time.Time      `json:"timestamp"`
-	Permissions []Permission   `json:"permissions"`
-	Issues      []AuditIssue   `json:"issues"`
-	Summary     AuditSummary   `json:"summary"`
+	ID          string       `json:"id"`
+	Resource    string       `json:"resource"`
+	Timestamp   time.Time    `json:"timestamp"`
+	Permissions []Permission `json:"permissions"`
+	Issues      []AuditIssue `json:"issues"`
+	Summary     AuditSummary `json:"summary"`
 }
 
 // Permission represents a permission entry
 type Permission struct {
-	Principal string   `json:"principal"`
-	Actions   []string `json:"actions"`
-	Resource  string   `json:"resource"`
-	Effect    string   `json:"effect"`
+	Principal  string            `json:"principal"`
+	Actions    []string          `json:"actions"`
+	Resource   string            `json:"resource"`
+	Effect     string            `json:"effect"`
 	Conditions map[string]string `json:"conditions"`
 }
 
 // AuditIssue represents an audit issue
 type AuditIssue struct {
-	Type        string `json:"type"`
-	Severity    string `json:"severity"`
-	Description string `json:"description"`
-	Resource    string `json:"resource"`
-	Principal   string `json:"principal"`
+	Type           string `json:"type"`
+	Severity       string `json:"severity"`
+	Description    string `json:"description"`
+	Resource       string `json:"resource"`
+	Principal      string `json:"principal"`
 	Recommendation string `json:"recommendation"`
 }
 
@@ -146,32 +146,32 @@ type SecurityEvent struct {
 
 // SecurityReport represents a comprehensive security report
 type SecurityReport struct {
-	ID              string               `json:"id"`
-	Timestamp       time.Time            `json:"timestamp"`
-	Type            string               `json:"type"`
-	ExecutiveSummary ExecutiveSummary    `json:"executive_summary"`
-	ScanResults     []ScanResult         `json:"scan_results"`
+	ID                string             `json:"id"`
+	Timestamp         time.Time          `json:"timestamp"`
+	Type              string             `json:"type"`
+	ExecutiveSummary  ExecutiveSummary   `json:"executive_summary"`
+	ScanResults       []ScanResult       `json:"scan_results"`
 	ComplianceResults []ComplianceResult `json:"compliance_results"`
-	AuditResults    []AuditResult        `json:"audit_results"`
-	Recommendations []string             `json:"recommendations"`
+	AuditResults      []AuditResult      `json:"audit_results"`
+	Recommendations   []string           `json:"recommendations"`
 }
 
 // ExecutiveSummary provides a high-level summary
 type ExecutiveSummary struct {
-	OverallRiskScore     float64 `json:"overall_risk_score"`
-	CriticalFindings     int     `json:"critical_findings"`
-	HighPriorityFindings int     `json:"high_priority_findings"`
-	ComplianceScore      float64 `json:"compliance_score"`
+	OverallRiskScore     float64  `json:"overall_risk_score"`
+	CriticalFindings     int      `json:"critical_findings"`
+	HighPriorityFindings int      `json:"high_priority_findings"`
+	ComplianceScore      float64  `json:"compliance_score"`
 	KeyRecommendations   []string `json:"key_recommendations"`
 }
 
 // ReportOptions defines options for generating security reports
 type ReportOptions struct {
-	Type        string   `json:"type"`
-	Targets     []string `json:"targets"`
-	Standards   []string `json:"standards"`
-	IncludeDetails bool   `json:"include_details"`
-	Format      string   `json:"format"`
+	Type           string   `json:"type"`
+	Targets        []string `json:"targets"`
+	Standards      []string `json:"standards"`
+	IncludeDetails bool     `json:"include_details"`
+	Format         string   `json:"format"`
 }
 
 // Policy represents a security policy
@@ -186,27 +186,27 @@ type Policy struct {
 
 // PolicyRule represents a rule within a policy
 type PolicyRule struct {
-	ID          string            `json:"id"`
-	Condition   string            `json:"condition"`
-	Action      string            `json:"action"`
-	Parameters  map[string]string `json:"parameters"`
-	Enabled     bool              `json:"enabled"`
+	ID         string            `json:"id"`
+	Condition  string            `json:"condition"`
+	Action     string            `json:"action"`
+	Parameters map[string]string `json:"parameters"`
+	Enabled    bool              `json:"enabled"`
 }
 
 // ValidationResult represents policy validation results
 type ValidationResult struct {
-	ID          string            `json:"id"`
-	Timestamp   time.Time         `json:"timestamp"`
-	Status      string            `json:"status"`
-	Policies    []PolicyValidation `json:"policies"`
-	Summary     ValidationSummary  `json:"summary"`
+	ID        string             `json:"id"`
+	Timestamp time.Time          `json:"timestamp"`
+	Status    string             `json:"status"`
+	Policies  []PolicyValidation `json:"policies"`
+	Summary   ValidationSummary  `json:"summary"`
 }
 
 // PolicyValidation represents validation results for a single policy
 type PolicyValidation struct {
-	PolicyID string             `json:"policy_id"`
-	Status   string             `json:"status"`
-	Issues   []ValidationIssue  `json:"issues"`
+	PolicyID string              `json:"policy_id"`
+	Status   string              `json:"status"`
+	Issues   []ValidationIssue   `json:"issues"`
 	Warnings []ValidationWarning `json:"warnings"`
 }
 
@@ -229,11 +229,11 @@ type ValidationWarning struct {
 
 // ValidationSummary provides a summary of validation results
 type ValidationSummary struct {
-	TotalPolicies int `json:"total_policies"`
-	ValidPolicies int `json:"valid_policies"`
+	TotalPolicies   int `json:"total_policies"`
+	ValidPolicies   int `json:"valid_policies"`
 	InvalidPolicies int `json:"invalid_policies"`
-	TotalIssues   int `json:"total_issues"`
-	TotalWarnings int `json:"total_warnings"`
+	TotalIssues     int `json:"total_issues"`
+	TotalWarnings   int `json:"total_warnings"`
 }
 
 // DefaultSecurityService provides a default implementation
@@ -330,11 +330,11 @@ func (s *DefaultSecurityService) AuditPermissions(ctx context.Context, resource 
 		},
 		Issues: []AuditIssue{
 			{
-				Type:        "excessive_permissions",
-				Severity:    "medium",
-				Description: "User has more permissions than required",
-				Resource:    resource,
-				Principal:   "user:admin",
+				Type:           "excessive_permissions",
+				Severity:       "medium",
+				Description:    "User has more permissions than required",
+				Resource:       resource,
+				Principal:      "user:admin",
 				Recommendation: "Review and reduce permissions to minimum required",
 			},
 		},
@@ -351,13 +351,13 @@ func (s *DefaultSecurityService) AuditPermissions(ctx context.Context, resource 
 // MonitorSecurityEvents monitors security events
 func (s *DefaultSecurityService) MonitorSecurityEvents(ctx context.Context) (<-chan SecurityEvent, error) {
 	events := make(chan SecurityEvent, 100)
-	
+
 	// Mock implementation - would integrate with SIEM systems
 	go func() {
 		defer close(events)
 		ticker := time.NewTicker(5 * time.Second)
 		defer ticker.Stop()
-		
+
 		for {
 			select {
 			case <-ctx.Done():
@@ -384,7 +384,7 @@ func (s *DefaultSecurityService) MonitorSecurityEvents(ctx context.Context) (<-c
 			}
 		}
 	}()
-	
+
 	return events, nil
 }
 
@@ -444,12 +444,12 @@ func (s *DefaultSecurityService) ValidateSecurityPolicies(ctx context.Context, p
 
 // Enhanced Security Manager with Encryption and Audit Logging
 type SecurityManager struct {
-	config      *SecurityConfig
-	auditor     *AuditLogger
-	encryptor   *Encryptor
-	keyManager  *KeyManager
-	logger      *logrus.Logger
-	mu          sync.RWMutex
+	config     *SecurityConfig
+	auditor    *AuditLogger
+	encryptor  *Encryptor
+	keyManager *KeyManager
+	logger     *logrus.Logger
+	mu         sync.RWMutex
 }
 
 // SecurityConfig represents security configuration
@@ -465,27 +465,27 @@ type SecurityConfig struct {
 
 // AuditEvent represents an audit event
 type AuditEvent struct {
-	ID          string                 `json:"id"`
-	Timestamp   time.Time              `json:"timestamp"`
-	EventType   string                 `json:"event_type"`
-	User        string                 `json:"user"`
-	Resource    string                 `json:"resource"`
-	Action      string                 `json:"action"`
-	Result      string                 `json:"result"`
-	Details     map[string]interface{} `json:"details"`
-	IPAddress   string                 `json:"ip_address"`
-	UserAgent   string                 `json:"user_agent"`
-	SessionID   string                 `json:"session_id"`
-	Severity    string                 `json:"severity"`
-	Compliance  []string               `json:"compliance"`
+	ID         string                 `json:"id"`
+	Timestamp  time.Time              `json:"timestamp"`
+	EventType  string                 `json:"event_type"`
+	User       string                 `json:"user"`
+	Resource   string                 `json:"resource"`
+	Action     string                 `json:"action"`
+	Result     string                 `json:"result"`
+	Details    map[string]interface{} `json:"details"`
+	IPAddress  string                 `json:"ip_address"`
+	UserAgent  string                 `json:"user_agent"`
+	SessionID  string                 `json:"session_id"`
+	Severity   string                 `json:"severity"`
+	Compliance []string               `json:"compliance"`
 }
 
 // AuditLogger handles audit logging
 type AuditLogger struct {
-	config     *SecurityConfig
-	logger     *logrus.Logger
-	file       *os.File
-	mu         sync.Mutex
+	config *SecurityConfig
+	logger *logrus.Logger
+	file   *os.File
+	mu     sync.Mutex
 }
 
 // Encryptor handles encryption operations
@@ -496,11 +496,11 @@ type Encryptor struct {
 
 // KeyManager manages encryption keys
 type KeyManager struct {
-	config     *SecurityConfig
-	keys       map[string][]byte
-	keyStore   string
-	logger     *logrus.Logger
-	mu         sync.RWMutex
+	config   *SecurityConfig
+	keys     map[string][]byte
+	keyStore string
+	logger   *logrus.Logger
+	mu       sync.RWMutex
 }
 
 // NewSecurityManager creates a new security manager

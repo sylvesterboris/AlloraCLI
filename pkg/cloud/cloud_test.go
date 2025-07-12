@@ -12,9 +12,9 @@ func TestCloudManager(t *testing.T) {
 
 	// Test adding a provider
 	provider := &MockCloudProvider{
-		name:     "aws",
-		region:   "us-west-2",
-		status:   "connected",
+		name:   "aws",
+		region: "us-west-2",
+		status: "connected",
 	}
 
 	err := manager.AddProvider(provider)
@@ -41,9 +41,9 @@ func TestCloudManager(t *testing.T) {
 
 func TestResourceOperations(t *testing.T) {
 	provider := &MockCloudProvider{
-		name:     "aws",
-		region:   "us-west-2",
-		status:   "connected",
+		name:   "aws",
+		region: "us-west-2",
+		status: "connected",
 	}
 
 	ctx := context.Background()
@@ -115,9 +115,9 @@ func TestResourceOperations(t *testing.T) {
 
 func TestCloudMetrics(t *testing.T) {
 	provider := &MockCloudProvider{
-		name:     "aws",
-		region:   "us-west-2",
-		status:   "connected",
+		name:   "aws",
+		region: "us-west-2",
+		status: "connected",
 	}
 
 	ctx := context.Background()
@@ -159,9 +159,9 @@ func TestCloudMetrics(t *testing.T) {
 
 func TestCloudProviderConfiguration(t *testing.T) {
 	provider := &MockCloudProvider{
-		name:     "aws",
-		region:   "us-west-2",
-		status:   "connected",
+		name:   "aws",
+		region: "us-west-2",
+		status: "connected",
 	}
 
 	// Test getting initial configuration
@@ -192,26 +192,26 @@ func TestCloudProviderConfiguration(t *testing.T) {
 
 func TestCloudProviderStatus(t *testing.T) {
 	provider := &MockCloudProvider{
-		name:     "aws",
-		region:   "us-west-2",
-		status:   "connected",
+		name:   "aws",
+		region: "us-west-2",
+		status: "connected",
 	}
 
 	status := provider.GetStatus()
-if status.Status != "connected" {
-	t.Errorf("Expected status 'connected', got '%s'", status.Status)
+	if status.Status != "connected" {
+		t.Errorf("Expected status 'connected', got '%s'", status.Status)
 	}
 
-if status.LastCheck.IsZero() {
-	t.Error("Expected non-zero last check time")
+	if status.LastCheck.IsZero() {
+		t.Error("Expected non-zero last check time")
 	}
 }
 
 func BenchmarkListResources(b *testing.B) {
 	provider := &MockCloudProvider{
-		name:     "aws",
-		region:   "us-west-2",
-		status:   "connected",
+		name:   "aws",
+		region: "us-west-2",
+		status: "connected",
 	}
 
 	ctx := context.Background()
@@ -266,7 +266,7 @@ func (m *MockCloudProvider) ListResources(ctx context.Context, resourceType stri
 			Name:   "test-instance",
 			Type:   "ec2",
 			Region: m.region,
-	Status:  "running",
+			Status: "running",
 			Config: map[string]interface{}{
 				"instance_type": "t3.micro",
 				"image_id":      "ami-12345678",
@@ -278,7 +278,7 @@ func (m *MockCloudProvider) ListResources(ctx context.Context, resourceType stri
 			Name:   "test-volume",
 			Type:   "ebs",
 			Region: m.region,
-	Status:  "available",
+			Status: "available",
 			Config: map[string]interface{}{
 				"size": 20,
 				"type": "gp3",
@@ -319,7 +319,7 @@ func (m *MockCloudProvider) CreateResource(ctx context.Context, req *CreateResou
 		Name:      req.Name,
 		Type:      req.Type,
 		Region:    req.Region,
-	Status:     "pending",
+		Status:    "pending",
 		Config:    req.Config,
 		CreatedAt: time.Now(),
 	}
@@ -369,7 +369,7 @@ func generateRandomID() string {
 
 func (m *MockCloudProvider) GetMetrics(ctx context.Context, req *MetricsRequest) (*MetricsResponse, error) {
 	dataPoints := make([]*MetricDataPoint, 0)
-	
+
 	// Generate mock data points
 	for i := 0; i < 12; i++ {
 		dataPoints = append(dataPoints, &MetricDataPoint{
@@ -421,7 +421,7 @@ func (m *MockCloudProvider) UpdateConfiguration(config *ProviderConfig) error {
 func (m *MockCloudProvider) GetStatus() *ProviderStatus {
 	if m.providerStatus == nil {
 		m.providerStatus = &ProviderStatus{
-		Status:     m.status,
+			Status:    m.status,
 			LastCheck: time.Now(),
 			Health:    "healthy",
 		}

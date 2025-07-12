@@ -166,7 +166,7 @@ func runPluginInstall(name, source, version string) error {
 	}
 
 	ctx := context.Background()
-	
+
 	if source == "" {
 		source = fmt.Sprintf("https://registry.alloraai.com/plugins/%s", name)
 	}

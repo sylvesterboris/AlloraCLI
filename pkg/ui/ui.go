@@ -125,7 +125,7 @@ func (ui *UIManager) InteractivePrompt(label string, defaultValue string) (strin
 		Label:   label,
 		Default: defaultValue,
 	}
-	
+
 	return prompt.Run()
 }
 
@@ -135,7 +135,7 @@ func (ui *UIManager) InteractiveSelect(label string, items []string) (string, er
 		Label: label,
 		Items: items,
 	}
-	
+
 	_, result, err := prompt.Run()
 	return result, err
 }
@@ -145,19 +145,19 @@ func (ui *UIManager) InteractiveConfirm(label string, defaultValue bool) (bool, 
 	prompt := promptui.Prompt{
 		Label:     label,
 		IsConfirm: true,
-		Default:   func() string {
+		Default: func() string {
 			if defaultValue {
 				return "y"
 			}
 			return "n"
 		}(),
 	}
-	
+
 	result, err := prompt.Run()
 	if err != nil {
 		return false, err
 	}
-	
+
 	return strings.ToLower(result) == "y" || strings.ToLower(result) == "yes", nil
 }
 
@@ -167,14 +167,14 @@ func (ui *UIManager) InteractivePassword(label string) (string, error) {
 		Label: label,
 		Mask:  '*',
 	}
-	
+
 	return prompt.Run()
 }
 
 // InteractiveMultiSelect creates an interactive multi-selection menu
 func (ui *UIManager) InteractiveMultiSelect(label string, items []string) ([]string, error) {
 	var selected []string
-	
+
 	for {
 		remaining := []string{}
 		for _, item := range items {
@@ -189,30 +189,30 @@ func (ui *UIManager) InteractiveMultiSelect(label string, items []string) ([]str
 				remaining = append(remaining, item)
 			}
 		}
-		
+
 		if len(remaining) == 0 {
 			break
 		}
-		
+
 		options := append(remaining, "Done")
-		
+
 		prompt := promptui.Select{
 			Label: fmt.Sprintf("%s (selected: %d)", label, len(selected)),
 			Items: options,
 		}
-		
+
 		_, result, err := prompt.Run()
 		if err != nil {
 			return nil, err
 		}
-		
+
 		if result == "Done" {
 			break
 		}
-		
+
 		selected = append(selected, result)
 	}
-	
+
 	return selected, nil
 }
 
@@ -222,13 +222,13 @@ func (ui *UIManager) DisplayTable(headers []string, rows [][]string) {
 		ui.PrintInfo("No data to display")
 		return
 	}
-	
+
 	// Calculate column widths
 	colWidths := make([]int, len(headers))
 	for i, header := range headers {
 		colWidths[i] = len(header)
 	}
-	
+
 	for _, row := range rows {
 		for i, cell := range row {
 			if i < len(colWidths) && len(cell) > colWidths[i] {
@@ -236,16 +236,16 @@ func (ui *UIManager) DisplayTable(headers []string, rows [][]string) {
 			}
 		}
 	}
-	
+
 	// Print header
 	ui.printTableRow(headers, colWidths, true)
 	ui.printTableSeparator(colWidths)
-	
+
 	// Print rows
 	for _, row := range rows {
 		ui.printTableRow(row, colWidths, false)
 	}
-	
+
 	fmt.Println()
 }
 
@@ -292,7 +292,7 @@ func (ui *UIManager) DisplayList(items []string, title string) {
 	if title != "" {
 		ui.PrintHeader(title)
 	}
-	
+
 	for i, item := range items {
 		if ui.colorEnabled {
 			InfoColor.Printf("  %d. %s\n", i+1, item)
@@ -306,32 +306,32 @@ func (ui *UIManager) DisplayList(items []string, title string) {
 // ShowSpinner shows a spinner with a message
 func (ui *UIManager) ShowSpinner(message string, duration time.Duration) {
 	spinner := ui.CreateSpinnerProgressBar(message)
-	
+
 	start := time.Now()
 	for time.Since(start) < duration {
 		spinner.Add(1)
 		time.Sleep(100 * time.Millisecond)
 	}
-	
+
 	spinner.Finish()
 }
 
 // InteractiveWizard creates an interactive wizard
 func (ui *UIManager) InteractiveWizard(title string, steps []WizardStep) (map[string]interface{}, error) {
 	ui.PrintHeader(title)
-	
+
 	results := make(map[string]interface{})
-	
+
 	for i, step := range steps {
 		ui.PrintInfo("Step %d/%d: %s", i+1, len(steps), step.Title)
-		
+
 		if step.Description != "" {
 			fmt.Printf("  %s\n\n", step.Description)
 		}
-		
+
 		var result interface{}
 		var err error
-		
+
 		switch step.Type {
 		case WizardStepTypeInput:
 			result, err = ui.InteractivePrompt(step.Prompt, step.Default)
@@ -344,15 +344,15 @@ func (ui *UIManager) InteractiveWizard(title string, steps []WizardStep) (map[st
 		case WizardStepTypeMultiSelect:
 			result, err = ui.InteractiveMultiSelect(step.Prompt, step.Options)
 		}
-		
+
 		if err != nil {
 			return nil, fmt.Errorf("step %d failed: %w", i+1, err)
 		}
-		
+
 		results[step.Key] = result
 		fmt.Println()
 	}
-	
+
 	return results, nil
 }
 
@@ -391,7 +391,7 @@ func (ui *UIManager) PrintBanner() {
                                            
  AI-Powered IT Infrastructure Management
 `
-	
+
 	if ui.colorEnabled {
 		HeaderColor.Println(banner)
 	} else {
@@ -431,7 +431,7 @@ func (ui *UIManager) PressEnterToContinue(message string) {
 	if message == "" {
 		message = "Press Enter to continue..."
 	}
-	
+
 	fmt.Print(message)
 	fmt.Scanln()
 }
@@ -439,22 +439,22 @@ func (ui *UIManager) PressEnterToContinue(message string) {
 // DisplayMenu displays a menu and returns the selected option
 func (ui *UIManager) DisplayMenu(title string, options []string) (int, error) {
 	ui.PrintHeader(title)
-	
+
 	for i, option := range options {
 		fmt.Printf("  %d. %s\n", i+1, option)
 	}
-	
+
 	var choice int
 	fmt.Print("\nEnter your choice: ")
 	_, err := fmt.Scanln(&choice)
 	if err != nil {
 		return 0, err
 	}
-	
+
 	if choice < 1 || choice > len(options) {
 		return 0, fmt.Errorf("invalid choice: %d", choice)
 	}
-	
+
 	return choice - 1, nil
 }
 
@@ -465,6 +465,6 @@ func (ui *UIManager) IsTerminalInteractive() bool {
 	if err != nil {
 		return false
 	}
-	
+
 	return (stat.Mode() & os.ModeCharDevice) != 0
 }

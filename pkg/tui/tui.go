@@ -21,7 +21,7 @@ type TUIManager struct {
 func NewTUIManager() *TUIManager {
 	app := tview.NewApplication()
 	pages := tview.NewPages()
-	
+
 	return &TUIManager{
 		app:        app,
 		pages:      pages,
@@ -40,7 +40,7 @@ func (t *TUIManager) ShowComponent(name string) error {
 	if _, exists := t.components[name]; !exists {
 		return fmt.Errorf("component not found: %s", name)
 	}
-	
+
 	t.pages.SwitchToPage(name)
 	t.currentPage = name
 	return nil
@@ -73,25 +73,25 @@ func (t *TUIManager) CreateDashboard() *tview.Grid {
 
 	// Main content area
 	mainContent := tview.NewFlex().SetDirection(tview.FlexRow)
-	
+
 	// Status panel
 	statusPanel := tview.NewTextView().
 		SetDynamicColors(true).
 		SetScrollable(true)
 	statusPanel.SetBorder(true).SetTitle("System Status")
-	
+
 	// Metrics panel
 	metricsPanel := tview.NewTextView().
 		SetDynamicColors(true).
 		SetScrollable(true)
 	metricsPanel.SetBorder(true).SetTitle("Metrics")
-	
+
 	// Logs panel
 	logsPanel := tview.NewTextView().
 		SetDynamicColors(true).
 		SetScrollable(true)
 	logsPanel.SetBorder(true).SetTitle("Logs")
-	
+
 	// Add panels to main content
 	mainContent.AddItem(statusPanel, 0, 1, false)
 	mainContent.AddItem(metricsPanel, 0, 1, false)
@@ -112,28 +112,28 @@ func (t *TUIManager) CreateDashboard() *tview.Grid {
 	go func() {
 		ticker := time.NewTicker(2 * time.Second)
 		defer ticker.Stop()
-		
+
 		for range ticker.C {
 			t.app.QueueUpdateDraw(func() {
 				statusPanel.SetText(fmt.Sprintf(
-					"[green]System Status: [white]Healthy\n" +
-					"[yellow]CPU Usage: [white]25%%\n" +
-					"[blue]Memory Usage: [white]45%%\n" +
-					"[cyan]Disk Usage: [white]60%%\n" +
-					"[magenta]Network: [white]Active\n" +
-					"[red]Alerts: [white]0\n" +
-					"[green]Uptime: [white]%s",
+					"[green]System Status: [white]Healthy\n"+
+						"[yellow]CPU Usage: [white]25%%\n"+
+						"[blue]Memory Usage: [white]45%%\n"+
+						"[cyan]Disk Usage: [white]60%%\n"+
+						"[magenta]Network: [white]Active\n"+
+						"[red]Alerts: [white]0\n"+
+						"[green]Uptime: [white]%s",
 					time.Since(time.Now().Add(-24*time.Hour)).String(),
 				))
-				
+
 				metricsPanel.SetText(fmt.Sprintf(
-					"[green]Requests/sec: [white]120\n" +
-					"[yellow]Response Time: [white]50ms\n" +
-					"[blue]Error Rate: [white]0.1%%\n" +
-					"[cyan]Throughput: [white]2.5MB/s\n" +
-					"[magenta]Connections: [white]450\n" +
-					"[red]Queue Length: [white]15\n" +
-					"[green]Last Update: [white]%s",
+					"[green]Requests/sec: [white]120\n"+
+						"[yellow]Response Time: [white]50ms\n"+
+						"[blue]Error Rate: [white]0.1%%\n"+
+						"[cyan]Throughput: [white]2.5MB/s\n"+
+						"[magenta]Connections: [white]450\n"+
+						"[red]Queue Length: [white]15\n"+
+						"[green]Last Update: [white]%s",
 					time.Now().Format("15:04:05"),
 				))
 			})
@@ -151,14 +151,14 @@ func (t *TUIManager) CreateLogViewer() *tview.TextView {
 		SetChangedFunc(func() {
 			t.app.Draw()
 		})
-	
+
 	logView.SetBorder(true).SetTitle("Log Viewer")
-	
+
 	// Simulate log messages
 	go func() {
 		ticker := time.NewTicker(1 * time.Second)
 		defer ticker.Stop()
-		
+
 		messages := []string{
 			"[green]INFO[white] System initialization complete",
 			"[yellow]WARN[white] High CPU usage detected",
@@ -168,7 +168,7 @@ func (t *TUIManager) CreateLogViewer() *tview.TextView {
 			"[red]ERROR[white] Failed to connect to database",
 			"[green]INFO[white] Connection restored",
 		}
-		
+
 		i := 0
 		for range ticker.C {
 			t.app.QueueUpdateDraw(func() {
@@ -179,7 +179,7 @@ func (t *TUIManager) CreateLogViewer() *tview.TextView {
 			})
 		}
 	}()
-	
+
 	return logView
 }
 
@@ -207,7 +207,7 @@ func (t *TUIManager) CreateInteractiveMenu() *tview.List {
 		AddItem("Exit", "Exit application", 'q', func() {
 			t.Stop()
 		})
-	
+
 	menu.SetBorder(true).SetTitle("AlloraCLI Menu")
 	return menu
 }
@@ -217,7 +217,7 @@ func (t *TUIManager) CreateProgressBar(title string) *tview.TextView {
 	progressView := tview.NewTextView().
 		SetDynamicColors(true)
 	progressView.SetBorder(true).SetTitle(title)
-	
+
 	return progressView
 }
 
@@ -226,7 +226,7 @@ func (t *TUIManager) UpdateProgressBar(progressView *tview.TextView, current, to
 	percent := float64(current) / float64(total) * 100
 	barLength := 50
 	filled := int(percent / 100 * float64(barLength))
-	
+
 	bar := ""
 	for i := 0; i < barLength; i++ {
 		if i < filled {
@@ -235,7 +235,7 @@ func (t *TUIManager) UpdateProgressBar(progressView *tview.TextView, current, to
 			bar += "░"
 		}
 	}
-	
+
 	t.app.QueueUpdateDraw(func() {
 		progressView.SetText(fmt.Sprintf(
 			"[cyan]%s\n\n[white]Progress: [green]%s[white] %.1f%%\n\n[yellow]%s",
@@ -265,13 +265,13 @@ func (t *TUIManager) SetupKeyBindings() {
 			}
 			return nil
 		}
-		
+
 		switch event.Rune() {
 		case 'q':
 			t.Stop()
 			return nil
 		}
-		
+
 		return event
 	})
 }
@@ -282,22 +282,22 @@ func (t *TUIManager) ShowInteractiveDemo() error {
 	menu := t.CreateInteractiveMenu()
 	dashboard := t.CreateDashboard()
 	logs := t.CreateLogViewer()
-	
+
 	// Add components
 	t.AddComponent("menu", menu)
 	t.AddComponent("dashboard", dashboard)
 	t.AddComponent("logs", logs)
-	
+
 	// Setup key bindings
 	t.SetupKeyBindings()
-	
+
 	// Start with menu
 	t.ShowComponent("menu")
-	
+
 	// Run the application
 	if err := t.Run(); err != nil {
 		log.Fatal(err)
 	}
-	
+
 	return nil
 }

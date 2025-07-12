@@ -48,10 +48,10 @@ func NewMemoryCache(maxTTL time.Duration) *MemoryCache {
 		data:   make(map[string]*CacheItem),
 		maxTTL: maxTTL,
 	}
-	
+
 	// Start cleanup goroutine
 	go cache.cleanup()
-	
+
 	return cache
 }
 
@@ -62,7 +62,7 @@ func NewRedisCache(addr, password string, db int, prefix string) *RedisCache {
 		Password: password,
 		DB:       db,
 	})
-	
+
 	return &RedisCache{
 		client: client,
 		prefix: prefix,
@@ -75,12 +75,12 @@ func NewRedisCache(addr, password string, db int, prefix string) *RedisCache {
 func (c *MemoryCache) Get(ctx context.Context, key string) ([]byte, error) {
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
-	
+
 	item, exists := c.data[key]
 	if !exists {
 		return nil, fmt.Errorf("key not found: %s", key)
 	}
-	
+
 	// Check expiration
 	if time.Now().After(item.Expiration) {
 		c.mutex.RUnlock()
@@ -90,7 +90,7 @@ func (c *MemoryCache) Get(ctx context.Context, key string) ([]byte, error) {
 		c.mutex.RLock()
 		return nil, fmt.Errorf("key expired: %s", key)
 	}
-	
+
 	return item.Value, nil
 }
 
@@ -98,18 +98,18 @@ func (c *MemoryCache) Get(ctx context.Context, key string) ([]byte, error) {
 func (c *MemoryCache) Set(ctx context.Context, key string, value []byte, expiration time.Duration) error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	
+
 	// Use maxTTL if expiration is longer or zero
 	if expiration == 0 || expiration > c.maxTTL {
 		expiration = c.maxTTL
 	}
-	
+
 	c.data[key] = &CacheItem{
 		Value:      value,
 		Expiration: time.Now().Add(expiration),
 		CreatedAt:  time.Now(),
 	}
-	
+
 	return nil
 }
 
@@ -117,7 +117,7 @@ func (c *MemoryCache) Set(ctx context.Context, key string, value []byte, expirat
 func (c *MemoryCache) Delete(ctx context.Context, key string) error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	
+
 	delete(c.data, key)
 	return nil
 }
@@ -126,17 +126,17 @@ func (c *MemoryCache) Delete(ctx context.Context, key string) error {
 func (c *MemoryCache) Exists(ctx context.Context, key string) (bool, error) {
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
-	
+
 	item, exists := c.data[key]
 	if !exists {
 		return false, nil
 	}
-	
+
 	// Check expiration
 	if time.Now().After(item.Expiration) {
 		return false, nil
 	}
-	
+
 	return true, nil
 }
 
@@ -144,7 +144,7 @@ func (c *MemoryCache) Exists(ctx context.Context, key string) (bool, error) {
 func (c *MemoryCache) Clear(ctx context.Context) error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	
+
 	c.data = make(map[string]*CacheItem)
 	return nil
 }
@@ -153,17 +153,17 @@ func (c *MemoryCache) Clear(ctx context.Context) error {
 func (c *MemoryCache) GetWithTTL(ctx context.Context, key string) ([]byte, time.Duration, error) {
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
-	
+
 	item, exists := c.data[key]
 	if !exists {
 		return nil, 0, fmt.Errorf("key not found: %s", key)
 	}
-	
+
 	ttl := time.Until(item.Expiration)
 	if ttl <= 0 {
 		return nil, 0, fmt.Errorf("key expired: %s", key)
 	}
-	
+
 	return item.Value, ttl, nil
 }
 
@@ -173,7 +173,7 @@ func (c *MemoryCache) SetJSON(ctx context.Context, key string, value interface{}
 	if err != nil {
 		return fmt.Errorf("failed to marshal JSON: %w", err)
 	}
-	
+
 	return c.Set(ctx, key, data, expiration)
 }
 
@@ -183,7 +183,7 @@ func (c *MemoryCache) GetJSON(ctx context.Context, key string, dest interface{})
 	if err != nil {
 		return err
 	}
-	
+
 	return json.Unmarshal(data, dest)
 }
 
@@ -191,7 +191,7 @@ func (c *MemoryCache) GetJSON(ctx context.Context, key string, dest interface{})
 func (c *MemoryCache) cleanup() {
 	ticker := time.NewTicker(time.Minute)
 	defer ticker.Stop()
-	
+
 	for range ticker.C {
 		c.mutex.Lock()
 		now := time.Now()
@@ -216,7 +216,7 @@ func (c *RedisCache) Get(ctx context.Context, key string) ([]byte, error) {
 		}
 		return nil, fmt.Errorf("failed to get key: %w", err)
 	}
-	
+
 	return result, nil
 }
 
@@ -246,41 +246,41 @@ func (c *RedisCache) Clear(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	
+
 	if len(keys) > 0 {
 		return c.client.Del(ctx, keys...).Err()
 	}
-	
+
 	return nil
 }
 
 // GetWithTTL retrieves a value with remaining TTL from Redis
 func (c *RedisCache) GetWithTTL(ctx context.Context, key string) ([]byte, time.Duration, error) {
 	key = c.prefix + key
-	
+
 	pipe := c.client.Pipeline()
 	getCmd := pipe.Get(ctx, key)
 	ttlCmd := pipe.TTL(ctx, key)
-	
+
 	_, err := pipe.Exec(ctx)
 	if err != nil && err != redis.Nil {
 		return nil, 0, fmt.Errorf("failed to execute pipeline: %w", err)
 	}
-	
+
 	if err == redis.Nil {
 		return nil, 0, fmt.Errorf("key not found: %s", key)
 	}
-	
+
 	value, err := getCmd.Bytes()
 	if err != nil {
 		return nil, 0, fmt.Errorf("failed to get value: %w", err)
 	}
-	
+
 	ttl, err := ttlCmd.Result()
 	if err != nil {
 		return nil, 0, fmt.Errorf("failed to get TTL: %w", err)
 	}
-	
+
 	return value, ttl, nil
 }
 
@@ -290,7 +290,7 @@ func (c *RedisCache) SetJSON(ctx context.Context, key string, value interface{},
 	if err != nil {
 		return fmt.Errorf("failed to marshal JSON: %w", err)
 	}
-	
+
 	return c.Set(ctx, key, data, expiration)
 }
 
@@ -300,7 +300,7 @@ func (c *RedisCache) GetJSON(ctx context.Context, key string, dest interface{}) 
 	if err != nil {
 		return err
 	}
-	
+
 	return json.Unmarshal(data, dest)
 }
 
@@ -321,7 +321,7 @@ func NewCacheManager() *CacheManager {
 func (m *CacheManager) AddCache(name string, cache Cache) {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	
+
 	m.caches[name] = cache
 }
 
@@ -329,12 +329,12 @@ func (m *CacheManager) AddCache(name string, cache Cache) {
 func (m *CacheManager) GetCache(name string) (Cache, error) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	cache, exists := m.caches[name]
 	if !exists {
 		return nil, fmt.Errorf("cache not found: %s", name)
 	}
-	
+
 	return cache, nil
 }
 
@@ -342,12 +342,12 @@ func (m *CacheManager) GetCache(name string) (Cache, error) {
 func (m *CacheManager) GetDefaultCache() Cache {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	// Return the first cache or create a memory cache
 	for _, cache := range m.caches {
 		return cache
 	}
-	
+
 	// Create default memory cache
 	return NewMemoryCache(24 * time.Hour)
 }

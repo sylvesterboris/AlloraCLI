@@ -128,14 +128,14 @@ func ConfirmAction(message string) bool {
 // ClearScreen clears the terminal screen
 func ClearScreen() {
 	var cmd *exec.Cmd
-	
+
 	switch runtime.GOOS {
 	case "windows":
 		cmd = exec.Command("cmd", "/c", "cls")
 	default:
 		cmd = exec.Command("clear")
 	}
-	
+
 	cmd.Stdout = os.Stdout
 	cmd.Run()
 }

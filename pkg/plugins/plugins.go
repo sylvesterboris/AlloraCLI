@@ -26,30 +26,30 @@ type PluginService interface {
 
 // PluginInfo represents plugin information
 type PluginInfo struct {
-	Name        string            `json:"name"`
-	Version     string            `json:"version"`
-	Description string            `json:"description"`
-	Author      string            `json:"author"`
-	License     string            `json:"license"`
-	Homepage    string            `json:"homepage"`
-	Repository  string            `json:"repository"`
-	Tags        []string          `json:"tags"`
-	Commands    []CommandInfo     `json:"commands"`
-	Status      string            `json:"status"`
-	Enabled     bool              `json:"enabled"`
-	Installed   time.Time         `json:"installed"`
-	Updated     time.Time         `json:"updated"`
-	Config      map[string]string `json:"config"`
-	Dependencies []string         `json:"dependencies"`
+	Name         string            `json:"name"`
+	Version      string            `json:"version"`
+	Description  string            `json:"description"`
+	Author       string            `json:"author"`
+	License      string            `json:"license"`
+	Homepage     string            `json:"homepage"`
+	Repository   string            `json:"repository"`
+	Tags         []string          `json:"tags"`
+	Commands     []CommandInfo     `json:"commands"`
+	Status       string            `json:"status"`
+	Enabled      bool              `json:"enabled"`
+	Installed    time.Time         `json:"installed"`
+	Updated      time.Time         `json:"updated"`
+	Config       map[string]string `json:"config"`
+	Dependencies []string          `json:"dependencies"`
 }
 
 // CommandInfo represents a plugin command
 type CommandInfo struct {
-	Name        string            `json:"name"`
-	Description string            `json:"description"`
-	Usage       string            `json:"usage"`
-	Flags       []FlagInfo        `json:"flags"`
-	Examples    []string          `json:"examples"`
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Usage       string     `json:"usage"`
+	Flags       []FlagInfo `json:"flags"`
+	Examples    []string   `json:"examples"`
 }
 
 // FlagInfo represents a command flag
@@ -64,24 +64,24 @@ type FlagInfo struct {
 
 // PluginResult represents the result of plugin execution
 type PluginResult struct {
-	ExitCode int               `json:"exit_code"`
-	Output   string            `json:"output"`
-	Error    string            `json:"error"`
+	ExitCode int                    `json:"exit_code"`
+	Output   string                 `json:"output"`
+	Error    string                 `json:"error"`
 	Data     map[string]interface{} `json:"data"`
-	Duration time.Duration     `json:"duration"`
+	Duration time.Duration          `json:"duration"`
 }
 
 // PluginSearchResult represents a plugin search result
 type PluginSearchResult struct {
-	Name        string   `json:"name"`
-	Version     string   `json:"version"`
-	Description string   `json:"description"`
-	Author      string   `json:"author"`
-	Tags        []string `json:"tags"`
-	Downloads   int      `json:"downloads"`
-	Rating      float64  `json:"rating"`
+	Name        string    `json:"name"`
+	Version     string    `json:"version"`
+	Description string    `json:"description"`
+	Author      string    `json:"author"`
+	Tags        []string  `json:"tags"`
+	Downloads   int       `json:"downloads"`
+	Rating      float64   `json:"rating"`
 	Updated     time.Time `json:"updated"`
-	Source      string   `json:"source"`
+	Source      string    `json:"source"`
 }
 
 // Plugin interface defines the contract for AlloraCLI plugins
@@ -94,19 +94,19 @@ type Plugin interface {
 
 // PluginManifest represents the plugin manifest file
 type PluginManifest struct {
-	Name        string            `yaml:"name"`
-	Version     string            `yaml:"version"`
-	Description string            `yaml:"description"`
-	Author      string            `yaml:"author"`
-	License     string            `yaml:"license"`
-	Homepage    string            `yaml:"homepage"`
-	Repository  string            `yaml:"repository"`
-	Tags        []string          `yaml:"tags"`
-	Commands    []CommandInfo     `yaml:"commands"`
-	Dependencies []string         `yaml:"dependencies"`
-	Config      map[string]string `yaml:"config"`
-	Binary      string            `yaml:"binary"`
-	Checksum    string            `yaml:"checksum"`
+	Name         string            `yaml:"name"`
+	Version      string            `yaml:"version"`
+	Description  string            `yaml:"description"`
+	Author       string            `yaml:"author"`
+	License      string            `yaml:"license"`
+	Homepage     string            `yaml:"homepage"`
+	Repository   string            `yaml:"repository"`
+	Tags         []string          `yaml:"tags"`
+	Commands     []CommandInfo     `yaml:"commands"`
+	Dependencies []string          `yaml:"dependencies"`
+	Config       map[string]string `yaml:"config"`
+	Binary       string            `yaml:"binary"`
+	Checksum     string            `yaml:"checksum"`
 }
 
 // DefaultPluginService provides a default implementation
@@ -126,29 +126,29 @@ func NewPluginService(cfg *config.Config) (PluginService, error) {
 		}
 		pluginDir = filepath.Join(homeDir, ".config", "alloracli", "plugins")
 	}
-	
+
 	service := &DefaultPluginService{
 		config:    cfg,
 		pluginDir: pluginDir,
 		plugins:   make(map[string]*PluginInfo),
 	}
-	
+
 	// Load existing plugins
 	if err := service.loadPlugins(); err != nil {
 		return nil, fmt.Errorf("failed to load plugins: %w", err)
 	}
-	
+
 	return service, nil
 }
 
 // ListPlugins lists all installed plugins
 func (p *DefaultPluginService) ListPlugins(ctx context.Context) ([]PluginInfo, error) {
 	var plugins []PluginInfo
-	
+
 	for _, plugin := range p.plugins {
 		plugins = append(plugins, *plugin)
 	}
-	
+
 	return plugins, nil
 }
 
@@ -161,7 +161,7 @@ func (p *DefaultPluginService) InstallPlugin(ctx context.Context, name string, s
 	// 4. Validate manifest
 	// 5. Install dependencies
 	// 6. Register plugin
-	
+
 	pluginInfo := &PluginInfo{
 		Name:        name,
 		Version:     "1.0.0",
@@ -187,9 +187,9 @@ func (p *DefaultPluginService) InstallPlugin(ctx context.Context, name string, s
 		Config:       make(map[string]string),
 		Dependencies: []string{},
 	}
-	
+
 	p.plugins[name] = pluginInfo
-	
+
 	return nil
 }
 
@@ -199,11 +199,11 @@ func (p *DefaultPluginService) UpdatePlugin(ctx context.Context, name string) er
 	if !exists {
 		return fmt.Errorf("plugin %s not found", name)
 	}
-	
+
 	// Mock implementation - would check for updates and install them
 	plugin.Updated = time.Now()
 	plugin.Version = "1.0.1"
-	
+
 	return nil
 }
 
@@ -212,10 +212,10 @@ func (p *DefaultPluginService) UninstallPlugin(ctx context.Context, name string)
 	if _, exists := p.plugins[name]; !exists {
 		return fmt.Errorf("plugin %s not found", name)
 	}
-	
+
 	// Mock implementation - would remove plugin files and cleanup
 	delete(p.plugins, name)
-	
+
 	return nil
 }
 
@@ -225,10 +225,10 @@ func (p *DefaultPluginService) EnablePlugin(ctx context.Context, name string) er
 	if !exists {
 		return fmt.Errorf("plugin %s not found", name)
 	}
-	
+
 	plugin.Enabled = true
 	plugin.Status = "enabled"
-	
+
 	return nil
 }
 
@@ -238,10 +238,10 @@ func (p *DefaultPluginService) DisablePlugin(ctx context.Context, name string) e
 	if !exists {
 		return fmt.Errorf("plugin %s not found", name)
 	}
-	
+
 	plugin.Enabled = false
 	plugin.Status = "disabled"
-	
+
 	return nil
 }
 
@@ -251,7 +251,7 @@ func (p *DefaultPluginService) GetPluginInfo(ctx context.Context, name string) (
 	if !exists {
 		return nil, fmt.Errorf("plugin %s not found", name)
 	}
-	
+
 	return plugin, nil
 }
 
@@ -261,13 +261,13 @@ func (p *DefaultPluginService) ExecutePlugin(ctx context.Context, name string, a
 	if !exists {
 		return nil, fmt.Errorf("plugin %s not found", name)
 	}
-	
+
 	if !pluginInfo.Enabled {
 		return nil, fmt.Errorf("plugin %s is disabled", name)
 	}
-	
+
 	start := time.Now()
-	
+
 	// Mock implementation - would execute the actual plugin
 	result := &PluginResult{
 		ExitCode: 0,
@@ -279,7 +279,7 @@ func (p *DefaultPluginService) ExecutePlugin(ctx context.Context, name string, a
 		},
 		Duration: time.Since(start),
 	}
-	
+
 	return result, nil
 }
 
@@ -321,7 +321,7 @@ func (p *DefaultPluginService) SearchPlugins(ctx context.Context, query string) 
 			Source:      "https://registry.alloraai.com/plugins/monitoring-tools",
 		},
 	}
-	
+
 	// Filter results based on query
 	var filtered []PluginSearchResult
 	for _, result := range results {
@@ -329,7 +329,7 @@ func (p *DefaultPluginService) SearchPlugins(ctx context.Context, query string) 
 			filtered = append(filtered, result)
 		}
 	}
-	
+
 	return filtered, nil
 }
 
@@ -339,7 +339,7 @@ func (p *DefaultPluginService) loadPlugins() error {
 	if err := os.MkdirAll(p.pluginDir, 0755); err != nil {
 		return fmt.Errorf("failed to create plugin directory: %w", err)
 	}
-	
+
 	// Mock implementation - would scan directory and load plugin manifests
 	// For now, we'll add some sample plugins
 	samplePlugins := []*PluginInfo{
@@ -381,11 +381,11 @@ func (p *DefaultPluginService) loadPlugins() error {
 			Dependencies: []string{},
 		},
 	}
-	
+
 	for _, plugin := range samplePlugins {
 		p.plugins[plugin.Name] = plugin
 	}
-	
+
 	return nil
 }
 
@@ -394,31 +394,31 @@ func containsQuery(result PluginSearchResult, query string) bool {
 	if query == "" {
 		return true
 	}
-	
+
 	// Simple text matching - in real implementation, this would be more sophisticated
 	if contains(result.Name, query) ||
 		contains(result.Description, query) ||
 		contains(result.Author, query) {
 		return true
 	}
-	
+
 	for _, tag := range result.Tags {
 		if contains(tag, query) {
 			return true
 		}
 	}
-	
+
 	return false
 }
 
 // contains checks if a string contains a substring (case-insensitive)
 func contains(s, substr string) bool {
-	return len(s) >= len(substr) && 
-		(s == substr || 
-		 len(s) > len(substr) && 
-		 (s[:len(substr)] == substr || 
-		  s[len(s)-len(substr):] == substr ||
-		  containsSubstring(s, substr)))
+	return len(s) >= len(substr) &&
+		(s == substr ||
+			len(s) > len(substr) &&
+				(s[:len(substr)] == substr ||
+					s[len(s)-len(substr):] == substr ||
+					containsSubstring(s, substr)))
 }
 
 // containsSubstring checks if a string contains a substring
@@ -504,7 +504,7 @@ func (m *PluginManager) GetClient(name string) (*plugin.Client, error) {
 	if client, exists := m.clients[name]; exists {
 		return client, nil
 	}
-	
+
 	// Mock implementation - would create actual plugin client
 	// using hashicorp/go-plugin
 	return nil, fmt.Errorf("plugin client not implemented for %s", name)

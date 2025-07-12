@@ -71,11 +71,11 @@ func (c *StreamingClient) StreamRequest(ctx context.Context, url string, headers
 		scanner := bufio.NewScanner(resp.Body)
 		for scanner.Scan() {
 			line := scanner.Text()
-			
+
 			// Parse Server-Sent Events format
 			if strings.HasPrefix(line, "data: ") {
 				data := strings.TrimPrefix(line, "data: ")
-				
+
 				// Try to parse as JSON
 				var responseData map[string]interface{}
 				if err := json.Unmarshal([]byte(data), &responseData); err == nil {
@@ -85,7 +85,7 @@ func (c *StreamingClient) StreamRequest(ctx context.Context, url string, headers
 						Data:      responseData,
 						Timestamp: time.Now(),
 					}
-					
+
 					select {
 					case responseChan <- response:
 					case <-ctx.Done():
@@ -168,7 +168,7 @@ func NewStreamingProgressTracker(writer *StreamWriter, total int) *StreamingProg
 // Update updates the progress and potentially streams an update
 func (t *StreamingProgressTracker) Update(current int, message string) error {
 	t.current = current
-	
+
 	// Check if we should send an update
 	if time.Since(t.lastUpdate) >= t.interval || current == t.total {
 		progress := &ProgressUpdate{
@@ -178,16 +178,16 @@ func (t *StreamingProgressTracker) Update(current int, message string) error {
 			Message:    message,
 			Timestamp:  time.Now(),
 		}
-		
+
 		err := t.writer.WriteEvent("progress", progress)
 		if err != nil {
 			return err
 		}
-		
+
 		t.writer.Flush()
 		t.lastUpdate = time.Now()
 	}
-	
+
 	return nil
 }
 
@@ -217,12 +217,12 @@ func (w *StreamingLogWriter) WriteLog(level, message string) error {
 		Message:   message,
 		Timestamp: time.Now(),
 	}
-	
+
 	err := w.writer.WriteEvent("log", logEntry)
 	if err != nil {
 		return err
 	}
-	
+
 	return w.writer.Flush()
 }
 
@@ -253,7 +253,7 @@ func NewStreamingMetricsCollector(writer *StreamWriter, interval time.Duration) 
 func (c *StreamingMetricsCollector) Start(ctx context.Context) error {
 	ticker := time.NewTicker(c.interval)
 	defer ticker.Stop()
-	
+
 	for {
 		select {
 		case <-ctx.Done():
@@ -309,7 +309,7 @@ func (e *StreamingCommandExecutor) ExecuteCommand(ctx context.Context, command s
 	if err != nil {
 		return err
 	}
-	
+
 	// Stream command output (this would integrate with actual command execution)
 	// For now, simulate streaming output
 	go func() {
@@ -326,7 +326,7 @@ func (e *StreamingCommandExecutor) ExecuteCommand(ctx context.Context, command s
 				e.writer.Flush()
 			}
 		}
-		
+
 		// Command completed
 		e.writer.WriteEvent("command_complete", map[string]interface{}{
 			"exit_code": 0,
@@ -334,7 +334,7 @@ func (e *StreamingCommandExecutor) ExecuteCommand(ctx context.Context, command s
 		})
 		e.writer.Flush()
 	}()
-	
+
 	return nil
 }
 
@@ -356,10 +356,10 @@ func (h *StreamingHTTPHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 	w.Header().Set("Connection", "keep-alive")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Cache-Control")
-	
+
 	// Create stream writer
 	streamWriter := NewStreamWriter(w)
-	
+
 	// Handle different endpoints
 	switch r.URL.Path {
 	case "/stream/logs":
@@ -376,7 +376,7 @@ func (h *StreamingHTTPHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 // streamLogs streams log messages
 func (h *StreamingHTTPHandler) streamLogs(ctx context.Context, writer *StreamWriter) {
 	logWriter := NewStreamingLogWriter(writer)
-	
+
 	// Stream sample log messages
 	logs := []struct {
 		level   string
@@ -388,7 +388,7 @@ func (h *StreamingHTTPHandler) streamLogs(ctx context.Context, writer *StreamWri
 		{"ERROR", "Database connection failed"},
 		{"INFO", "Connection restored"},
 	}
-	
+
 	for _, log := range logs {
 		select {
 		case <-ctx.Done():
@@ -409,7 +409,7 @@ func (h *StreamingHTTPHandler) streamMetrics(ctx context.Context, writer *Stream
 // streamProgress streams progress updates
 func (h *StreamingHTTPHandler) streamProgress(ctx context.Context, writer *StreamWriter) {
 	tracker := NewStreamingProgressTracker(writer, 100)
-	
+
 	for i := 0; i <= 100; i++ {
 		select {
 		case <-ctx.Done():

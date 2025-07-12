@@ -51,24 +51,24 @@ type CapacityOptions struct {
 
 // LogAnalysis represents log analysis results
 type LogAnalysis struct {
-	Summary      string              `json:"summary" yaml:"summary"`
-	ErrorCount   int                 `json:"error_count" yaml:"error_count"`
-	WarningCount int                 `json:"warning_count" yaml:"warning_count"`
-	Patterns     []LogPattern        `json:"patterns" yaml:"patterns"`
-	Anomalies    []LogAnomaly        `json:"anomalies" yaml:"anomalies"`
-	Insights     []string            `json:"insights" yaml:"insights"`
-	Metadata     map[string]string   `json:"metadata" yaml:"metadata"`
-	Timestamp    time.Time           `json:"timestamp" yaml:"timestamp"`
+	Summary      string            `json:"summary" yaml:"summary"`
+	ErrorCount   int               `json:"error_count" yaml:"error_count"`
+	WarningCount int               `json:"warning_count" yaml:"warning_count"`
+	Patterns     []LogPattern      `json:"patterns" yaml:"patterns"`
+	Anomalies    []LogAnomaly      `json:"anomalies" yaml:"anomalies"`
+	Insights     []string          `json:"insights" yaml:"insights"`
+	Metadata     map[string]string `json:"metadata" yaml:"metadata"`
+	Timestamp    time.Time         `json:"timestamp" yaml:"timestamp"`
 }
 
 // LogPattern represents a pattern found in logs
 type LogPattern struct {
-	Pattern     string    `json:"pattern" yaml:"pattern"`
-	Count       int       `json:"count" yaml:"count"`
-	Severity    string    `json:"severity" yaml:"severity"`
-	FirstSeen   time.Time `json:"first_seen" yaml:"first_seen"`
-	LastSeen    time.Time `json:"last_seen" yaml:"last_seen"`
-	Examples    []string  `json:"examples" yaml:"examples"`
+	Pattern   string    `json:"pattern" yaml:"pattern"`
+	Count     int       `json:"count" yaml:"count"`
+	Severity  string    `json:"severity" yaml:"severity"`
+	FirstSeen time.Time `json:"first_seen" yaml:"first_seen"`
+	LastSeen  time.Time `json:"last_seen" yaml:"last_seen"`
+	Examples  []string  `json:"examples" yaml:"examples"`
 }
 
 // LogAnomaly represents an anomaly found in logs
@@ -82,24 +82,24 @@ type LogAnomaly struct {
 
 // PerformanceAnalysis represents performance analysis results
 type PerformanceAnalysis struct {
-	Summary         string                 `json:"summary" yaml:"summary"`
-	OverallHealth   string                 `json:"overall_health" yaml:"overall_health"`
-	Metrics         []PerformanceMetric    `json:"metrics" yaml:"metrics"`
+	Summary         string                  `json:"summary" yaml:"summary"`
+	OverallHealth   string                  `json:"overall_health" yaml:"overall_health"`
+	Metrics         []PerformanceMetric     `json:"metrics" yaml:"metrics"`
 	Bottlenecks     []PerformanceBottleneck `json:"bottlenecks" yaml:"bottlenecks"`
-	Recommendations []string               `json:"recommendations" yaml:"recommendations"`
-	Trends          []PerformanceTrend     `json:"trends" yaml:"trends"`
-	Metadata        map[string]string      `json:"metadata" yaml:"metadata"`
-	Timestamp       time.Time              `json:"timestamp" yaml:"timestamp"`
+	Recommendations []string                `json:"recommendations" yaml:"recommendations"`
+	Trends          []PerformanceTrend      `json:"trends" yaml:"trends"`
+	Metadata        map[string]string       `json:"metadata" yaml:"metadata"`
+	Timestamp       time.Time               `json:"timestamp" yaml:"timestamp"`
 }
 
 // PerformanceMetric represents a performance metric
 type PerformanceMetric struct {
-	Name        string  `json:"name" yaml:"name"`
-	Value       float64 `json:"value" yaml:"value"`
-	Unit        string  `json:"unit" yaml:"unit"`
-	Status      string  `json:"status" yaml:"status"`
-	Threshold   float64 `json:"threshold" yaml:"threshold"`
-	Trend       string  `json:"trend" yaml:"trend"`
+	Name      string  `json:"name" yaml:"name"`
+	Value     float64 `json:"value" yaml:"value"`
+	Unit      string  `json:"unit" yaml:"unit"`
+	Status    string  `json:"status" yaml:"status"`
+	Threshold float64 `json:"threshold" yaml:"threshold"`
+	Trend     string  `json:"trend" yaml:"trend"`
 }
 
 // PerformanceBottleneck represents a performance bottleneck
@@ -122,55 +122,55 @@ type PerformanceTrend struct {
 
 // CostAnalysis represents cost analysis results
 type CostAnalysis struct {
-	Summary         string              `json:"summary" yaml:"summary"`
-	TotalCost       float64             `json:"total_cost" yaml:"total_cost"`
-	Currency        string              `json:"currency" yaml:"currency"`
-	Breakdown       []CostBreakdown     `json:"breakdown" yaml:"breakdown"`
-	Trends          []CostTrend         `json:"trends" yaml:"trends"`
+	Summary         string               `json:"summary" yaml:"summary"`
+	TotalCost       float64              `json:"total_cost" yaml:"total_cost"`
+	Currency        string               `json:"currency" yaml:"currency"`
+	Breakdown       []CostBreakdown      `json:"breakdown" yaml:"breakdown"`
+	Trends          []CostTrend          `json:"trends" yaml:"trends"`
 	Recommendations []CostRecommendation `json:"recommendations" yaml:"recommendations"`
-	Savings         float64             `json:"potential_savings" yaml:"potential_savings"`
-	Metadata        map[string]string   `json:"metadata" yaml:"metadata"`
-	Timestamp       time.Time           `json:"timestamp" yaml:"timestamp"`
+	Savings         float64              `json:"potential_savings" yaml:"potential_savings"`
+	Metadata        map[string]string    `json:"metadata" yaml:"metadata"`
+	Timestamp       time.Time            `json:"timestamp" yaml:"timestamp"`
 }
 
 // CostBreakdown represents cost breakdown by service/category
 type CostBreakdown struct {
-	Category    string  `json:"category" yaml:"category"`
-	Cost        float64 `json:"cost" yaml:"cost"`
-	Percentage  float64 `json:"percentage" yaml:"percentage"`
-	Change      float64 `json:"change" yaml:"change"`
-	Trend       string  `json:"trend" yaml:"trend"`
+	Category   string  `json:"category" yaml:"category"`
+	Cost       float64 `json:"cost" yaml:"cost"`
+	Percentage float64 `json:"percentage" yaml:"percentage"`
+	Change     float64 `json:"change" yaml:"change"`
+	Trend      string  `json:"trend" yaml:"trend"`
 }
 
 // CostTrend represents cost trend over time
 type CostTrend struct {
-	Period  string  `json:"period" yaml:"period"`
-	Cost    float64 `json:"cost" yaml:"cost"`
-	Change  float64 `json:"change" yaml:"change"`
-	Forecast string `json:"forecast" yaml:"forecast"`
+	Period   string  `json:"period" yaml:"period"`
+	Cost     float64 `json:"cost" yaml:"cost"`
+	Change   float64 `json:"change" yaml:"change"`
+	Forecast string  `json:"forecast" yaml:"forecast"`
 }
 
 // CostRecommendation represents a cost optimization recommendation
 type CostRecommendation struct {
-	Title       string  `json:"title" yaml:"title"`
-	Description string  `json:"description" yaml:"description"`
-	Savings     float64 `json:"potential_savings" yaml:"potential_savings"`
-	Effort      string  `json:"effort" yaml:"effort"`
-	Impact      string  `json:"impact" yaml:"impact"`
-	Priority    string  `json:"priority" yaml:"priority"`
+	Title       string   `json:"title" yaml:"title"`
+	Description string   `json:"description" yaml:"description"`
+	Savings     float64  `json:"potential_savings" yaml:"potential_savings"`
+	Effort      string   `json:"effort" yaml:"effort"`
+	Impact      string   `json:"impact" yaml:"impact"`
+	Priority    string   `json:"priority" yaml:"priority"`
 	Actions     []string `json:"actions" yaml:"actions"`
 }
 
 // SecurityAnalysis represents security analysis results
 type SecurityAnalysis struct {
-	Summary         string                 `json:"summary" yaml:"summary"`
-	OverallScore    float64                `json:"overall_score" yaml:"overall_score"`
-	Vulnerabilities []SecurityVulnerability `json:"vulnerabilities" yaml:"vulnerabilities"`
-	Compliance      []ComplianceCheck       `json:"compliance" yaml:"compliance"`
+	Summary         string                   `json:"summary" yaml:"summary"`
+	OverallScore    float64                  `json:"overall_score" yaml:"overall_score"`
+	Vulnerabilities []SecurityVulnerability  `json:"vulnerabilities" yaml:"vulnerabilities"`
+	Compliance      []ComplianceCheck        `json:"compliance" yaml:"compliance"`
 	Recommendations []SecurityRecommendation `json:"recommendations" yaml:"recommendations"`
-	RiskLevel       string                  `json:"risk_level" yaml:"risk_level"`
-	Metadata        map[string]string       `json:"metadata" yaml:"metadata"`
-	Timestamp       time.Time               `json:"timestamp" yaml:"timestamp"`
+	RiskLevel       string                   `json:"risk_level" yaml:"risk_level"`
+	Metadata        map[string]string        `json:"metadata" yaml:"metadata"`
+	Timestamp       time.Time                `json:"timestamp" yaml:"timestamp"`
 }
 
 // SecurityVulnerability represents a security vulnerability
@@ -209,44 +209,44 @@ type SecurityRecommendation struct {
 
 // CapacityAnalysis represents capacity analysis results
 type CapacityAnalysis struct {
-	Summary      string             `json:"summary" yaml:"summary"`
-	CurrentUsage []CapacityMetric   `json:"current_usage" yaml:"current_usage"`
-	Forecast     []CapacityForecast `json:"forecast" yaml:"forecast"`
-	Alerts       []CapacityAlert    `json:"alerts" yaml:"alerts"`
-	Recommendations []string        `json:"recommendations" yaml:"recommendations"`
-	Metadata     map[string]string  `json:"metadata" yaml:"metadata"`
-	Timestamp    time.Time          `json:"timestamp" yaml:"timestamp"`
+	Summary         string             `json:"summary" yaml:"summary"`
+	CurrentUsage    []CapacityMetric   `json:"current_usage" yaml:"current_usage"`
+	Forecast        []CapacityForecast `json:"forecast" yaml:"forecast"`
+	Alerts          []CapacityAlert    `json:"alerts" yaml:"alerts"`
+	Recommendations []string           `json:"recommendations" yaml:"recommendations"`
+	Metadata        map[string]string  `json:"metadata" yaml:"metadata"`
+	Timestamp       time.Time          `json:"timestamp" yaml:"timestamp"`
 }
 
 // CapacityMetric represents a capacity metric
 type CapacityMetric struct {
-	Resource    string  `json:"resource" yaml:"resource"`
-	Current     float64 `json:"current" yaml:"current"`
-	Maximum     float64 `json:"maximum" yaml:"maximum"`
-	Usage       float64 `json:"usage" yaml:"usage"`
-	Unit        string  `json:"unit" yaml:"unit"`
-	Status      string  `json:"status" yaml:"status"`
-	Trend       string  `json:"trend" yaml:"trend"`
+	Resource string  `json:"resource" yaml:"resource"`
+	Current  float64 `json:"current" yaml:"current"`
+	Maximum  float64 `json:"maximum" yaml:"maximum"`
+	Usage    float64 `json:"usage" yaml:"usage"`
+	Unit     string  `json:"unit" yaml:"unit"`
+	Status   string  `json:"status" yaml:"status"`
+	Trend    string  `json:"trend" yaml:"trend"`
 }
 
 // CapacityForecast represents capacity forecast
 type CapacityForecast struct {
-	Resource      string    `json:"resource" yaml:"resource"`
-	Period        string    `json:"period" yaml:"period"`
-	Predicted     float64   `json:"predicted" yaml:"predicted"`
-	Confidence    float64   `json:"confidence" yaml:"confidence"`
+	Resource       string     `json:"resource" yaml:"resource"`
+	Period         string     `json:"period" yaml:"period"`
+	Predicted      float64    `json:"predicted" yaml:"predicted"`
+	Confidence     float64    `json:"confidence" yaml:"confidence"`
 	ExhaustionDate *time.Time `json:"exhaustion_date,omitempty" yaml:"exhaustion_date,omitempty"`
 }
 
 // CapacityAlert represents a capacity alert
 type CapacityAlert struct {
-	Resource    string  `json:"resource" yaml:"resource"`
-	Type        string  `json:"type" yaml:"type"`
-	Severity    string  `json:"severity" yaml:"severity"`
-	Message     string  `json:"message" yaml:"message"`
-	Threshold   float64 `json:"threshold" yaml:"threshold"`
-	Current     float64 `json:"current" yaml:"current"`
-	Action      string  `json:"action" yaml:"action"`
+	Resource  string  `json:"resource" yaml:"resource"`
+	Type      string  `json:"type" yaml:"type"`
+	Severity  string  `json:"severity" yaml:"severity"`
+	Message   string  `json:"message" yaml:"message"`
+	Threshold float64 `json:"threshold" yaml:"threshold"`
+	Current   float64 `json:"current" yaml:"current"`
+	Action    string  `json:"action" yaml:"action"`
 }
 
 // AnalyzerImpl implements the Analyzer interface
@@ -306,9 +306,9 @@ func (a *AnalyzerImpl) AnalyzeLogs(options LogOptions) (*LogAnalysis, error) {
 			"Consider implementing connection pooling",
 		},
 		Metadata: map[string]string{
-			"file":       options.File,
+			"file":           options.File,
 			"lines_analyzed": "10000",
-			"time_range": options.TimeRange,
+			"time_range":     options.TimeRange,
 		},
 		Timestamp: time.Now(),
 	}
@@ -436,10 +436,10 @@ func (a *AnalyzerImpl) AnalyzeCosts(options CostOptions) (*CostAnalysis, error) 
 				Actions:     []string{"Analyze utilization", "Resize instances", "Monitor performance"},
 			},
 		},
-		Savings:   250.75,
+		Savings: 250.75,
 		Metadata: map[string]string{
-			"period":           options.Period,
-			"recommendations":  fmt.Sprintf("%t", options.Recommendations),
+			"period":          options.Period,
+			"recommendations": fmt.Sprintf("%t", options.Recommendations),
 		},
 		Timestamp: time.Now(),
 	}
@@ -502,7 +502,7 @@ func (a *AnalyzerImpl) AnalyzeSecurity(options SecurityOptions) (*SecurityAnalys
 func (a *AnalyzerImpl) AnalyzeCapacity(options CapacityOptions) (*CapacityAnalysis, error) {
 	// Mock implementation
 	exhaustionDate := time.Now().Add(45 * 24 * time.Hour)
-	
+
 	analysis := &CapacityAnalysis{
 		Summary: "Capacity analysis shows good resource availability",
 		CurrentUsage: []CapacityMetric{

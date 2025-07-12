@@ -94,31 +94,31 @@ func testOpenAIAgent() error {
 func testCloudProviders() error {
 	// Test AWS provider creation
 	fmt.Println("  📱 Testing AWS Provider...")
-	
+
 	// We'll test the mock functionality since we don't have real credentials
 	fmt.Println("  ✅ AWS Provider structure implemented")
-	
+
 	// Test Azure provider creation
 	fmt.Println("  📱 Testing Azure Provider...")
 	fmt.Println("  ✅ Azure Provider structure implemented")
-	
+
 	// Test GCP provider creation
 	fmt.Println("  📱 Testing GCP Provider...")
 	fmt.Println("  ✅ GCP Provider structure implemented")
-	
+
 	return nil
 }
 
 func testSecurityFeatures() error {
 	// Test encryption/decryption
 	fmt.Println("  🔒 Testing Encryption...")
-	
+
 	// Test audit logging
 	fmt.Println("  📝 Testing Audit Logging...")
-	
+
 	// Test key management
 	fmt.Println("  🔑 Testing Key Management...")
-	
+
 	fmt.Println("  ✅ Security features structure implemented")
 	return nil
 }
@@ -126,7 +126,7 @@ func testSecurityFeatures() error {
 func testPluginSystem() error {
 	// Test plugin manager creation
 	fmt.Println("  🔌 Testing Plugin Manager...")
-	
+
 	fmt.Println("  ✅ Plugin system structure implemented")
 	return nil
 }

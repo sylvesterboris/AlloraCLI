@@ -150,9 +150,9 @@ func (p *AWSProvider) listEC2Instances(ctx context.Context) ([]*Resource, error)
 				Modified: time.Now(),
 				Tags:     p.convertEC2Tags(instance.Tags),
 				Config: map[string]interface{}{
-					"instance_type":    string(instance.InstanceType),
-					"architecture":     string(instance.Architecture),
-					"platform":         aws.ToString(instance.PlatformDetails),
+					"instance_type":   string(instance.InstanceType),
+					"architecture":    string(instance.Architecture),
+					"platform":        aws.ToString(instance.PlatformDetails),
 					"vpc_id":          aws.ToString(instance.VpcId),
 					"subnet_id":       aws.ToString(instance.SubnetId),
 					"public_ip":       aws.ToString(instance.PublicIpAddress),
@@ -259,12 +259,12 @@ func (p *AWSProvider) listVPCs(ctx context.Context) ([]*Resource, error) {
 			Modified: time.Now(),
 			Tags:     p.convertVPCTags(vpc.Tags),
 			Config: map[string]interface{}{
-				"cidr_block":              aws.ToString(vpc.CidrBlock),
-				"dhcp_options_id":         aws.ToString(vpc.DhcpOptionsId),
-				"instance_tenancy":        string(vpc.InstanceTenancy),
-				"is_default":              aws.ToBool(vpc.IsDefault),
-				"ipv6_cidr_block_sets":    len(vpc.Ipv6CidrBlockAssociationSet),
-				"owner_id":                aws.ToString(vpc.OwnerId),
+				"cidr_block":           aws.ToString(vpc.CidrBlock),
+				"dhcp_options_id":      aws.ToString(vpc.DhcpOptionsId),
+				"instance_tenancy":     string(vpc.InstanceTenancy),
+				"is_default":           aws.ToBool(vpc.IsDefault),
+				"ipv6_cidr_block_sets": len(vpc.Ipv6CidrBlockAssociationSet),
+				"owner_id":             aws.ToString(vpc.OwnerId),
 			},
 		}
 		resources = append(resources, resource)
@@ -322,9 +322,9 @@ func (p *AWSProvider) getEC2InstanceDetails(ctx context.Context, instanceID stri
 		Modified: time.Now(),
 		Tags:     p.convertEC2Tags(instance.Tags),
 		Config: map[string]interface{}{
-			"instance_type":      string(instance.InstanceType),
-			"architecture":       string(instance.Architecture),
-			"platform":           aws.ToString(instance.PlatformDetails),
+			"instance_type":     string(instance.InstanceType),
+			"architecture":      string(instance.Architecture),
+			"platform":          aws.ToString(instance.PlatformDetails),
 			"vpc_id":            aws.ToString(instance.VpcId),
 			"subnet_id":         aws.ToString(instance.SubnetId),
 			"public_ip":         aws.ToString(instance.PublicIpAddress),
@@ -552,11 +552,11 @@ func (p *AWSProvider) getSecurityGroupDetails(ctx context.Context, groupID strin
 		Modified: time.Now(),
 		Tags:     p.convertSecurityGroupTags(sg.Tags),
 		Config: map[string]interface{}{
-			"description":       aws.ToString(sg.Description),
-			"vpc_id":           aws.ToString(sg.VpcId),
-			"owner_id":         aws.ToString(sg.OwnerId),
-			"inbound_rules":    len(sg.IpPermissions),
-			"outbound_rules":   len(sg.IpPermissionsEgress),
+			"description":    aws.ToString(sg.Description),
+			"vpc_id":         aws.ToString(sg.VpcId),
+			"owner_id":       aws.ToString(sg.OwnerId),
+			"inbound_rules":  len(sg.IpPermissions),
+			"outbound_rules": len(sg.IpPermissionsEgress),
 		},
 	}
 
@@ -589,12 +589,12 @@ func (p *AWSProvider) getVPCDetails(ctx context.Context, vpcID string) (*Resourc
 		Modified: time.Now(),
 		Tags:     p.convertVPCTags(vpc.Tags),
 		Config: map[string]interface{}{
-			"cidr_block":              aws.ToString(vpc.CidrBlock),
-			"dhcp_options_id":         aws.ToString(vpc.DhcpOptionsId),
-			"instance_tenancy":        string(vpc.InstanceTenancy),
-			"is_default":              aws.ToBool(vpc.IsDefault),
-			"ipv6_cidr_block_sets":    len(vpc.Ipv6CidrBlockAssociationSet),
-			"owner_id":                aws.ToString(vpc.OwnerId),
+			"cidr_block":           aws.ToString(vpc.CidrBlock),
+			"dhcp_options_id":      aws.ToString(vpc.DhcpOptionsId),
+			"instance_tenancy":     string(vpc.InstanceTenancy),
+			"is_default":           aws.ToBool(vpc.IsDefault),
+			"ipv6_cidr_block_sets": len(vpc.Ipv6CidrBlockAssociationSet),
+			"owner_id":             aws.ToString(vpc.OwnerId),
 		},
 	}
 

@@ -16,14 +16,14 @@ import (
 
 // AzureProvider implements the CloudProvider interface for Azure
 type AzureProvider struct {
-	credential      azcore.TokenCredential
-	computeClient   *armcompute.VirtualMachinesClient
-	networkClient   *armnetwork.VirtualNetworksClient
-	resourceClient  *armresources.Client
-	subscriptionID  string
-	config          *ProviderConfig
-	connected       bool
-	logger          *logrus.Logger
+	credential     azcore.TokenCredential
+	computeClient  *armcompute.VirtualMachinesClient
+	networkClient  *armnetwork.VirtualNetworksClient
+	resourceClient *armresources.Client
+	subscriptionID string
+	config         *ProviderConfig
+	connected      bool
+	logger         *logrus.Logger
 }
 
 // NewAzureProvider creates a new Azure provider
@@ -252,10 +252,10 @@ func (p *AzureProvider) listVirtualNetworks(ctx context.Context) ([]*Resource, e
 						Modified: time.Now(),
 						Tags:     p.convertAzureTags(vnet.Tags),
 						Config: map[string]interface{}{
-							"resource_group":  *rg.Name,
-							"location":        p.getStringValue(vnet.Location),
-							"address_spaces":  p.getAddressSpaces(vnet),
-							"subnets_count":   p.getSubnetsCount(vnet),
+							"resource_group": *rg.Name,
+							"location":       p.getStringValue(vnet.Location),
+							"address_spaces": p.getAddressSpaces(vnet),
+							"subnets_count":  p.getSubnetsCount(vnet),
 						},
 					}
 					resources = append(resources, resource)
@@ -295,7 +295,7 @@ func (p *AzureProvider) listResourceGroups(ctx context.Context) ([]*Resource, er
 				Modified: time.Now(),
 				Tags:     p.convertAzureTags(rg.Tags),
 				Config: map[string]interface{}{
-					"location":         p.getStringValue(rg.Location),
+					"location":           p.getStringValue(rg.Location),
 					"provisioning_state": p.getGenericResourceProvisioningState(rg),
 				},
 			}
@@ -356,9 +356,9 @@ func (p *AzureProvider) getVirtualMachineDetails(ctx context.Context, resourceID
 		Tags:     p.convertAzureTags(vm.Tags),
 		Config: map[string]interface{}{
 			"resource_group":     resourceGroup,
-			"vm_size":           p.getVMSize(&vm),
-			"os_type":           p.getOSType(&vm),
-			"location":          p.getStringValue(vm.Location),
+			"vm_size":            p.getVMSize(&vm),
+			"os_type":            p.getOSType(&vm),
+			"location":           p.getStringValue(vm.Location),
 			"provisioning_state": p.getVMProvisioningState(&vm),
 		},
 	}
@@ -617,9 +617,9 @@ func (p *AzureProvider) getVirtualNetworkDetails(ctx context.Context, resourceID
 		Tags:     p.convertAzureTags(vnet.Tags),
 		Config: map[string]interface{}{
 			"resource_group":     resourceGroup,
-			"location":          p.getStringValue(vnet.Location),
-			"address_spaces":    p.getAddressSpaces(&vnet),
-			"subnets_count":     p.getSubnetsCount(&vnet),
+			"location":           p.getStringValue(vnet.Location),
+			"address_spaces":     p.getAddressSpaces(&vnet),
+			"subnets_count":      p.getSubnetsCount(&vnet),
 			"provisioning_state": p.getVNetState(&vnet),
 		},
 	}

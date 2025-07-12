@@ -63,11 +63,11 @@ type Resource struct {
 
 // ResourceSpec defines the specification for creating/updating resources
 type ResourceSpec struct {
-	Name         string            `json:"name"`
-	Type         string            `json:"type"`
-	Region       string            `json:"region"`
+	Name          string                 `json:"name"`
+	Type          string                 `json:"type"`
+	Region        string                 `json:"region"`
 	Configuration map[string]interface{} `json:"configuration"`
-	Tags         map[string]string `json:"tags"`
+	Tags          map[string]string      `json:"tags"`
 }
 
 // ResourceDetails provides detailed information about a resource
@@ -83,27 +83,27 @@ type ResourceDetails struct {
 
 // CostInfo provides cost information for a resource
 type CostInfo struct {
-	Monthly     float64 `json:"monthly"`
-	Daily       float64 `json:"daily"`
-	Currency    string  `json:"currency"`
+	Monthly     float64   `json:"monthly"`
+	Daily       float64   `json:"daily"`
+	Currency    string    `json:"currency"`
 	LastUpdated time.Time `json:"last_updated"`
 }
 
 // SecurityGroup represents a security group
 type SecurityGroup struct {
-	ID          string                `json:"id"`
-	Name        string                `json:"name"`
-	Description string                `json:"description"`
-	Rules       []SecurityGroupRule   `json:"rules"`
+	ID          string              `json:"id"`
+	Name        string              `json:"name"`
+	Description string              `json:"description"`
+	Rules       []SecurityGroupRule `json:"rules"`
 }
 
 // SecurityGroupRule represents a security group rule
 type SecurityGroupRule struct {
-	Protocol   string `json:"protocol"`
-	Port       string `json:"port"`
-	Source     string `json:"source"`
-	Direction  string `json:"direction"`
-	Action     string `json:"action"`
+	Protocol  string `json:"protocol"`
+	Port      string `json:"port"`
+	Source    string `json:"source"`
+	Direction string `json:"direction"`
+	Action    string `json:"action"`
 }
 
 // NetworkInfo provides network information
@@ -117,19 +117,19 @@ type NetworkInfo struct {
 
 // MonitoringInfo provides monitoring information
 type MonitoringInfo struct {
-	Enabled       bool                   `json:"enabled"`
-	Metrics       []MetricInfo           `json:"metrics"`
-	Alerts        []AlertInfo            `json:"alerts"`
-	Dashboards    []string               `json:"dashboards"`
+	Enabled    bool         `json:"enabled"`
+	Metrics    []MetricInfo `json:"metrics"`
+	Alerts     []AlertInfo  `json:"alerts"`
+	Dashboards []string     `json:"dashboards"`
 }
 
 // MetricInfo represents a metric
 type MetricInfo struct {
-	Name        string    `json:"name"`
-	Value       float64   `json:"value"`
-	Unit        string    `json:"unit"`
-	Timestamp   time.Time `json:"timestamp"`
-	Threshold   float64   `json:"threshold"`
+	Name      string    `json:"name"`
+	Value     float64   `json:"value"`
+	Unit      string    `json:"unit"`
+	Timestamp time.Time `json:"timestamp"`
+	Threshold float64   `json:"threshold"`
 }
 
 // AlertInfo represents an alert
@@ -144,11 +144,11 @@ type AlertInfo struct {
 
 // BackupInfo provides backup information
 type BackupInfo struct {
-	Enabled      bool      `json:"enabled"`
-	Schedule     string    `json:"schedule"`
-	LastBackup   time.Time `json:"last_backup"`
-	NextBackup   time.Time `json:"next_backup"`
-	RetentionDays int      `json:"retention_days"`
+	Enabled       bool      `json:"enabled"`
+	Schedule      string    `json:"schedule"`
+	LastBackup    time.Time `json:"last_backup"`
+	NextBackup    time.Time `json:"next_backup"`
+	RetentionDays int       `json:"retention_days"`
 }
 
 // CostOptions defines options for cost analysis
@@ -162,20 +162,20 @@ type CostOptions struct {
 
 // CostAnalysis provides cost analysis results
 type CostAnalysis struct {
-	TotalCost      float64         `json:"total_cost"`
-	Currency       string          `json:"currency"`
-	Period         string          `json:"period"`
-	Breakdown      []CostBreakdown `json:"breakdown"`
-	Trends         []CostTrend     `json:"trends"`
+	TotalCost       float64              `json:"total_cost"`
+	Currency        string               `json:"currency"`
+	Period          string               `json:"period"`
+	Breakdown       []CostBreakdown      `json:"breakdown"`
+	Trends          []CostTrend          `json:"trends"`
 	Recommendations []CostRecommendation `json:"recommendations"`
 }
 
 // CostBreakdown provides cost breakdown by category
 type CostBreakdown struct {
-	Category    string  `json:"category"`
-	Cost        float64 `json:"cost"`
-	Percentage  float64 `json:"percentage"`
-	ResourceCount int   `json:"resource_count"`
+	Category      string  `json:"category"`
+	Cost          float64 `json:"cost"`
+	Percentage    float64 `json:"percentage"`
+	ResourceCount int     `json:"resource_count"`
 }
 
 // CostTrend represents cost trend data
@@ -187,13 +187,13 @@ type CostTrend struct {
 
 // CostRecommendation represents a cost optimization recommendation
 type CostRecommendation struct {
-	ID          string  `json:"id"`
-	Type        string  `json:"type"`
-	Title       string  `json:"title"`
-	Description string  `json:"description"`
-	Savings     float64 `json:"potential_savings"`
-	Effort      string  `json:"effort"`
-	Risk        string  `json:"risk"`
+	ID          string   `json:"id"`
+	Type        string   `json:"type"`
+	Title       string   `json:"title"`
+	Description string   `json:"description"`
+	Savings     float64  `json:"potential_savings"`
+	Effort      string   `json:"effort"`
+	Risk        string   `json:"risk"`
 	Actions     []string `json:"actions"`
 }
 
@@ -206,36 +206,36 @@ type OptimizeOptions struct {
 
 // OptimizationResult provides optimization results
 type OptimizationResult struct {
-	ID              string                    `json:"id"`
-	Timestamp       time.Time                 `json:"timestamp"`
-	Status          string                    `json:"status"`
-	Recommendations []OptimizationRecommendation `json:"recommendations"`
-	PotentialSavings float64                  `json:"potential_savings"`
-	RiskAssessment  string                    `json:"risk_assessment"`
+	ID               string                       `json:"id"`
+	Timestamp        time.Time                    `json:"timestamp"`
+	Status           string                       `json:"status"`
+	Recommendations  []OptimizationRecommendation `json:"recommendations"`
+	PotentialSavings float64                      `json:"potential_savings"`
+	RiskAssessment   string                       `json:"risk_assessment"`
 }
 
 // OptimizationRecommendation represents an optimization recommendation
 type OptimizationRecommendation struct {
-	ResourceID   string            `json:"resource_id"`
-	Type         string            `json:"type"`
-	Current      map[string]interface{} `json:"current"`
-	Recommended  map[string]interface{} `json:"recommended"`
-	Savings      float64           `json:"savings"`
-	Confidence   float64           `json:"confidence"`
-	Actions      []string          `json:"actions"`
+	ResourceID  string                 `json:"resource_id"`
+	Type        string                 `json:"type"`
+	Current     map[string]interface{} `json:"current"`
+	Recommended map[string]interface{} `json:"recommended"`
+	Savings     float64                `json:"savings"`
+	Confidence  float64                `json:"confidence"`
+	Actions     []string               `json:"actions"`
 }
 
 // HealthEvent represents a health monitoring event
 type HealthEvent struct {
-	ID          string            `json:"id"`
-	Timestamp   time.Time         `json:"timestamp"`
-	Provider    string            `json:"provider"`
-	ResourceID  string            `json:"resource_id"`
-	Type        string            `json:"type"`
-	Status      string            `json:"status"`
-	Message     string            `json:"message"`
-	Severity    string            `json:"severity"`
-	Details     map[string]string `json:"details"`
+	ID         string            `json:"id"`
+	Timestamp  time.Time         `json:"timestamp"`
+	Provider   string            `json:"provider"`
+	ResourceID string            `json:"resource_id"`
+	Type       string            `json:"type"`
+	Status     string            `json:"status"`
+	Message    string            `json:"message"`
+	Severity   string            `json:"severity"`
+	Details    map[string]string `json:"details"`
 }
 
 // CreateResourceRequest represents a request to create a resource
@@ -263,8 +263,8 @@ type MetricsRequest struct {
 
 // MetricsResponse represents a metrics response
 type MetricsResponse struct {
-	MetricName string              `json:"metric_name"`
-	DataPoints []*MetricDataPoint  `json:"data_points"`
+	MetricName string             `json:"metric_name"`
+	DataPoints []*MetricDataPoint `json:"data_points"`
 }
 
 // MetricDataPoint represents a single metric data point
@@ -297,16 +297,16 @@ type CostPeriod struct {
 
 // ProviderConfig represents cloud provider configuration
 type ProviderConfig struct {
-	Region             string            `json:"region"`
-	Credentials        map[string]string `json:"credentials"`
+	Region      string            `json:"region"`
+	Credentials map[string]string `json:"credentials"`
 	// AWS specific
-	Profile            string            `json:"profile,omitempty"`
+	Profile string `json:"profile,omitempty"`
 	// Azure specific
-	SubscriptionID     string            `json:"subscription_id,omitempty"`
-	TenantID           string            `json:"tenant_id,omitempty"`
+	SubscriptionID string `json:"subscription_id,omitempty"`
+	TenantID       string `json:"tenant_id,omitempty"`
 	// GCP specific
-	ProjectID          string            `json:"project_id,omitempty"`
-	ServiceAccountPath string            `json:"service_account_path,omitempty"`
+	ProjectID          string `json:"project_id,omitempty"`
+	ServiceAccountPath string `json:"service_account_path,omitempty"`
 }
 
 // ProviderStatus represents cloud provider status
@@ -332,10 +332,10 @@ func NewCloudService(cfg *config.Config) CloudService {
 		config:    cfg,
 		providers: make(map[string]CloudProvider),
 	}
-	
+
 	// Initialize providers based on configuration
 	service.initializeProviders()
-	
+
 	return service
 }
 
@@ -343,21 +343,21 @@ func NewCloudService(cfg *config.Config) CloudService {
 func (c *DefaultCloudService) initializeProviders() {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	
+
 	// Initialize AWS provider if configured
 	if awsConfig := c.getProviderConfig("aws"); awsConfig != nil {
 		if provider, err := NewAWSProvider(awsConfig); err == nil {
 			c.providers["aws"] = provider
 		}
 	}
-	
+
 	// Initialize Azure provider if configured
 	if azureConfig := c.getProviderConfig("azure"); azureConfig != nil {
 		if provider, err := NewAzureProvider(azureConfig); err == nil {
 			c.providers["azure"] = provider
 		}
 	}
-	
+
 	// Initialize GCP provider if configured
 	if gcpConfig := c.getProviderConfig("gcp"); gcpConfig != nil {
 		if provider, err := NewGCPProvider(gcpConfig); err == nil {
@@ -374,7 +374,7 @@ func (c *DefaultCloudService) getProviderConfig(provider string) *ProviderConfig
 		Region:      "us-west-2", // Default region
 		Credentials: make(map[string]string),
 	}
-	
+
 	switch provider {
 	case "aws":
 		cfg.Profile = "default"
@@ -384,11 +384,11 @@ func (c *DefaultCloudService) getProviderConfig(provider string) *ProviderConfig
 		cfg.TenantID = ""       // Should be loaded from config
 		return cfg
 	case "gcp":
-		cfg.ProjectID = ""                // Should be loaded from config
-		cfg.ServiceAccountPath = ""       // Should be loaded from config
+		cfg.ProjectID = ""          // Should be loaded from config
+		cfg.ServiceAccountPath = "" // Should be loaded from config
 		return cfg
 	}
-	
+
 	return nil
 }
 
@@ -396,12 +396,12 @@ func (c *DefaultCloudService) getProviderConfig(provider string) *ProviderConfig
 func (c *DefaultCloudService) getProvider(name string) (CloudProvider, error) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	
+
 	provider, exists := c.providers[name]
 	if !exists {
 		return nil, fmt.Errorf("provider %s not found or not configured", name)
 	}
-	
+
 	return provider, nil
 }
 
@@ -423,7 +423,7 @@ func (c *DefaultCloudService) ListResources(ctx context.Context, provider string
 		// If real provider fails, log warning and fall back to mock
 		fmt.Printf("Warning: Real provider %s failed: %v. Using mock data.\n", provider, err)
 	}
-	
+
 	// Fallback to mock implementation
 	switch provider {
 	case "aws":
@@ -454,7 +454,7 @@ func (c *DefaultCloudService) CreateResource(ctx context.Context, provider strin
 			"created_by": "allora-cli",
 		},
 	}
-	
+
 	return resource, nil
 }
 
@@ -475,7 +475,7 @@ func (c *DefaultCloudService) UpdateResource(ctx context.Context, provider strin
 			"updated_by": "allora-cli",
 		},
 	}
-	
+
 	return resource, nil
 }
 
@@ -543,7 +543,7 @@ func (c *DefaultCloudService) GetResourceDetails(ctx context.Context, provider s
 					Threshold: 80.0,
 				},
 			},
-			Alerts: []AlertInfo{},
+			Alerts:     []AlertInfo{},
 			Dashboards: []string{"resource-dashboard"},
 		},
 		Backup: BackupInfo{
@@ -554,7 +554,7 @@ func (c *DefaultCloudService) GetResourceDetails(ctx context.Context, provider s
 			RetentionDays: 30,
 		},
 	}
-	
+
 	return details, nil
 }
 
@@ -610,7 +610,7 @@ func (c *DefaultCloudService) GetCostAnalysis(ctx context.Context, provider stri
 			},
 		},
 	}
-	
+
 	return analysis, nil
 }
 
@@ -643,20 +643,20 @@ func (c *DefaultCloudService) OptimizeResources(ctx context.Context, provider st
 		PotentialSavings: 300.00,
 		RiskAssessment:   "low",
 	}
-	
+
 	return result, nil
 }
 
 // MonitorHealth monitors cloud resource health
 func (c *DefaultCloudService) MonitorHealth(ctx context.Context, provider string) (<-chan HealthEvent, error) {
 	events := make(chan HealthEvent, 100)
-	
+
 	// Mock implementation - would integrate with cloud provider health APIs
 	go func() {
 		defer close(events)
 		ticker := time.NewTicker(10 * time.Second)
 		defer ticker.Stop()
-		
+
 		for {
 			select {
 			case <-ctx.Done():
@@ -685,7 +685,7 @@ func (c *DefaultCloudService) MonitorHealth(ctx context.Context, provider string
 			}
 		}
 	}()
-	
+
 	return events, nil
 }
 
@@ -735,7 +735,7 @@ func (c *DefaultCloudService) listAWSResources(ctx context.Context, resourceType
 			},
 		},
 	}
-	
+
 	return resources, nil
 }
 
@@ -763,7 +763,7 @@ func (c *DefaultCloudService) listAzureResources(ctx context.Context, resourceTy
 			},
 		},
 	}
-	
+
 	return resources, nil
 }
 
@@ -791,7 +791,7 @@ func (c *DefaultCloudService) listGCPResources(ctx context.Context, resourceType
 			},
 		},
 	}
-	
+
 	return resources, nil
 }
 
@@ -812,7 +812,7 @@ func NewCloudManager() *CloudManager {
 func (m *CloudManager) AddProvider(provider CloudProvider) error {
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
-	
+
 	m.providers[provider.GetName()] = provider
 	return nil
 }
@@ -821,7 +821,7 @@ func (m *CloudManager) AddProvider(provider CloudProvider) error {
 func (m *CloudManager) GetProvider(name string) (CloudProvider, error) {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	provider, exists := m.providers[name]
 	if !exists {
 		return nil, fmt.Errorf("provider not found: %s", name)
@@ -833,7 +833,7 @@ func (m *CloudManager) GetProvider(name string) (CloudProvider, error) {
 func (m *CloudManager) ListProviders() []CloudProvider {
 	m.mutex.RLock()
 	defer m.mutex.RUnlock()
-	
+
 	providers := make([]CloudProvider, 0, len(m.providers))
 	for _, provider := range m.providers {
 		providers = append(providers, provider)
