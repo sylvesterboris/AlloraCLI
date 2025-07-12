@@ -21,12 +21,14 @@ go.work
 
 # Configuration files (may contain sensitive information)
 *.config
-*.yaml
-*.yml
-*.json
-*.toml
+config.yaml
+config.yml
+config.json
+config.toml
 !config/example.*
 !config/default.*
+!.github/**/*.yml
+!.github/**/*.yaml
 
 # Log files
 *.log
