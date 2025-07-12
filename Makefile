@@ -11,18 +11,48 @@ COMMIT?=$(shell git rev-parse --short HEAD 2>/dev/null || echo "unknown")
 DATE?=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # Build flags
-LDFLAGS=-ldflags "-X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(DATE)"
+LDFLAGS=-ldflags "-s -w -X main.version=$(VERSION) -X main.commit=$(COMMIT) -X main.date=$(DATE)"
+
+# Go variables
+GOCMD=go
+GOBUILD=$(GOCMD) build
+GOTEST=$(GOCMD) test
+GOGET=$(GOCMD) get
+GOMOD=$(GOCMD) mod
+GOFMT=$(GOCMD) fmt
 
 # Default target
 .PHONY: all
-all: build
+all: clean deps lint test build
+
+# Help target
+.PHONY: help
+help:
+	@echo "Available targets:"
+	@echo "  all          - Clean, download deps, lint, test, and build"
+	@echo "  build        - Build the application"
+	@echo "  build-all    - Build for all platforms"
+	@echo "  test         - Run tests"
+	@echo "  test-cover   - Run tests with coverage"
+	@echo "  lint         - Run linters"
+	@echo "  clean        - Clean build artifacts"
+	@echo "  deps         - Download dependencies"
+	@echo "  install      - Install to GOPATH/bin"
+	@echo "  release      - Create release builds"
+
+# Download dependencies
+.PHONY: deps
+deps:
+	@echo "Downloading dependencies..."
+	$(GOMOD) download
+	$(GOMOD) tidy
 
 # Build the application
 .PHONY: build
 build:
 	@echo "Building AlloraCLI..."
 	@mkdir -p bin
-	go build $(LDFLAGS) -o $(BINARY_PATH) $(MAIN_PATH)
+	$(GOBUILD) $(LDFLAGS) -o $(BINARY_PATH) $(MAIN_PATH)
 	@echo "Build completed: $(BINARY_PATH)"
 
 # Build for Windows

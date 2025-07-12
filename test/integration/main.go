@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -61,8 +60,7 @@ func testOpenAIAgent() error {
 	}
 
 	// Create agent config
-	agentConfig := &agents.AgentConfig{
-		Type:        "openai",
+	agentConfig := config.Agent{
 		Model:       "gpt-4",
 		MaxTokens:   1000,
 		Temperature: 0.7,
@@ -73,14 +71,18 @@ func testOpenAIAgent() error {
 	// Create agent
 	agent, err := agents.NewAgent(agentConfig)
 	if err != nil {
-		return fmt.Errorf("failed to create OpenAI agent: %w", err)
+		return fmt.Errorf("failed to create agent: %w", err)
 	}
 
 	// Test query
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	response, err := agent.Query(ctx, "What is the capital of France?")
+	query := &agents.Query{
+		Text: "What is the capital of France?",
+	}
+
+	response, err := agent.Query(ctx, query)
 	if err != nil {
 		return fmt.Errorf("failed to query OpenAI agent: %w", err)
 	}

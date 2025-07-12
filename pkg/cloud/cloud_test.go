@@ -198,12 +198,12 @@ func TestCloudProviderStatus(t *testing.T) {
 	}
 
 	status := provider.GetStatus()
-	if status.State != "connected" {
-		t.Errorf("Expected status 'connected', got '%s'", status.State)
+if status.Status != "connected" {
+	t.Errorf("Expected status 'connected', got '%s'", status.Status)
 	}
 
-	if status.LastCheck.IsZero() {
-		t.Error("Expected non-zero last check time")
+if status.LastCheck.IsZero() {
+	t.Error("Expected non-zero last check time")
 	}
 }
 
@@ -266,7 +266,7 @@ func (m *MockCloudProvider) ListResources(ctx context.Context, resourceType stri
 			Name:   "test-instance",
 			Type:   "ec2",
 			Region: m.region,
-			State:  "running",
+	Status:  "running",
 			Config: map[string]interface{}{
 				"instance_type": "t3.micro",
 				"image_id":      "ami-12345678",
@@ -278,7 +278,7 @@ func (m *MockCloudProvider) ListResources(ctx context.Context, resourceType stri
 			Name:   "test-volume",
 			Type:   "ebs",
 			Region: m.region,
-			State:  "available",
+	Status:  "available",
 			Config: map[string]interface{}{
 				"size": 20,
 				"type": "gp3",
@@ -319,7 +319,7 @@ func (m *MockCloudProvider) CreateResource(ctx context.Context, req *CreateResou
 		Name:      req.Name,
 		Type:      req.Type,
 		Region:    req.Region,
-		State:     "pending",
+	Status:     "pending",
 		Config:    req.Config,
 		CreatedAt: time.Now(),
 	}
@@ -421,7 +421,7 @@ func (m *MockCloudProvider) UpdateConfiguration(config *ProviderConfig) error {
 func (m *MockCloudProvider) GetStatus() *ProviderStatus {
 	if m.providerStatus == nil {
 		m.providerStatus = &ProviderStatus{
-			State:     m.status,
+		Status:     m.status,
 			LastCheck: time.Now(),
 			Health:    "healthy",
 		}
