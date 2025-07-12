@@ -251,8 +251,17 @@ allora ask "Show me my cloud infrastructure status"
 
 ### Prerequisites
 
-- Go 1.21 or higher
-- Git
+- Go 1.21 or higher (for building from source)
+- Git (for cloning repository)
+
+### 🪟 Windows Users - Detailed Guide
+📖 **[Complete Windows Installation Guide →](WINDOWS_INSTALLATION.md)**
+
+For Windows users, we have a comprehensive step-by-step guide covering:
+- Multiple installation methods
+- PATH configuration
+- Troubleshooting common issues
+- Initial setup and configuration
 
 ### Install from Release
 
@@ -264,8 +273,9 @@ curl -L https://github.com/AlloraAi/AlloraCLI/releases/latest/download/allora-li
 chmod +x allora
 sudo mv allora /usr/local/bin/
 
-# Windows (PowerShell)
+# Windows (PowerShell) - Quick Method
 Invoke-WebRequest -Uri "https://github.com/AlloraAi/AlloraCLI/releases/latest/download/allora-windows-amd64.exe" -OutFile "allora.exe"
+# For detailed setup, see WINDOWS_INSTALLATION.md
 ```
 
 ### Install from Source
