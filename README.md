@@ -24,6 +24,9 @@
 </div>
 
 ---
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/AlloraAi">AlloraAi</a>
+</p>
 
 ## 🎯 What is AlloraCLI?
 
@@ -93,38 +96,6 @@ allora ask "Show me all running EC2 instances with their names"
 
 </details>
 
-
-
-## 🎯 Quick Navigation for Different User Types
-
-### 🔰 **New Users - Start Here**
-1. 📖 **[What is AlloraCLI?](#-what-is-alloracli)** - Understand the value proposition
-2. 🛠️ **[Installation](#-installation)** - Get AlloraCLI installed
-3. ⚙️ **[Configuration](#️-configuration)** - Set up your cloud providers
-4. 🚀 **[Quick Start](#-quick-start)** - Run your first commands
-5. 📚 **[Usage Examples](#-usage-examples)** - See real-world examples
-
-### 👨‍💻 **Developers - Technical Deep Dive**
-1. 🏗️ **[Architecture](#️-architecture)** - Understand system design
-2. 🏗️ **[Development Setup](#-development-setup)** - Set up dev environment
-3. 📐 **[API Reference](#-api-reference)** - Learn the APIs
-4. 🔧 **[Plugin Development](#-plugin-development)** - Create custom plugins
-5. 🧪 **[Testing Guidelines](#-testing-guidelines)** - Test your contributions
-
-### 🏢 **Enterprise Users - Production Ready**
-1. 💼 **[Real-World Use Cases](#-real-world-use-cases)** - See enterprise examples
-2. ⚙️ **[Configuration](#️-configuration)** - Enterprise setup patterns
-3. 🔒 **[Security & Compliance](#-security--compliance)** - Security features
-4. 🏆 **[Enterprise Features](#-enterprise-features)** - Advanced capabilities
-5. 🆘 **[Support](#-support)** - Get enterprise support
-
-### 🤝 **Contributors - Join the Community**
-1. 🤝 **[Contributing](#-contributing)** - How to contribute
-2. 💬 **[Community](#-community)** - Join our community
-3. 🏗️ **[Development Setup](#️-development-setup)** - Set up development
-4. 📋 **[Roadmap](#-roadmap)** - See what's planned
-5. 🏆 **[Recognition](#-recognition)** - Contributor benefits
-
 ## 🚀 Why Choose AlloraCLI?
 
 ### ✅ **Proven Benefits**
@@ -136,7 +107,8 @@ allora ask "Show me all running EC2 instances with their names"
 | Manual troubleshooting and debugging | **AI-powered diagnostics** | 70% faster problem resolution |
 | Reactive monitoring and alerts | **Proactive AI insights** | 60% reduction in incidents |
 | Vendor-specific tools and workflows | **Multi-cloud unified management** | 50% operational overhead reduction |
-
+| Manual cost optimization | **Automated cost analytics** | 30% reduction in cloud spend |
+| Security and compliance gaps | **Built-in security scanning** | 40% improved compliance posture |
 
 ---
 
@@ -165,6 +137,53 @@ allora ask "Show me my cloud infrastructure status"
 </div>
 
 ---
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/AlloraAi">AlloraAi</a>
+</p>
+
+## 📊 Complete Documentation Index
+
+### 📚 **User Documentation**
+
+| Document | Description | For Who |
+|----------|-------------|---------|
+| [📖 Complete Usage Guide](docs/usage.md) | 300+ page comprehensive manual covering all features | **New & Experienced Users** |
+| [⚙️ Configuration Reference](docs/configuration.md) | Detailed setup guide for all cloud providers and AI services | **System Administrators** |
+| [🚀 Getting Started](docs/getting-started.md) | Quick 10-minute setup tutorial | **First-time Users** |
+| [❓ FAQ](docs/faq.md) | Most common questions and detailed answers | **All Users** |
+| [🔍 Troubleshooting](docs/troubleshooting.md) | Common issues, solutions, and debugging tips | **Support & Operations** |
+
+### 👨‍💻 **Developer Documentation**
+
+| Document | Description | For Who |
+|----------|-------------|---------|
+| [🏗️ Architecture Guide](docs/architecture.md) | System design, components, and technical deep-dive | **Developers & Architects** |
+| [📐 API Reference](docs/api.md) | Complete API documentation for all interfaces | **Integration Developers** |
+| [🔧 Plugin Development](docs/plugins.md) | Step-by-step plugin creation and examples | **Plugin Developers** |
+| [🧪 Development Guide](docs/development.md) | Setup development environment and contribute | **Contributors** |
+
+### 🌟 **Community Resources**
+
+| Resource | Description | Purpose |
+|----------|-------------|---------|
+| [💬 GitHub Discussions](https://github.com/AlloraAi/AlloraCLI/discussions) | Community Q&A, feature requests, showcases | **Community Support** |
+| [🐛 Issue Tracker](https://github.com/AlloraAi/AlloraCLI/issues) | Bug reports and feature requests | **Bug Reporting** |
+| [📺 Video Tutorials](https://youtube.com/@alloracli) | Step-by-step video guides and demos | **Visual Learning** |
+| [📝 Blog & Best Practices](https://dev.alloracli.com) | Tutorials, case studies, and industry practices | **Advanced Learning** |
+
+
+### 🎓 Interactive Learning
+
+```bash
+# Built-in help system
+allora help                           # Main help
+allora help ask                       # Command-specific help
+allora examples                       # View usage examples
+allora tutorial                       # Interactive tutorial
+```
+
+
+
 
 ## 🛠️ Installation
 
@@ -182,7 +201,7 @@ For Windows users, we have a comprehensive step-by-step guide covering:
 - Troubleshooting common issues
 - Initial setup and configuration
 
-### Install from Release
+## Install from Release
 
 Download the latest release from [GitHub Releases](https://github.com/AlloraAi/AlloraCLI/releases):
 
@@ -232,7 +251,7 @@ scoop install allora
 choco install allora
 ```
 
-## 🚀 Quick Start
+## 🚀 Quick Start configuration
 
 ### 1. Initialize Configuration
 
@@ -269,38 +288,7 @@ allora monitor --provider aws --resource ec2
 allora troubleshoot --service database --issue "high latency"
 ```
 
-## 📖 Documentation
 
-### 📚 Learning Resources
-
-<table>
-<tr>
-<td><strong>🚀 Getting Started</strong></td>
-<td><a href="docs/usage.md">Complete Usage Guide</a><br/>Comprehensive guide covering installation to advanced usage</td>
-</tr>
-<tr>
-<td><strong>⚙️ Configuration</strong></td>
-<td><a href="docs/configuration.md">Configuration Reference</a><br/>All configuration options and environment setup</td>
-</tr>
-<tr>
-<td><strong>🔧 Troubleshooting</strong></td>
-<td><a href="docs/troubleshooting.md">Common Issues</a><br/>Solutions to frequently encountered problems</td>
-</tr>
-<tr>
-<td><strong>🔌 Development</strong></td>
-<td><a href="docs/plugins.md">Plugin Development</a><br/>Create custom plugins and extensions</td>
-</tr>
-</table>
-
-### 🎓 Interactive Learning
-
-```bash
-# Built-in help system
-allora help                           # Main help
-allora help ask                       # Command-specific help
-allora examples                       # View usage examples
-allora tutorial                       # Interactive tutorial
-```
 
 
 ## 💼 Real-World Use Cases
@@ -721,7 +709,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Inspired by the amazing open-source community
 - Special thanks to our [contributors](https://github.com/AlloraAi/AlloraCLI/graphs/contributors)
 
-
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/AlloraAi">AlloraAi</a>
+</p>
 
 ## 🏗️ Development Setup
 
@@ -908,3 +898,8 @@ func TestCloudProviderAWS(t *testing.T) {
     assert.NotEmpty(t, resources)
 }
 ```
+<hr>
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/AlloraAi">AlloraAi</a>
+</p>
+<hr>
