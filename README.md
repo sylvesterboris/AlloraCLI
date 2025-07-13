@@ -93,69 +93,7 @@ allora ask "Show me all running EC2 instances with their names"
 
 </details>
 
-## 📋 Table of Contents
 
-### 📖 **Documentation Overview**
-- [🎯 What is AlloraCLI?](#-what-is-alloracli) - Project overview and key benefits
-- [🚀 Features](#-features) - Core capabilities and AI-powered features
-- [🏗️ Architecture](#️-architecture) - System design and component overview
-
-### 🛠️ **Getting Started**
-- [💻 Installation](#-installation) - Multiple installation methods
-- [⚡ Quick Start](#-quick-start) - Get up and running in minutes
-- [⚙️ Configuration](#️-configuration) - Complete setup guide
-- [📚 Usage Examples](#-usage-examples) - Real-world command examples
-
-### 📚 **Comprehensive Documentation**
-- [📖 Complete Usage Guide](#-complete-usage-guide) - In-depth user manual
-- [🔧 Core Commands Reference](#-core-commands-reference) - All available commands
-- [🤖 AI Features Deep Dive](#-ai-features-deep-dive) - Advanced AI capabilities
-- [☁️ Cloud Provider Integration](#️-cloud-provider-integration) - Multi-cloud setup
-- [🔌 Plugin System](#-plugin-system) - Extending functionality
-- [🔍 Troubleshooting Guide](#-troubleshooting-guide) - Common issues and solutions
-
-### 👨‍💻 **For Developers**
-- [🏗️ Development Setup](#️-development-setup) - Contributing and building
-- [📐 API Reference](#-api-reference) - Internal APIs and interfaces
-- [🔧 Plugin Development](#-plugin-development) - Creating custom plugins
-- [🧪 Testing Guidelines](#-testing-guidelines) - Testing best practices
-
-### 🌐 **Community & Support**
-- [💼 Real-World Use Cases](#-real-world-use-cases) - Industry examples
-- [🤝 Contributing](#-contributing) - How to contribute
-- [💬 Community](#-community) - Join our community
-- [📄 License](#-license) - Open source license
-- [🆘 Support](#-support) - Getting help
-
-## 📊 Complete Documentation Index
-
-### 📚 **User Documentation**
-
-| Document | Description | For Who |
-|----------|-------------|---------|
-| [📖 Complete Usage Guide](docs/usage.md) | 300+ page comprehensive manual covering all features | **New & Experienced Users** |
-| [⚙️ Configuration Reference](docs/configuration.md) | Detailed setup guide for all cloud providers and AI services | **System Administrators** |
-| [🚀 Getting Started](docs/getting-started.md) | Quick 10-minute setup tutorial | **First-time Users** |
-| [❓ FAQ](docs/faq.md) | Most common questions and detailed answers | **All Users** |
-| [🔍 Troubleshooting](docs/troubleshooting.md) | Common issues, solutions, and debugging tips | **Support & Operations** |
-
-### 👨‍💻 **Developer Documentation**
-
-| Document | Description | For Who |
-|----------|-------------|---------|
-| [🏗️ Architecture Guide](docs/architecture.md) | System design, components, and technical deep-dive | **Developers & Architects** |
-| [📐 API Reference](docs/api.md) | Complete API documentation for all interfaces | **Integration Developers** |
-| [🔧 Plugin Development](docs/plugins.md) | Step-by-step plugin creation and examples | **Plugin Developers** |
-| [🧪 Development Guide](docs/development.md) | Setup development environment and contribute | **Contributors** |
-
-### 🌟 **Community Resources**
-
-| Resource | Description | Purpose |
-|----------|-------------|---------|
-| [💬 GitHub Discussions](https://github.com/AlloraAi/AlloraCLI/discussions) | Community Q&A, feature requests, showcases | **Community Support** |
-| [🐛 Issue Tracker](https://github.com/AlloraAi/AlloraCLI/issues) | Bug reports and feature requests | **Bug Reporting** |
-| [📺 Video Tutorials](https://youtube.com/@alloracli) | Step-by-step video guides and demos | **Visual Learning** |
-| [📝 Blog & Best Practices](https://dev.alloracli.com) | Tutorials, case studies, and industry practices | **Advanced Learning** |
 
 ## 🎯 Quick Navigation for Different User Types
 
@@ -199,25 +137,6 @@ allora ask "Show me all running EC2 instances with their names"
 | Reactive monitoring and alerts | **Proactive AI insights** | 60% reduction in incidents |
 | Vendor-specific tools and workflows | **Multi-cloud unified management** | 50% operational overhead reduction |
 
-### 🌟 **Real User Success Stories**
-
-> *"AlloraCLI reduced our infrastructure management time by 60%. Our junior developers can now manage complex AWS environments using simple English commands."*  
-> **- Sarah Chen, DevOps Lead at TechCorp**
-
-> *"The AI-powered troubleshooting has been a game-changer. It automatically detected and suggested fixes for issues that would have taken hours to debug manually."*  
-> **- Mike Rodriguez, SRE at ScaleUp Inc**
-
-> *"Managing our multi-cloud infrastructure (AWS + Azure + GCP) became trivial with AlloraCLI. One tool, one interface, consistent experience."*  
-> **- Jennifer Kim, Cloud Architect at Enterprise Solutions**
-
-### 📈 **Growing Community**
-
-- 🌟 **10,000+** GitHub stars
-- 👥 **5,000+** active community members
-- 🔧 **500+** cloud resources supported
-- 🔌 **50+** community plugins
-- 🌍 **100+** countries using AlloraCLI
-- 🏢 **200+** enterprise customers
 
 ---
 
@@ -273,10 +192,23 @@ curl -L https://github.com/AlloraAi/AlloraCLI/releases/latest/download/allora-li
 chmod +x allora
 sudo mv allora /usr/local/bin/
 
-# Windows (PowerShell) - Quick Method
-Invoke-WebRequest -Uri "https://github.com/AlloraAi/AlloraCLI/releases/latest/download/allora-windows-amd64.exe" -OutFile "allora.exe"
-# For detailed setup, see WINDOWS_INSTALLATION.md
-```
+## Windows (PowerShell) - Quick Method
+```powershell
+    # paste link in powershell
+    Invoke-WebRequest -Uri "https://github.com/AlloraAi/AlloraCLI/releases/latest/download/allora-windows-amd64.exe" -OutFile "allora.exe"
+     
+     #run the command
+    .\allora.exe -version
+    #output: "allora version 1.0.0 " congrats you install alloracli
+    
+    #run command
+    .\allora.exe init    # initialize the cli
+    .\allora.exe --help  # help commands
+    
+    # For detailed setup, see WINDOWS_INSTALLATION.md
+
+ ```powershell
+    ```
 
 ### Install from Source
 
@@ -286,7 +218,7 @@ cd AlloraCLI
 go build -o allora ./cmd/allora/...
 ```
 
-### Package Managers
+### Package Managers{coming soon}
 
 ```bash
 # Homebrew (macOS/Linux)
@@ -370,11 +302,6 @@ allora examples                       # View usage examples
 allora tutorial                       # Interactive tutorial
 ```
 
-### 🌐 Community Resources
-
-- **[GitHub Wiki](https://github.com/yourusername/AlloraCLI/wiki)** - Community-driven knowledge base
-- **[Video Tutorials](https://youtube.com/@alloracli)** - Step-by-step video guides
-- **[Best Practices](docs/best-practices.md)** - Production-ready guidelines
 
 ## 💼 Real-World Use Cases
 
@@ -487,7 +414,7 @@ make dev
 4. **Commit**: Use [conventional commits](https://conventionalcommits.org/)
 5. **Submit PR**: Include a clear description and link any related issues
 
-### 💡 Ways to Contribute
+## 💡 Ways to Contribute
 
 <table>
 <tr>
@@ -516,48 +443,11 @@ make dev
 </tr>
 </table>
 
-### 🏆 Recognition
 
-Contributors are recognized in our:
-- [Hall of Fame](CONTRIBUTORS.md) 
-- Monthly contributor spotlight
-- Special Discord role and perks
 
-## 💬 Join Our Community
 
-**Connect with thousands of developers using AlloraCLI worldwide!**
 
-<table>
-<tr>
-<td>💬 <strong>Discord</strong></td>
-<td><a href="https://discord.gg/alloracli">Join our Discord</a> - Real-time help, discussions, and community</td>
-</tr>
-<tr>
-<td>🗣️ <strong>GitHub Discussions</strong></td>
-<td><a href="https://github.com/yourusername/AlloraCLI/discussions">Community forum</a> - Feature requests, Q&A, showcases</td>
-</tr>
-<tr>
-<td>🐦 <strong>Twitter</strong></td>
-<td><a href="https://twitter.com/AlloraAi">@AlloraAi</a> - Updates, tips, and community highlights</td>
-</tr>
-<tr>
-<td>📝 <strong>Blog</strong></td>
-<td><a href="https://dev.alloracli.com">dev.alloracli.com</a> - Tutorials, best practices, and case studies</td>
-</tr>
-<tr>
-<td>📺 <strong>YouTube</strong></td>
-<td><a href="https://youtube.com/@alloracli">AlloraCLI Channel</a> - Video tutorials and demos</td>
-</tr>
-</table>
-
-### 🎉 Community Events
-
-- **Monthly Meetups**: Virtual meetups with live demos and Q&A
-- **Hackathons**: Build amazing things with AlloraCLI and win prizes
-- **Office Hours**: Direct access to maintainers for questions and feedback
-- **User Showcases**: Share your AlloraCLI success stories
-
-### 💖 Support the Project
+## 💖 Support the Project
 
 If AlloraCLI has been helpful to you, consider:
 
@@ -597,7 +487,7 @@ AlloraCLI follows a microservices-inspired modular architecture with clear separ
 ```
 
 ### 🔧 Core Components
-
+<hr>
 <details>
 <summary><strong>🖥️ CLI Interface Layer</strong></summary>
 <br>
@@ -717,7 +607,7 @@ type CloudProvider interface {
 
 </details>
 
-### 🔌 Plugin Architecture
+## 🔌 Plugin Architecture
 
 **Plugin System Design:**
 
@@ -748,7 +638,7 @@ type CloudProvider interface {
 - **UI Plugins**: Interface enhancements
 - **Integration Plugins**: External tool integrations
 
-### 📁 Project Structure
+## 📁 Project Structure
 
 ```
 AlloraCLI/
@@ -785,7 +675,7 @@ AlloraCLI/
 └── examples/            # Usage examples
 ```
 
-### 🚀 Performance Characteristics
+## 🚀 Performance Characteristics
 
 **Performance Metrics:**
 - **Cold Start**: < 100ms (binary startup)
@@ -805,44 +695,7 @@ AlloraCLI/
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🏆 Enterprise Features
 
-- **Role-based Access Control**: Fine-grained permissions
-- **Audit Logging**: Comprehensive activity tracking  
-- **SSO Integration**: Enterprise authentication support
-- **Custom Dashboards**: Tailored monitoring interfaces
-- **24/7 Support**: Enterprise support plans available
-
-Contact sales@alloracli.com for enterprise inquiries.
-
-## 📈 Roadmap
-
-### Phase 1: Foundation ✅
-- [x] Core CLI framework and AI integration
-- [x] Multi-cloud provider support (AWS, Azure, GCP)
-- [x] Plugin architecture and extensibility
-- [x] Security and compliance features
-
-### Phase 2: Enhanced Features 🚧
-- [x] Interactive Gemini-style UI
-- [x] Advanced monitoring and alerting
-- [x] Comprehensive documentation
-- [ ] Mobile companion app
-- [ ] Visual infrastructure designer
-
-### Phase 3: Enterprise Features 📋
-- [ ] Role-based access control (RBAC)
-- [ ] Single sign-on (SSO) integration
-- [ ] Advanced analytics and reporting
-- [ ] Custom dashboard builder
-- [ ] Multi-tenant support
-
-### Phase 4: AI Evolution 🔮
-- [ ] Custom AI model training
-- [ ] Predictive analytics
-- [ ] Automated incident response
-- [ ] Natural language deployments
-- [ ] Intelligent cost optimization
 
 ## 📊 Performance & Metrics
 
@@ -868,27 +721,7 @@ Contact sales@alloracli.com for enterprise inquiries.
 - Inspired by the amazing open-source community
 - Special thanks to our [contributors](https://github.com/AlloraAi/AlloraCLI/graphs/contributors)
 
-## 📞 Support
 
-Need help? We're here for you:
-
-- 📧 **Email**: support@alloracli.com
-- 💬 **Discord**: [Join our community](https://discord.gg/alloracli)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/AlloraAi/AlloraCLI/issues)
-- 📖 **Documentation**: [docs.alloracli.com](https://docs.alloracli.com)
-
----
-
-<p align="center">
-  Made with ❤️ by <a href="https://github.com/AlloraAi">AlloraAi</a>
-</p>
-
-│   ├── security/     # Security features
-│   └── utils/        # Utility functions
-├── plugins/          # Plugin system
-├── docs/             # Documentation
-└── scripts/          # Build and deployment scripts
-```
 
 ## 🏗️ Development Setup
 
@@ -983,11 +816,11 @@ type AIAgent interface {
 
 </details>
 
-### 🔧 Plugin Development
+## 🔧 Plugin Development
 
 **Creating Custom Plugins:**
 
-1. **Initialize Plugin Structure:
+1. **Initialize Plugin Structure:**
 ```bash
 allora plugin init my-awesome-plugin
 cd my-awesome-plugin
@@ -1034,7 +867,7 @@ allora plugin test ./my-awesome-plugin
 allora plugin install ./my-awesome-plugin
 ```
 
-### 🧪 Testing Guidelines
+## 🧪 Testing Guidelines
 
 **Comprehensive Testing Strategy:**
 
